@@ -34,8 +34,14 @@ export default {
     // https://go.nuxtjs.dev/bootstrap
     '@nuxtjs/bulma',
     // https://go.nuxtjs.dev/axios
-    '@nuxtjs/axios'
+    '@nuxtjs/axios',
+    // https://auth.nuxtjs.org
+    '@nuxtjs/auth'
   ],
+
+  auth: {
+    // Options
+  },
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
   axios: {},
