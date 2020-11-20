@@ -1,0 +1,83 @@
+<template>
+  <form>
+    <div class="field">
+      <label class="label">Email</label>
+      <div class="control has-icons-left">
+        <input
+          v-model="userInfo.email"
+          class="input"
+          type="email"
+        >
+        <span class="icon is-small is-left">
+          <font-awesome-icon :icon="['fas', 'envelope']" />
+        </span>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label">Password</label>
+      <div class="control has-icons-left">
+        <input
+          v-model="userInfo.password"
+          class="input"
+          type="password"
+          minLength="6"
+          title="Please choose a password with at least 6 characters."
+        >
+        <span class="icon is-small is-left">
+          <font-awesome-icon :icon="['fas', 'key']" />
+        </span>
+      </div>
+    </div>
+
+    <div v-if="checkTos" class="field">
+      <div class="control">
+        <label class="checkbox">
+          <input v-model="userInfo.agreeToTerms" type="checkbox">
+          I agree to the <a href="#">terms and conditions</a>
+        </label>
+      </div>
+    </div>
+
+    <div class="field is-grouped">
+      <div class="control">
+        <button
+          :disabled="!valid"
+          class="button is-link"
+          @click="submitForm(userInfo)"
+        >
+          {{ buttonText }}
+        </button>
+      </div>
+    </div>
+  </form>
+</template>
+
+<script>
+export default {
+  props: {
+    submitForm: {
+      type: Function,
+      required: true
+    },
+    buttonText: {
+      type: String,
+      required: true
+    },
+    checkTos: Boolean
+  },
+  data () {
+    return {
+      valid: true,
+      userInfo: {
+        email: 'test@test.com',
+        password: 'testing!!',
+        agreeToTerms: false
+      }
+    }
+  }
+}
+</script>
+
+<style>
+</style>

@@ -26,8 +26,16 @@ export default {
   // Modules for dev and build (recommended) (https://go.nuxtjs.dev/config-modules)
   buildModules: [
     // https://go.nuxtjs.dev/eslint
-    '@nuxtjs/eslint-module'
+    '@nuxtjs/eslint-module',
+    '@nuxtjs/fontawesome'
   ],
+
+  fontawesome: {
+    icons: {
+      solid: true,
+      brands: true
+    }
+  },
 
   // Modules (https://go.nuxtjs.dev/config-modules)
   modules: [
@@ -40,11 +48,26 @@ export default {
   ],
 
   auth: {
-    // Options
+    strategies: {
+      local: {
+        endpoints: {
+          login: { url: '/api/auth/login', method: 'post', propertyName: 'token' },
+          logout: false,
+          user: { url: '/api/auth/user', method: 'get', propertyName: false }
+        }
+      }
+    },
+    redirect: {
+      logout: '/',
+      callback: '/login',
+      home: '/'
+    }
   },
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
-  axios: {},
+  axios: {
+    baseURL:'http://localhost:4000'
+  },
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {

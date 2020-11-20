@@ -12,11 +12,21 @@
     "test": "jest"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.32",
+    "@fortawesome/free-brands-svg-icons": "^5.15.1",
+    "@fortawesome/free-solid-svg-icons": "^5.15.1",
     "@nuxtjs/auth": "^4.9.1",
     "@nuxtjs/axios": "^5.12.2",
     "@nuxtjs/bulma": "^1.3.0",
+    "@nuxtjs/fontawesome": "^1.1.2",
+    "bcrypt": "^5.0.0",
+    "body-parser": "^1.19.0",
     "core-js": "^3.6.5",
-    "nuxt": "^2.14.6"
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "mysql2": "^2.2.5",
+    "nuxt": "^2.14.6",
+    "sequelize": "^6.3.5"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config": "^3.1.0",
