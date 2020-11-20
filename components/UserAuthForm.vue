@@ -1,5 +1,5 @@
 <template>
-  <form>
+  <form @submit.prevent="submitForm(userInfo)">
     <div class="field">
       <label class="label">Email</label>
       <div class="control has-icons-left">
@@ -44,7 +44,6 @@
         <button
           :disabled="!valid"
           class="button is-link"
-          @click="submitForm(userInfo)"
         >
           {{ buttonText }}
         </button>

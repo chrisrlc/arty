@@ -5,7 +5,7 @@ const cors = require('cors');
 const app = express();
 
 var corsOptions = {
-  // origin: 'http://localhost:8081'
+  origin: 'http://localhost:3000'
 };
 
 app.use(cors(corsOptions));
@@ -16,7 +16,7 @@ app.use(bodyParser.json());
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
 
-const db = require('./api/models');
+const db = require('./models');
 // db.sequelize.sync();
 db.sequelize.sync({ force: true }).then(() => {
   console.log('Drop and re-sync db.');
@@ -29,7 +29,10 @@ app.get('/', (req, res) => {
 
 // bring in authentication routes
 // const authenticationRoutes = require("./api/routes/authentication");
-app.use(require("./api/routes/authentication"))
+app.use(require("./routes/authentication"));
+
+const passport = require('passport');
+app.use(passport.initialize());
 
 // set port, listen for requests
 const PORT = process.env.PORT || 4000;

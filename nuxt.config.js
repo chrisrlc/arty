@@ -56,12 +56,12 @@ export default {
           user: { url: '/api/auth/user', method: 'get', propertyName: false }
         }
       }
-    },
-    redirect: {
-      logout: '/',
-      callback: '/login',
-      home: '/'
-    }
+    }//,
+    // redirect: {
+    //   logout: '/',
+    //   callback: '/login',
+    //   home: '/'
+    // }
   },
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
