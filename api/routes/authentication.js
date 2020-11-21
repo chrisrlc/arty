@@ -3,25 +3,20 @@ const express = require('express');
 const router = express.Router();
 
 router.post('/api/auth/register', async (req, res) => {
-  try {
-    await AuthenticationController.create(req, res);
-    res.send({message: 'An account has been created'})
-  } catch (err) {
-    throw err;
-  }
+  await AuthenticationController.create(req, res);
 })
 
 router.post('/api/auth/login', async (req, res) => {
-  try {
-    await AuthenticationController.login(req, res);
-    res.send({ message: 'Login is successful' });
-  } catch (err) {
-    throw err;
-  }
+  await AuthenticationController.login(req, res);
 })
 
-router.get('/api/auth/user', async (req, res) => {
-  res.send({ ok: 'ok' })
+// router.post('/api/auth/logout', async (req, res) => {
+//   req.logout()
+//   res.redirect('/')
+// })
+//
+router.get('/api/auth/user', (req, res) => {
+  AuthenticationController.getUser(req, res);
 })
 
 module.exports = router;

@@ -7,6 +7,7 @@
           v-model="userInfo.email"
           class="input"
           type="email"
+          required
         >
         <span class="icon is-small is-left">
           <font-awesome-icon :icon="['fas', 'envelope']" />
@@ -23,6 +24,7 @@
           type="password"
           minLength="6"
           title="Please choose a password with at least 6 characters."
+          required
         >
         <span class="icon is-small is-left">
           <font-awesome-icon :icon="['fas', 'key']" />
@@ -33,7 +35,7 @@
     <div v-if="checkTos" class="field">
       <div class="control">
         <label class="checkbox">
-          <input v-model="userInfo.agreeToTerms" type="checkbox">
+          <input v-model="userInfo.agreeToTerms" type="checkbox" required>
           I agree to the <a href="#">terms and conditions</a>
         </label>
       </div>
@@ -71,7 +73,7 @@ export default {
       userInfo: {
         email: 'test@test.com',
         password: 'testing!!',
-        agreeToTerms: false
+        agreeToTerms: true
       }
     }
   }

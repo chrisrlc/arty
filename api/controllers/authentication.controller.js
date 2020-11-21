@@ -1,11 +1,7 @@
-const authConfig = require("../config/auth.config.js");
 const db = require("../models");
 const User = db.users;
-const bcrypt = require('bcrypt')
-const passport = require('passport')
-const jwt = require('jsonwebtoken')
-const LocalStrategy = require('passport-local').Strategy
-const authUserSecret = authConfig.AUTH_USER_SECRET
+const bcrypt = require('bcrypt');
+const session = require('express-session');
 
 // Create and save a new User
 async function create (req, res) {
@@ -34,69 +30,59 @@ async function create (req, res) {
   }
 }
 
-// Find a single User with an email
-async function findOne (email) {
-  try {
-    return await User.findOne({where: {email: email}});
-  } catch (err) {
-    throw err;
-  }
-}
-
-passport.use(
-  new LocalStrategy(
-    {
-      usernameField: 'email',
-      passwordField: 'password'
-    },
-    async function (email, password, done) {
-      try {
-        const user = await findOne(email)
-        console.log(user)
-
-        if (user) {
-          const validation = await comparePasswords(password, user.password)
-          if (validation) {
-            return done(null, user)
-          } else {
-            return done(null, false, { message: 'Authentication failed' })
-          }
-        } else {
-          return done(null, false, { message: 'Authentication failed' })
-        }
-      } catch (err) {
-        return done(err)
-      }
-    }
-  )
-)
-
 async function comparePasswords (plainPassword, hashedPassword) {
   return await bcrypt.compare(plainPassword, hashedPassword)
 }
 
-function signUserToken (user) {
-  return jwt.sign({
-    id: user.id,
-    email: user.email
-  }, authUserSecret)
+async function login (req, res) {
+  // Validate request
+  if (!req.body.email || !req.body.password) {
+    res.status(400).send({
+      message: "Email or password can not be empty!"
+    });
+    return;
+  }
+
+  const email = req.body.email;
+  const plainPassword = req.body.password;
+
+  // Save User in the database
+  try {
+    const user = await User.findOne({where: {email: email}})
+    if (user && await comparePasswords(plainPassword, user.password)) {
+      console.log('in login')
+      console.log(req.session)
+      console.log(req.session.user)
+      req.session.user = user;
+      console.log(user);
+      console.log(req.session);
+      console.log(req.session.id);
+      return res.send(user)
+    } else {
+      return res.status(403).send({
+        message:
+          "User login credentials invalid."
+      });
+    }
+  } catch (err) {
+    res.status(500).send({
+      message:
+        err.message || "Some error occurred while logging in."
+    });
+  }
 }
 
-function login (req, res) {
-  passport.authenticate('local', { session: false }, (err, user, message) => {
-    if (err) {
-      res.status(500).send(err);
-    } else if (!user) {
-      res.status(403).send(message);
-    } else {
-      const token = signUserToken(user)
-      res.send({ token })
-    }
-  })(req, res)
+function getUser (req, res) {
+  console.log('in getUser')
+  // console.log(session.user.email)
+  console.log(req.session)
+  console.log(req.session.id)
+  console.log(req.session.user)
+  res.send(req.session.user.email);
 }
 
 module.exports = {
   create,
-  findOne,
-  login
+  login,
+  getUser
 }

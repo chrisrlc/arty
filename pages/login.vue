@@ -1,18 +1,37 @@
 <template>
-  <div>
-    <h1 class="title">
-      Login
-    </h1>
-    <UserAuthForm buttonText="Login" :submitForm="userLogin" />
-  </div>
+  <section class="section">
+    <div class="container">
+      <div class="columns">
+        <div class="column">
+          <h1 class="title has-text-centered">
+            Login
+          </h1>
+
+          <Notification v-if="error" :message="error" />
+
+          <UserAuthForm buttonText="Login" :submitForm="userLogin" />
+
+          <div class="has-text-centered" style="margin-top: 20px">
+            Don't have an account?
+            <NuxtLink to="/signup">
+              Sign Up
+            </NuxtLink>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 </template>
 
 <script>
 export default {
+  // middleware: 'guest',
+  data () {
+    return {
+      error: null
+    }
+  },
   methods: {
-    // userLogin (userInfo) {
-    //   this.$auth.loginWith('local', { data: userInfo })
-    // }
     async userLogin (userInfo) {
       try {
         const response = await this.$auth.loginWith('local', {
@@ -23,6 +42,8 @@ export default {
         })
         console.log('cool')
         console.log(response)
+
+        this.$router.push('/')
       } catch (err) {
         console.log('oh no login error')
         console.log(err)

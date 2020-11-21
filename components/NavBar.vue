@@ -1,9 +1,9 @@
 <template>
   <nav class="navbar" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
-      <a class="navbar-item" href="https://bulma.io">
-        <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28">
-      </a>
+      <NuxtLink class="navbar-item" to="/">
+        Arty
+      </NuxtLink>
 
       <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
         <span aria-hidden="true" />
@@ -14,10 +14,6 @@
 
     <div id="navbarBasicExample" class="navbar-menu">
       <div class="navbar-start">
-        <NuxtLink to="/" class="navbar-item">
-          Home
-        </NuxtLink>
-
         <NuxtLink to="/about" class="navbar-item">
           About
         </NuxtLink>
@@ -26,19 +22,18 @@
       <div class="navbar-end">
         <div class="navbar-item">
           <div class="buttons">
-            <div v-if="$auth.loggedIn">
+            <div v-if="loggedIn">
               <div class="navbar-item has-dropdown is-hoverable">
-                <a class="navbar-link">
-                  {{ $auth.user.email }}
-                </a>
+                <a class="navbar-link">{{ user.email }}</a>
 
                 <div class="navbar-dropdown">
-                  <NuxtLink to="#" class="navbar-item">
-                    Settings
+                  <NuxtLink to="/profile" class="navbar-item">
+                    My Profile
                   </NuxtLink>
-                  <NuxtLink to="/logout" class="navbar-item">
+                  <hr class="navbar-divider">
+                  <a class="navbar-item" @click="logout">
                     Log out
-                  </NuxtLink>
+                  </a>
                 </div>
               </div>
             </div>
@@ -56,3 +51,22 @@
     </div>
   </nav>
 </template>
+
+<script>
+export default {
+  computed: {
+    loggedIn () {
+      return this.$auth.loggedIn
+    },
+    user () {
+      return this.$auth.user
+    }
+  },
+  methods: {
+    async logout () {
+      await this.$auth.logout()
+      this.$router.push('/login')
+    }
+  }
+}
+</script>

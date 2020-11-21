@@ -2,6 +2,8 @@
 
 ## Build Setup
 
+### Client-side
+
 ```bash
 # install dependencies
 $ npm install
@@ -18,3 +20,10 @@ $ npm run generate
 ```
 
 For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
+
+### Backend
+
+```bash
+# start backend server at localhost:4000
+$ node api/index.js
+```
