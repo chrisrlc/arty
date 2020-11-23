@@ -83,6 +83,11 @@ async function login (req, res) {
   }
 }
 
+function logout (req, res) {
+  req.session.destroy();
+  res.redirect('/');
+}
+
 function getUser (req, res) {
   res.send(req.session.user);
 }
@@ -90,5 +95,6 @@ function getUser (req, res) {
 module.exports = {
   create,
   login,
+  logout,
   getUser
 }
