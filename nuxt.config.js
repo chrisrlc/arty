@@ -58,12 +58,7 @@ export default {
         tokenRequired: false,
         tokenType: false
       }
-    }//,
-    // redirect: {
-    //   logout: '/',
-    //   callback: '/login',
-    //   home: '/'
-    // }
+    }
   },
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
