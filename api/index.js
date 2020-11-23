@@ -19,17 +19,21 @@ app.use(bodyParser.json());
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
 
+const db = require('./models');
+db.sequelize.sync();
+db.sequelize.sync({ force: true }).then(() => {
+  console.log('Drop and re-sync db.');
+});
+
+const SequelizeStore = require('connect-session-sequelize')(session.Store)
 app.use(session({
+  store: new SequelizeStore({
+    db: db.sequelize,
+  }),
   secret: authConfig.AUTH_USER_SECRET,
   resave: false,
   saveUninitialized: false
 }))
-
-const db = require('./models');
-// db.sequelize.sync();
-db.sequelize.sync({ force: true }).then(() => {
-  console.log('Drop and re-sync db.');
-});
 
 // simple route
 app.get('/', (req, res) => {
