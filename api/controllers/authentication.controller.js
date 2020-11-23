@@ -1,7 +1,6 @@
 const db = require("../models");
 const User = db.users;
 const bcrypt = require('bcrypt');
-const session = require('express-session');
 
 // Create and save a new User
 async function create (req, res) {
@@ -21,7 +20,10 @@ async function create (req, res) {
 
   // Save User in the database
   try {
-    res.send(await User.create(user));
+    req.session.user = await User.create(user)
+    console.log('In register')
+    console.log(session.id)
+    res.send(req.session.user);
   } catch (err) {
     res.status(500).send({
       message:
@@ -50,13 +52,9 @@ async function login (req, res) {
   try {
     const user = await User.findOne({where: {email: email}})
     if (user && await comparePasswords(plainPassword, user.password)) {
-      console.log('in login')
+      req.session.user = user
       console.log(req.session)
-      console.log(req.session.user)
-      req.session.user = user;
-      console.log(user);
-      console.log(req.session);
-      console.log(req.session.id);
+      console.log(req.session.id)
       return res.send(user)
     } else {
       return res.status(403).send({
@@ -77,8 +75,7 @@ function getUser (req, res) {
   // console.log(session.user.email)
   console.log(req.session)
   console.log(req.session.id)
-  console.log(req.session.user)
-  res.send(req.session.user.email);
+  res.send(req.session.user);
 }
 
 module.exports = {
