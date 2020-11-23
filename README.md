@@ -24,6 +24,16 @@ For detailed explanation on how things work, check out [Nuxt.js docs](https://nu
 ### Backend
 
 ```bash
+# Install mysql
+
+# Create database and user
+$ mysql -u root
+mysql> CREATE USER 'artyUser'@'localhost' IDENTIFIED BY 'artyarty';
+mysql> CREATE DATABASE IF NOT EXISTS arty;
+mysql> GRANT ALL PRIVILEGES ON arty.* TO 'artyUser'@'localhost';
+mysql> FLUSH PRIVILEGES;
+mysql> EXIT
+
 # start backend server at localhost:4000
 $ node api/index.js
 ```
