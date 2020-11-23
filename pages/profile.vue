@@ -14,7 +14,6 @@
 </template>
 
 <script>
-
 export default {
   middleware: 'auth',
   computed: {
