@@ -38,7 +38,7 @@ async function create (req, res) {
   // Save User in the database and log in
   try {
     req.session.user = await User.create(newUser)
-    res.send(req.session.user)
+    res.end()
   } catch (err) {
     res.status(500).send({
       message:
@@ -68,7 +68,7 @@ async function login (req, res) {
     const user = await User.findOne({where: {email: email}})
     if (user && await comparePasswords(plainPassword, user.password)) {
       req.session.user = user
-      res.send(req.session.user)
+      res.end()
     } else {
       res.status(403).send({
         message:
@@ -89,7 +89,12 @@ async function logout (req, res) {
 }
 
 function getUser (req, res) {
-  res.send(req.session.user)
+  if (req.session.user) {
+    const { password, ...withoutPassword } = req.session.user
+    res.send(withoutPassword)
+  } else {
+    res.send(undefined)
+  }
 }
 
 module.exports = {
