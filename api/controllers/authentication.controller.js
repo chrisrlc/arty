@@ -93,7 +93,7 @@ function getUser (req, res) {
     const { password, ...withoutPassword } = req.session.user
     res.send(withoutPassword)
   } else {
-    res.send(undefined)
+    res.end()
   }
 }
 
