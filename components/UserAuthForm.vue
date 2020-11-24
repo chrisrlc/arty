@@ -7,6 +7,7 @@
           v-model="userInfo.email"
           class="input"
           type="email"
+          name="email"
           required
         >
         <span class="icon is-small is-left">
@@ -22,6 +23,7 @@
           v-model="userInfo.password"
           class="input"
           type="password"
+          name="password"
           minLength="6"
           title="Please choose a password with at least 6 characters."
           required
@@ -41,15 +43,13 @@
       </div>
     </div>
 
-    <div class="field is-grouped">
-      <div class="control">
-        <button
-          :disabled="!valid"
-          class="button is-link"
-        >
-          {{ buttonText }}
-        </button>
-      </div>
+    <div class="control">
+      <button
+        :disabled="!valid"
+        class="button is-link is-fullwidth"
+      >
+        {{ buttonText }}
+      </button>
     </div>
   </form>
 </template>
@@ -71,9 +71,9 @@ export default {
     return {
       valid: true,
       userInfo: {
-        email: 'test@test.com',
-        password: 'testing!!',
-        agreeToTerms: true
+        email: null,
+        password: null,
+        agreeToTerms: false
       }
     }
   }
