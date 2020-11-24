@@ -34,19 +34,10 @@ export default {
   methods: {
     async userLogin (userInfo) {
       try {
-        const response = await this.$auth.loginWith('local', {
-          data: {
-            email: userInfo.email,
-            password: userInfo.password
-          }
-        })
-        console.log('cool')
-        console.log(response)
-
-        this.$router.push('/')
+        await this.$auth.loginWith('local', { data: userInfo })
+        await this.$router.push('/')
       } catch (err) {
-        console.log('oh no login error')
-        console.log(err)
+        this.error = err.response.data.message
       }
     }
   }
