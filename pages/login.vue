@@ -25,7 +25,7 @@
 
 <script>
 export default {
-  // middleware: 'guest',
+  auth: 'guest',
   data () {
     return {
       error: null
