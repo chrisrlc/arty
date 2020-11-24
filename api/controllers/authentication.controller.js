@@ -10,20 +10,20 @@ async function create (req, res) {
 
   // Validate request
   if (!agreeToTerms) {
-    res.status(400).send({
+    res.status(401).send({
       message: "Please agree to the terms and conditions before creating an account."
     });
     return;
   }
   if (!email || !plainPassword) {
-    res.status(400).send({
+    res.status(401).send({
       message: "Email or password can't be empty!"
     });
     return;
   }
   const existingUser = await User.findOne({where: {email: email}})
   if (existingUser) {
-    res.status(400).send({
+    res.status(401).send({
       message: "Email has already been taken. Please log in or choose another."
     });
     return;
@@ -54,7 +54,7 @@ async function comparePasswords (plainPassword, hashedPassword) {
 async function login (req, res) {
   // Validate request
   if (!req.body.email || !req.body.password) {
-    res.status(400).send({
+    res.status(401).send({
       message: "Email or password can't be empty!"
     });
     return;
