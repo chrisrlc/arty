@@ -56,6 +56,6 @@ export default {
 
 .links .button:hover {
   color: #fff;
-  background-color: #35495e;
+  background-color: #800080;
 }
 </style>
