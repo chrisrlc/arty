@@ -41,7 +41,7 @@ app.get('/', (req, res) => {
 })
 
 // bring in authentication routes
-app.use(require("./routes/authentication"))
+app.use('/api', require('./routes/authentication'))
 
 // set port, listen for requests
 const PORT = process.env.PORT || 4000
