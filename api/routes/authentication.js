@@ -2,19 +2,19 @@ const AuthenticationController = require("../controllers/authentication.controll
 const express = require('express')
 const router = express.Router()
 
-router.post('/api/auth/register', async (req, res) => {
+router.post('/auth/register', async (req, res) => {
   await AuthenticationController.create(req, res)
 })
 
-router.post('/api/auth/login', async (req, res) => {
+router.post('/auth/login', async (req, res) => {
   await AuthenticationController.login(req, res)
 })
 
-router.post('/api/auth/logout', async (req, res) => {
+router.post('/auth/logout', async (req, res) => {
   await AuthenticationController.logout(req, res)
 })
 
-router.get('/api/auth/user', (req, res) => {
+router.get('/auth/user', (req, res) => {
   AuthenticationController.getUser(req, res)
 })
 

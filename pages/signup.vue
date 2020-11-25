@@ -34,7 +34,7 @@ export default {
   methods: {
     async userSignup (userInfo) {
       try {
-        await this.$axios.post('/api/auth/register', userInfo)
+        await this.$axios.post('/auth/register', userInfo)
         await this.$auth.loginWith('local', { data: userInfo })
 
         await this.$router.push('/')
