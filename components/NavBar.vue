@@ -1,8 +1,8 @@
 <template>
   <nav class="navbar" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
-      <NuxtLink class="navbar-item" to="/">
-        Arty
+      <NuxtLink class="navbar-item arty-title" to="/">
+        arty
       </NuxtLink>
 
       <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
@@ -70,3 +70,10 @@ export default {
   }
 }
 </script>
+
+<style>
+a.arty-title:hover, a.arty-title:active, a.arty-title:focus {
+  color: #800080;
+}
+
+</style>
