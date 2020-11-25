@@ -1,4 +1,4 @@
-const db = require("../models")
+const db = require('../models')
 const User = db.users
 const bcrypt = require('bcrypt')
 
@@ -11,7 +11,7 @@ async function create (req, res) {
   // Validate request
   if (!agreeToTerms) {
     res.status(401).send({
-      message: "Please agree to the terms and conditions before creating an account."
+      message: 'Please agree to the terms and conditions before creating an account.'
     })
     return
   }
@@ -24,7 +24,7 @@ async function create (req, res) {
   const existingUser = await User.findOne({where: {email: email}})
   if (existingUser) {
     res.status(401).send({
-      message: "Email has already been taken. Please log in or choose another."
+      message: 'Email has already been taken. Please log in or choose another.'
     })
     return
   }
@@ -42,7 +42,7 @@ async function create (req, res) {
   } catch (err) {
     res.status(500).send({
       message:
-        err.message || "Some error occurred while creating the user."
+        err.message || 'Some error occurred while creating the user.'
     })
   }
 }
@@ -72,13 +72,13 @@ async function login (req, res) {
     } else {
       res.status(403).send({
         message:
-          "Invalid email or password."
+          'Invalid email or password.'
       })
     }
   } catch (err) {
     res.status(500).send({
       message:
-        err.message || "Some error occurred while logging in."
+        err.message || 'Some error occurred while logging in.'
     })
   }
 }
