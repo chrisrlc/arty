@@ -71,9 +71,9 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 a.arty-title:hover, a.arty-title:active, a.arty-title:focus {
-  color: #800080;
+  color: $arty-purple;
 }
 
 </style>

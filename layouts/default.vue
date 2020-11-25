@@ -7,7 +7,7 @@
   </div>
 </template>
 
-<style>
+<style lang="scss">
 html {
   font-family:
     'Source Sans Pro',
@@ -39,6 +39,15 @@ html {
     Arial,
     sans-serif;
   font-weight: 300;
-  color: #800080;
+  color: $arty-purple;
+}
+
+.button.is-arty {
+  background-color: $arty-purple;
+  color: #fff;
+}
+
+.navbar-link:not(.is-arrowless)::after {
+  border-color: $arty-purple;
 }
 </style>
