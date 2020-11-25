@@ -1,14 +1,10 @@
 <template>
-  <div>
-    <main>
-      <h1 class="title">
-        Yay a page!
-      </h1>
-    </main>
-    <NuxtLink to="/">
-      Home page
-    </NuxtLink>
-  </div>
+  <section class="section">
+    <h1 class="title">
+      Art inventories for arty people.
+    </h1>
+    <p><span class="arty-title">arty</span> is a fun project created by two eggs during the 2020 pandemic.</p>
+  </section>
 </template>
 
 <script>

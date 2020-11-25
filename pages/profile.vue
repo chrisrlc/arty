@@ -1,15 +1,11 @@
 <template>
   <section class="section">
-    <div class="container">
       <h1 class="title">
         My Profile
       </h1>
-      <div class="content">
-        <p>
-          <strong>Email:</strong> {{ user.email }}
-        </p>
-      </div>
-    </div>
+      <p>
+        <strong>Email:</strong> {{ user.email }}
+      </p>
   </section>
 </template>
 
