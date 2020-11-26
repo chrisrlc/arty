@@ -1,7 +1,7 @@
 <template>
   <div class="container home">
     <div>
-      <img class="arty-logo" src="~/assets/arty-logo.svg" />
+      <img class="arty-logo" src="~/assets/arty-logo-outline.svg" />
       <h1 class="title arty-title">
         arty
       </h1>
