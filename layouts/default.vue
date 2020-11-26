@@ -41,13 +41,4 @@ html {
   font-weight: 300;
   color: $arty-purple;
 }
-
-.button.is-arty {
-  background-color: $arty-purple;
-  color: #fff;
-}
-
-.navbar-link:not(.is-arrowless)::after {
-  border-color: $arty-purple;
-}
 </style>
