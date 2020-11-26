@@ -46,7 +46,7 @@
     <div class="control">
       <button
         :disabled="!valid"
-        class="button is-arty is-fullwidth"
+        class="button is-primary is-fullwidth"
       >
         {{ buttonText }}
       </button>

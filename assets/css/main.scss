@@ -3,7 +3,8 @@
 @import '~bulma/sass/utilities/functions';
 
 // Overrides
-
+$primary: $arty-purple;
+$link: $secondary;
 
 // Import the rest of bulma
 @import '~bulma';

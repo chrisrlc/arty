@@ -38,7 +38,7 @@
               </div>
             </div>
             <div v-else>
-              <NuxtLink to="/signup" class="button is-primary">
+              <NuxtLink to="/signup" class="button is-link">
                 <strong>Sign up</strong>
               </NuxtLink>
               <NuxtLink to="/login" class="button is-light">
@@ -75,5 +75,4 @@ export default {
 a.arty-title:hover, a.arty-title:active, a.arty-title:focus {
   color: $arty-purple;
 }
-
 </style>
