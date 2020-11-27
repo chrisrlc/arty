@@ -60,7 +60,7 @@
           v-model="workInfo.acquisitionDate"
           placeholder="MM/DD/YYYY"
           format="MM/dd/yyyy"
-          typeable=true
+          :typeable="true"
           name="acquisitionDate"
           input-class="input"
         />
