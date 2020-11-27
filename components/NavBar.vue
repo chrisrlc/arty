@@ -19,32 +19,38 @@
         </NuxtLink>
       </div>
 
-      <div class="navbar-end">
+      <div class="navbar-end" v-if="loggedIn" >
         <div class="navbar-item">
           <div class="buttons">
-            <div v-if="loggedIn">
-              <div class="navbar-item has-dropdown is-hoverable">
-                <a class="navbar-link">{{ user.email }}</a>
+            <NuxtLink to="/artwork" class="button is-link">
+              <strong>Add new artwork</strong>
+            </NuxtLink>
+          </div>
+        </div>
 
-                <div class="navbar-dropdown">
-                  <NuxtLink to="/settings" class="navbar-item">
-                    Settings
-                  </NuxtLink>
-                  <hr class="navbar-divider">
-                  <a class="navbar-item" @click="logout">
-                    Log out
-                  </a>
-                </div>
-              </div>
-            </div>
-            <div v-else>
-              <NuxtLink to="/signup" class="button is-link">
-                <strong>Sign up</strong>
-              </NuxtLink>
-              <NuxtLink to="/login" class="button is-light">
-                Log in
-              </NuxtLink>
-            </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link">{{ user.email }}</a>
+
+          <div class="navbar-dropdown">
+            <NuxtLink to="/settings" class="navbar-item">
+              Settings
+            </NuxtLink>
+            <hr class="navbar-divider">
+            <a class="navbar-item" @click="logout">
+              Log out
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="navbar-end" v-else>
+        <div class="navbar-item">
+          <div class="buttons">
+            <NuxtLink to="/signup" class="button is-link">
+              <strong>Sign up</strong>
+            </NuxtLink>
+            <NuxtLink to="/login" class="button is-light">
+              Log in
+            </NuxtLink>
           </div>
         </div>
       </div>

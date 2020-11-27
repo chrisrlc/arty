@@ -1,28 +1,35 @@
 const db = require('../models')
 const Artwork = db.artworks
 const Artist = db.artists
-const ArtistWebsite = db.artistWebsites
 
 // Create and save a new User
 async function create (req, res) {
   // TODO: 403 if no user
 
-  const newArtist = Artist.create({ name: req.body.artist })
+  try {
+    let newArtistId = null
+    if (req.body.artist) {
+      const newArtist = await Artist.create({ name: req.body.artist })
+      newArtistId = newArtist.id
+    }
 
-  req.body.websites.forEach(function (websiteUrl) {
-    ArtistWebsite.create({ url: websiteUrl })
-  })
+    const newArtwork = await Artwork.create({
+      userId: req.session.user.id,
+      artistId: newArtistId,
+      title: req.body.title,
+      description: req.body.description,
+      acquisitionUrl: req.body.acquisitionUrl,
+      acquisitionDate: req.body.acquisitionDate,
+      acquisitionCost: req.body.acquisitionCost
+    })
 
-  const newArtwork = {
-    userId: req.session.user.id,
-    artistId: newArtist.id,
-    title: req.body.title,
-    description: req.body.description,
-    acquisitionUrl: req.body.acquisitionUrl,
-    acquisitionDate: req.body.acquisitionDate,
-    acquisitionCost: req.body.acquisitionCost
+    res.send(newArtwork)
+  } catch (err) {
+    res.status(500).send({
+      message:
+        err.message || 'Some error occurred while creating an artwork.'
+    })
   }
-  Artwork.create(newArtwork)
 }
 
 async function show (req, res) {
@@ -37,8 +44,6 @@ async function show (req, res) {
     })
   }
 }
-
-
 
 module.exports = {
   create,
