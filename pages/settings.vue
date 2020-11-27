@@ -1,7 +1,7 @@
 <template>
   <section class="section">
       <h1 class="title">
-        My Profile
+        Account Settings
       </h1>
       <p>
         <strong>Email:</strong> {{ user.email }}

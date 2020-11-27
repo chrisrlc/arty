@@ -27,8 +27,8 @@
                 <a class="navbar-link">{{ user.email }}</a>
 
                 <div class="navbar-dropdown">
-                  <NuxtLink to="/profile" class="navbar-item">
-                    My Profile
+                  <NuxtLink to="/settings" class="navbar-item">
+                    Settings
                   </NuxtLink>
                   <hr class="navbar-divider">
                   <a class="navbar-item" @click="logout">
