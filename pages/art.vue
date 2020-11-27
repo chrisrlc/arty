@@ -1,17 +1,19 @@
 <template>
   <section class="section">
-    <h1 class="title">Add a new artwork to your inventory</h1>
-    <form @submit.prevent="addArtwork(artworkInfo)">
+    <h1 class="title">
+      Add new art to your inventory
+    </h1>
+    <form @submit.prevent="addWork(workInfo)">
       <div class="field">
         <label class="label">Title</label>
         <div class="control">
           <input
-            v-model="artworkInfo.title"
+            v-model="workInfo.title"
             class="input"
             type="text"
             name="title"
             placeholder="e.g. Arty Rabbit"
-          />
+          >
         </div>
       </div>
 
@@ -19,12 +21,12 @@
         <label class="label">Artist</label>
         <div class="control">
           <input
-            v-model="artworkInfo.artist"
+            v-model="workInfo.artist"
             class="input"
             type="text"
             name="artist"
             placeholder="e.g. Chrissy C"
-          />
+          >
         </div>
       </div>
 
@@ -32,11 +34,9 @@
         <label class="label">Description</label>
         <div class="control">
           <textarea
-            v-model="artworkInfo.description"
+            v-model="workInfo.description"
             class="textarea"
-            placeholder="e.g. Handmade purple patchwork rabbit with tiny horn-rimmed glasses and a judgmental expression, measures 8” long.
-
-Might be haunted?"
+            :placeholder="descriptionPlaceholder"
           />
         </div>
       </div>
@@ -45,34 +45,40 @@ Might be haunted?"
         <label class="label">URL</label>
         <div class="control">
           <input
-            v-model="artworkInfo.acquisitionUrl"
+            v-model="workInfo.acquisitionUrl"
             class="input"
             type="text"
             name="acquisitionUrl"
             placeholder="e.g. https://www.etsy.com/transaction/555555555"
-          />
+          >
         </div>
       </div>
 
       <div class="field">
         <label class="label">Date purchased</label>
         <date-picker
+          v-model="workInfo.acquisitionDate"
           placeholder="MM/DD/YYYY"
           format="MM/dd/yyyy"
-          v-model="artworkInfo.acquisitionDate"
-          input-class="input" />
+          typeable=true
+          name="acquisitionDate"
+          input-class="input"
+        />
       </div>
 
       <div class="field">
         <label class="label">Cost</label>
-        <div class="control">
+        <div class="control has-icons-left">
           <input
-            v-model="artworkInfo.acquisitionCost"
+            v-model="workInfo.acquisitionCost"
             class="input"
-            type="text"
+            type="number"
+            min="0"
+            step="any"
             name="acquisitionCost"
-            placeholder="e.g. $20"
-          />
+            placeholder="e.g. 20"
+          >
+          <span class="icon is-small is-left">$</span>
         </div>
       </div>
 
@@ -89,7 +95,9 @@ Might be haunted?"
 export default {
   data () {
     return {
-      artworkInfo: {
+      descriptionPlaceholder: 'e.g. Handmade purple patchwork rabbit with tiny horn-rimmed glasses and a judgmental ' +
+        'expression, measures 8” long.\n\nMight be haunted?',
+      workInfo: {
         title: null,
         artist: null,
         description: null,
@@ -100,16 +108,14 @@ export default {
     }
   },
   methods: {
-    async addArtwork () {
+    async addWork () {
       try {
-        console.log('trying to addArtwork')
-        const artwork = await this.$axios.post('/art', this.artworkInfo)
-        console.log('in success')
-        console.log(artwork.id)
+        const work = await this.$axios.post('/art', this.workInfo)
 
+        console.log(work)
         // TODO: Redirect to show page
       } catch (err) {
-        console.log('in error')
+        // TODO: Handle error
         console.log(err.response.data.message)
       }
     }

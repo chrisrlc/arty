@@ -12,7 +12,7 @@ module.exports = (sequelize, Sequelize) => {
   })
 
   User.associate = function (models) {
-    User.hasMany(models.Artwork, {
+    User.hasMany(models.Work, {
       foreignKey: 'userId'
     })
   }

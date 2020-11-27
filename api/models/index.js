@@ -20,7 +20,7 @@ db.Sequelize = Sequelize
 db.sequelize = sequelize
 
 db.users = require('./user.js')(sequelize, Sequelize)
-db.artworks = require('./artwork.js')(sequelize, Sequelize)
+db.works = require('./work.js')(sequelize, Sequelize)
 db.artists = require('./artist.js')(sequelize, Sequelize)
 db.artistWebsites = require('./artist-website.js')(sequelize, Sequelize)
 

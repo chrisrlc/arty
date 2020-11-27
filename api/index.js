@@ -21,9 +21,18 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 const db = require('./models')
 // db.sequelize.sync()
-db.sequelize.sync({ force: true }).then(() => {
-  console.log('Drop and re-sync db.')
-})
+db.sequelize.query('SET FOREIGN_KEY_CHECKS = 0')
+  .then(function () {
+    return db.sequelize.sync({force: true});
+  })
+  .then(function () {
+    return db.sequelize.query('SET FOREIGN_KEY_CHECKS = 1')
+  })
+  .then(function () {
+    console.log('Drop and re-sync db.');
+  }, function (err) {
+    console.log(err);
+  });
 
 const SequelizeStore = require('connect-session-sequelize')(session.Store)
 app.use(session({
@@ -42,7 +51,7 @@ app.get('/', (req, res) => {
 
 // bring in routes
 app.use('/api', require('./routes/authentication'))
-app.use('/api', require('./routes/artwork'))
+app.use('/api', require('./routes/work'))
 
 // set port, listen for requests
 const PORT = process.env.PORT || 4000

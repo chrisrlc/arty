@@ -19,11 +19,11 @@
         </NuxtLink>
       </div>
 
-      <div class="navbar-end" v-if="loggedIn" >
+      <div v-if="loggedIn" class="navbar-end">
         <div class="navbar-item">
           <div class="buttons">
-            <NuxtLink to="/artwork" class="button is-link">
-              <strong>Add new artwork</strong>
+            <NuxtLink to="/art" class="button is-link">
+              <strong>Add new art</strong>
             </NuxtLink>
           </div>
         </div>
@@ -42,7 +42,7 @@
           </div>
         </div>
       </div>
-      <div class="navbar-end" v-else>
+      <div v-else class="navbar-end">
         <div class="navbar-item">
           <div class="buttons">
             <NuxtLink to="/signup" class="button is-link">

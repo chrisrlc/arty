@@ -1,5 +1,5 @@
 const db = require('../models')
-const Artwork = db.artworks
+const Work = db.works
 const Artist = db.artists
 
 // Create and save a new User
@@ -13,7 +13,7 @@ async function create (req, res) {
       newArtistId = newArtist.id
     }
 
-    const newArtwork = await Artwork.create({
+    const newWork = await Work.create({
       userId: req.session.user.id,
       artistId: newArtistId,
       title: req.body.title,
@@ -23,11 +23,11 @@ async function create (req, res) {
       acquisitionCost: req.body.acquisitionCost
     })
 
-    res.send(newArtwork)
+    res.send(newWork)
   } catch (err) {
     res.status(500).send({
       message:
-        err.message || 'Some error occurred while creating an artwork.'
+        err.message || 'Some error occurred while creating a Work.'
     })
   }
 }
@@ -35,12 +35,12 @@ async function create (req, res) {
 async function show (req, res) {
   // TODO: 403 if no user
 
-  const artwork = await Artwork.findByPk(req.params.artworkId)
-  if (artwork) {
-    res.send(artwork)
+  const work = await Work.findByPk(req.params.workId)
+  if (work) {
+    res.send(work)
   } else {
     res.status(404).send({
-      message: "No artwork found"
+      message: "No Work found"
     })
   }
 }

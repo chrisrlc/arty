@@ -1,7 +1,8 @@
 module.exports = (sequelize, Sequelize) => {
-  const Artwork = sequelize.define('artwork', {
+  const Work = sequelize.define('work', {
     userId: {
       type: Sequelize.INTEGER,
+      require: true,
       onDelete: 'CASCADE',
       references: {
         model: 'users',
@@ -28,20 +29,20 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.DATEONLY
     },
     acquisitionCost: {
-      type: Sequelize.STRING
+      type: Sequelize.DECIMAL(19,4)
     }
   })
 
-  Artwork.associate = function (models) {
-    Artwork.belongsTo(models.Artist, {
+  Work.associate = function (models) {
+    Work.belongsTo(models.Artist, {
       foreignKey: 'artistId'
     })
 
-    Artwork.belongsTo(models.User, {
+    Work.belongsTo(models.User, {
       foreignKey: 'userId',
       onDelete: 'CASCADE'
     })
   }
 
-  return Artwork
+  return Work
 }
