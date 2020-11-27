@@ -5,14 +5,22 @@
         arty
       </NuxtLink>
 
-      <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+      <a
+        role="button"
+        class="navbar-burger burger"
+        :class="{ 'is-active': isActive }"
+        aria-label="menu"
+        aria-expanded="false"
+        data-target="navbarBasicExample"
+        @click="isActive = !isActive"
+      >
         <span aria-hidden="true" />
         <span aria-hidden="true" />
         <span aria-hidden="true" />
       </a>
     </div>
 
-    <div id="navbarBasicExample" class="navbar-menu">
+    <div id="navbarBasicExample" class="navbar-menu" :class="{ 'is-active': isActive }">
       <div class="navbar-start">
         <NuxtLink to="/about" class="navbar-item">
           About
@@ -60,6 +68,11 @@
 
 <script>
 export default {
+  data () {
+    return {
+      isActive: false
+    }
+  },
   computed: {
     loggedIn () {
       return this.$auth.loggedIn
