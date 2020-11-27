@@ -40,8 +40,9 @@ app.get('/', (req, res) => {
   res.json('Hola!!')
 })
 
-// bring in authentication routes
+// bring in routes
 app.use('/api', require('./routes/authentication'))
+app.use('/api', require('./routes/artwork'))
 
 // set port, listen for requests
 const PORT = process.env.PORT || 4000
