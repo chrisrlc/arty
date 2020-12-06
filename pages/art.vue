@@ -5,6 +5,24 @@
     </h1>
     <form @submit.prevent="addWork(workInfo)">
       <div class="field">
+        <picture-input
+          ref="pictureInput"
+          width="600"
+          height="600"
+          margin="16"
+          accept="image/jpeg,image/png"
+          size="10"
+          button-class="button is-link"
+          removeButtonClass="button"
+          :removable="true"
+          name="image"
+          v-model="workInfo.image"
+          @change="onChange"
+        >
+        </picture-input>
+      </div>
+
+      <div class="field">
         <label class="label">Title</label>
         <div class="control">
           <input
@@ -117,6 +135,15 @@ export default {
       } catch (err) {
         // TODO: Handle error
         console.log(err.response.data.message)
+      }
+    },
+    onChange (image) {
+      console.log('New picture selected!')
+      if (image) {
+        console.log('Picture loaded.')
+        this.image = image
+      } else {
+        console.log('FileReader API not supported')
       }
     }
   }
