@@ -120,7 +120,7 @@ export default {
         artist: null,
         description: null,
         acquisitionUrl: null,
-        acquisitionDate: new Date(),
+        acquisitionDate: null,
         acquisitionCost: null
       }
     }
