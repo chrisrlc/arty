@@ -73,6 +73,11 @@ export default {
       isActive: false
     }
   },
+  watch: {
+    '$route' () {
+      this.isActive = false
+    }
+  },
   computed: {
     loggedIn () {
       return this.$auth.loggedIn
