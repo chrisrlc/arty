@@ -121,7 +121,8 @@ export default {
         description: null,
         acquisitionUrl: null,
         acquisitionDate: null,
-        acquisitionCost: null
+        acquisitionCost: null,
+        image: null
       }
     }
   },
