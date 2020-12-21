@@ -11,7 +11,7 @@
     <div v-if="loggedIn" class="level-right">
       <div class="level-item">
         <NuxtLink to="/art" class="button is-link is-outlined" aria-label="Add new art">
-          <span class="icon is-small" aria-hidden="true">
+          <span class="icon is-small">
             <font-awesome-icon :icon="['fas', 'plus']" />
           </span>
         </NuxtLink>
@@ -21,13 +21,13 @@
         <div class="dropdown-trigger">
           <button class="button is-white" aria-haspopup="true" aria-controls="dropdown-menu">
             <span class="is-hidden-desktop">
-              <span class="icon is-small" aria-hidden="true">
+              <span class="icon is-small has-text-link">
                 <font-awesome-icon :icon="['fas', 'cog']" />
               </span>
             </span>
             <span class="is-hidden-touch">
               <span>{{ user.email }}</span>
-              <span class="icon is-small">
+              <span class="icon is-small has-text-link">
                 <font-awesome-icon :icon="['fas', 'angle-down']" />
               </span>
             </span>
