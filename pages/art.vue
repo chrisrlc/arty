@@ -30,7 +30,7 @@
             class="input"
             type="text"
             name="title"
-            placeholder="e.g. Arty Rabbit"
+            placeholder="Arty Rabbit"
           >
         </div>
       </div>
@@ -43,7 +43,7 @@
             class="input"
             type="text"
             name="artist"
-            placeholder="e.g. Chrissy C"
+            placeholder="Chrissy C"
           >
         </div>
       </div>
@@ -67,7 +67,7 @@
             class="input"
             type="text"
             name="acquisitionUrl"
-            placeholder="e.g. https://www.etsy.com/transaction/555555555"
+            placeholder="https://www.etsy.com/transaction/555555555"
           >
         </div>
       </div>
@@ -94,7 +94,7 @@
             min="0"
             step="any"
             name="acquisitionCost"
-            placeholder="e.g. 20"
+            placeholder="20"
           >
           <span class="icon is-small is-left">$</span>
         </div>
@@ -113,7 +113,7 @@
 export default {
   data () {
     return {
-      descriptionPlaceholder: 'e.g. Handmade purple patchwork rabbit with tiny horn-rimmed glasses and a judgmental ' +
+      descriptionPlaceholder: 'Handmade purple patchwork rabbit with tiny horn-rimmed glasses and a judgmental ' +
         'expression, measures 8” long.\n\nMight be haunted?',
       workInfo: {
         title: null,
