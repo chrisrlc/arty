@@ -1,6 +1,6 @@
 <template>
-  <div class="container home">
-    <div>
+  <section class="section home">
+    <div class="container">
       <img class="arty-logo" src="~/assets/arty-logo-outline.svg">
       <h1 class="title arty-title">
         arty
@@ -16,7 +16,7 @@
         </a>
       </div>
     </div>
-  </div>
+  </section>
 </template>
 
 <script>
@@ -27,9 +27,6 @@ export default {
 
 <style lang="scss">
 .container {
-  margin: 0 auto;
-  min-height: 100vh;
-  display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
