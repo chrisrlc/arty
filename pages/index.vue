@@ -26,33 +26,35 @@ export default {
 </script>
 
 <style lang="scss">
-.container {
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-
-.home .title {
-  font-size: 100px;
-}
-
-.arty-logo {
-  animation: 1s appear;
-  margin: auto;
-}
-
-@keyframes appear {
-  0% {
-    opacity: 0;
+.home {
+  .container {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
   }
-}
 
-.links {
-  padding-top: 15px;
-}
+  .title {
+    font-size: 100px;
+  }
 
-.links .button:hover {
-  color: #fff;
-  background-color: $arty-purple;
+  .arty-logo {
+    animation: 1s appear;
+    margin: auto;
+  }
+
+  @keyframes appear {
+    0% {
+      opacity: 0;
+    }
+  }
+
+  .links {
+    padding-top: 15px;
+  }
+
+  .links .button:hover {
+    color: #fff;
+    background-color: $arty-purple;
+  }
 }
 </style>

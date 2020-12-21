@@ -1,5 +1,5 @@
 <template>
-  <nav class="level is-mobile" role="navigation" aria-label="main navigation">
+  <nav class="level is-mobile main-nav" role="navigation" aria-label="main navigation">
     <!-- Left side -->
     <div class="level-left">
       <NuxtLink class="level-item arty-title" to="/">
@@ -93,23 +93,25 @@ export default {
 </script>
 
 <style lang="scss">
-a.arty-title {
-  font-size: 1.5em;
-}
+.main-nav {
+  a.arty-title {
+    font-size: 1.5em;
 
-a.arty-title:hover, a.arty-title:active, a.arty-title:focus {
-  color: $arty-purple;
-}
+    &:hover, &:active, &:focus {
+      color: $arty-purple;
+    }
+  }
 
-.level .level-item {
-  padding-top: 0.5rem;
-}
+  .level-item {
+    padding-top: 0.5rem;
 
-.level .level-item:first-of-type {
-  padding-left: 0.75rem;
-}
+    &:first-of-type {
+      padding-left: 0.75rem;
+    }
 
-.level .level-item:last-of-type {
-  padding-right: 0.75rem;
+    &:last-of-type {
+      padding-right: 0.75rem;
+    }
+  }
 }
 </style>

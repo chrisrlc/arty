@@ -1,6 +1,6 @@
 <template>
   <footer class="footer">
-    <nav class="level is-mobile" role="navigation" aria-label="navigation">
+    <nav class="level" role="navigation" aria-label="navigation">
       <div class="level-left">
         <div class="level-item">
           <p>
