@@ -34,6 +34,9 @@ mysql> GRANT ALL PRIVILEGES ON arty.* TO 'artyUser'@'localhost';
 mysql> FLUSH PRIVILEGES;
 mysql> EXIT
 
-# start backend server at localhost:4000
+# Copy .env.example to .env (update vars as needed)
+cp .env.example .env
+
+# Start backend server at localhost:4000
 $ node api/index.js
 ```
