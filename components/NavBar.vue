@@ -1,62 +1,91 @@
 <template>
-  <nav class="level is-mobile main-nav" role="navigation" aria-label="main navigation">
-    <!-- Left side -->
-    <div class="level-left">
-      <NuxtLink class="level-item arty-title" to="/">
+  <nav class="navbar main-nav" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+      <NuxtLink class="navbar-item arty-title" to="/">
         arty
       </NuxtLink>
-    </div>
 
-    <!-- Right side -->
-    <div v-if="loggedIn" class="level-right">
-      <div class="level-item">
-        <NuxtLink to="/art" class="button is-link is-outlined" aria-label="Add new art">
-          <span class="icon is-small">
-            <font-awesome-icon :icon="['fas', 'plus']" />
-          </span>
-        </NuxtLink>
+      <div v-if="loggedIn" class="navbar-menu-constant is-hidden-desktop">
+        <div class="navbar-item">
+          <NuxtLink to="/art" class="button is-link is-outlined" aria-label="Add new art">
+            <span class="icon is-small">
+              <font-awesome-icon :icon="['fas', 'plus']" />
+            </span>
+          </NuxtLink>
+        </div>
+      </div>
+      <div v-else class="navbar-menu-constant is-hidden-desktop">
+        <div class="navbar-item">
+          <div class="buttons">
+            <NuxtLink to="/signup" class="button is-link">
+              <strong>Sign up</strong>
+            </NuxtLink>
+            <NuxtLink to="/login" class="button is-light">
+              Log in
+            </NuxtLink>
+          </div>
+        </div>
       </div>
 
-      <div class="level-item dropdown is-hoverable">
-        <div class="dropdown-trigger">
-          <button class="button is-white" aria-haspopup="true" aria-controls="dropdown-menu">
-            <span class="is-hidden-desktop">
-              <span class="icon is-small has-text-link">
-                <font-awesome-icon :icon="['fas', 'cog']" />
-              </span>
-            </span>
-            <span class="is-hidden-touch">
-              <span>{{ user.email }}</span>
-              <span class="icon is-small has-text-link">
-                <font-awesome-icon :icon="['fas', 'angle-down']" />
-              </span>
-            </span>
+      <a
+        v-if="loggedIn"
+        role="button"
+        class="navbar-burger"
+        :class="{ 'is-active': isActive }"
+        aria-label="menu"
+        aria-expanded="false"
+        data-target="navbarBasicExample"
+        @click="isActive = !isActive"
+      >
+        <span class="icon is-small has-text-link">
+          <font-awesome-icon :icon="['fas', 'cog']" />
+        </span>
+      </a>
+    </div>
 
-          </button>
+    <div v-if="loggedIn" id="navbarBasicExample" class="navbar-menu" :class="{ 'is-active': isActive }">
+      <div class="navbar-end">
+        <div class="navbar-item is-hidden-touch">
+          <NuxtLink to="/art" class="button is-link is-outlined" aria-label="Add new art">
+            <span class="icon is-small">
+              <font-awesome-icon :icon="['fas', 'plus']" />
+            </span>
+          </NuxtLink>
         </div>
-        <div class="dropdown-menu" id="dropdown-menu" role="menu">
-          <div class="dropdown-content">
-            <NuxtLink to="/settings" class="dropdown-item">
+        <div class="navbar-item has-dropdown is-hoverable is-hidden-touch">
+          <a class="navbar-link">{{ user.email }}</a>
+
+          <div class="navbar-dropdown">
+            <NuxtLink to="/settings" class="navbar-item">
               Settings
             </NuxtLink>
-            <hr class="dropdown-divider">
-            <a class="dropdown-item" @click="logout">
+            <hr class="navbar-divider">
+            <a class="navbar-item" @click="logout">
               Log out
             </a>
           </div>
         </div>
+
+        <NuxtLink to="/settings" class="navbar-item is-hidden-desktop">
+          Settings
+        </NuxtLink>
+        <a class="navbar-item is-hidden-desktop" @click="logout">
+          Log out
+        </a>
       </div>
     </div>
 
-    <div v-else class="level-right">
-      <div class="level-item">
-        <div class="buttons">
-          <NuxtLink to="/signup" class="button is-link">
-            <strong>Sign up</strong>
-          </NuxtLink>
-          <NuxtLink to="/login" class="button is-light">
-            Log in
-          </NuxtLink>
+    <div v-else id="navbarBasicExample" class="navbar-menu is-hidden-touch" :class="{ 'is-active': isActive }">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <div class="buttons">
+            <NuxtLink to="/signup" class="button is-link">
+              <strong>Sign up</strong>
+            </NuxtLink>
+            <NuxtLink to="/login" class="button is-light">
+              Log in
+            </NuxtLink>
+          </div>
         </div>
       </div>
     </div>
@@ -70,17 +99,17 @@ export default {
       isActive: false
     }
   },
-  watch: {
-    '$route' () {
-      this.isActive = false
-    }
-  },
   computed: {
     loggedIn () {
       return this.$auth.loggedIn
     },
     user () {
       return this.$auth.user
+    }
+  },
+  watch: {
+    '$route' () {
+      this.isActive = false
     }
   },
   methods: {
@@ -102,15 +131,18 @@ export default {
     }
   }
 
-  .level-item {
-    padding-top: 0.5rem;
+  .navbar-menu-constant {
+    margin-left: auto;
+  }
 
-    &:first-of-type {
-      padding-left: 0.75rem;
+  .navbar-burger {
+    margin-left: unset;
+    span {
+      background-color: transparent;
     }
 
-    &:last-of-type {
-      padding-right: 0.75rem;
+    &.is-active span {
+      transform: none;
     }
   }
 }
