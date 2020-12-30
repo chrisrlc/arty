@@ -16,7 +16,6 @@
           removeButtonClass="button"
           :removable="true"
           name="image"
-          v-model="workInfo.image"
           @change="onChange"
         >
         </picture-input>
@@ -139,11 +138,10 @@ export default {
       }
     },
     onChange (image) {
-      console.log('New picture selected!')
       if (image) {
-        console.log('Picture loaded.')
-        this.image = image
+        this.workInfo.image = image
       } else {
+        // TODO: Handle error
         console.log('FileReader API not supported')
       }
     }
