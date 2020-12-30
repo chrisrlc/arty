@@ -7,7 +7,7 @@
 
       <div v-if="loggedIn" class="navbar-menu-constant is-hidden-desktop">
         <div class="navbar-item">
-          <NuxtLink to="/art" class="button is-link is-outlined" aria-label="Add new art">
+          <NuxtLink to="/art" class="button is-link" aria-label="Add new art">
             <span class="icon is-small">
               <font-awesome-icon :icon="['fas', 'plus']" />
             </span>
@@ -46,7 +46,7 @@
     <div v-if="loggedIn" id="navbarBasicExample" class="navbar-menu" :class="{ 'is-active': isActive }">
       <div class="navbar-end">
         <div class="navbar-item is-hidden-touch">
-          <NuxtLink to="/art" class="button is-link is-outlined" aria-label="Add new art">
+          <NuxtLink to="/art" class="button is-link" aria-label="Add new art">
             <span class="icon is-small">
               <font-awesome-icon :icon="['fas', 'plus']" />
             </span>
@@ -133,16 +133,28 @@ export default {
 
   .navbar-menu-constant {
     margin-left: auto;
+
+    .navbar-item {
+      padding-right: 0;
+    }
   }
 
   .navbar-burger {
     margin-left: unset;
     span {
       background-color: transparent;
+
+      &:nth-child(1) {
+        top: calc(50% - 10px);
+      }
     }
 
     &.is-active span {
       transform: none;
+    }
+
+    &:hover {
+      background-color: transparent;
     }
   }
 }
