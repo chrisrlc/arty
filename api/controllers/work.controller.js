@@ -1,8 +1,7 @@
 const db = require('../models')
 const Work = db.works
 const Artist = db.artists
-const cloudinary = require('cloudinary').v2
-const cloudinaryConfig = require('../config/cloudinary.config.js')
+const cloudinary = require('../lib/cloudinary.js')
 
 // Create and save a new User
 async function create (req, res) {
@@ -27,7 +26,7 @@ async function create (req, res) {
 
     if (req.body.image) {
       // Upload image to Cloudinary
-      const imageUpload = await uploadImage(req.body.image)
+      const imageUpload = await cloudinary.uploadImage(req.body.image)
 
       // Set up image data for db
       newWorkInfo.cloudinaryId = imageUpload.public_id
@@ -44,16 +43,6 @@ async function create (req, res) {
         err.message || 'Some error occurred while creating a Work.'
     })
   }
-}
-
-async function uploadImage (image) {
-  cloudinary.config({
-    cloud_name: cloudinaryConfig.CLOUD_NAME,
-    api_key: cloudinaryConfig.API_KEY,
-    api_secret: cloudinaryConfig.API_SECRET,
-  })
-
-  return await cloudinary.uploader.upload(image)
 }
 
 async function show (req, res) {
