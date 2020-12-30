@@ -5,18 +5,15 @@
         arty
       </NuxtLink>
 
-      <div v-if="loggedIn" class="navbar-menu-constant is-hidden-desktop">
+      <div class="navbar-menu-constant">
         <div class="navbar-item">
-          <NuxtLink to="/art" class="button is-link" aria-label="Add new art">
+          <NuxtLink v-if="loggedIn" to="/art" class="button is-link" aria-label="Add new art">
             <span class="icon is-small">
               <font-awesome-icon :icon="['fas', 'plus']" />
             </span>
           </NuxtLink>
-        </div>
-      </div>
-      <div v-else class="navbar-menu-constant is-hidden-desktop">
-        <div class="navbar-item">
-          <div class="buttons">
+
+          <div v-else class="buttons">
             <NuxtLink to="/signup" class="button is-link">
               <strong>Sign up</strong>
             </NuxtLink>
@@ -27,6 +24,7 @@
         </div>
       </div>
 
+      <!-- navbar-menu only contains account links, so no need to display burger when logged out -->
       <a
         v-if="loggedIn"
         role="button"
@@ -34,25 +32,18 @@
         :class="{ 'is-active': isActive }"
         aria-label="menu"
         aria-expanded="false"
-        data-target="navbarBasicExample"
+        data-target="navbarBurgerDropdown"
         @click="isActive = !isActive"
       >
-        <span class="icon is-small has-text-link">
-          <font-awesome-icon :icon="['fas', 'cog']" />
-        </span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
       </a>
     </div>
 
-    <div v-if="loggedIn" id="navbarBasicExample" class="navbar-menu" :class="{ 'is-active': isActive }">
+    <div v-if="loggedIn" id="navbarBurgerDropdown" class="navbar-menu" :class="{ 'is-active': isActive }">
       <div class="navbar-end">
-        <div class="navbar-item is-hidden-touch">
-          <NuxtLink to="/art" class="button is-link" aria-label="Add new art">
-            <span class="icon is-small">
-              <font-awesome-icon :icon="['fas', 'plus']" />
-            </span>
-          </NuxtLink>
-        </div>
-        <div class="navbar-item has-dropdown is-hoverable is-hidden-touch">
+        <div class="navbar-item has-dropdown is-hoverable">
           <a class="navbar-link">{{ user.email }}</a>
 
           <div class="navbar-dropdown">
@@ -63,28 +54,6 @@
             <a class="navbar-item" @click="logout">
               Log out
             </a>
-          </div>
-        </div>
-
-        <NuxtLink to="/settings" class="navbar-item is-hidden-desktop">
-          Settings
-        </NuxtLink>
-        <a class="navbar-item is-hidden-desktop" @click="logout">
-          Log out
-        </a>
-      </div>
-    </div>
-
-    <div v-else id="navbarBasicExample" class="navbar-menu is-hidden-touch" :class="{ 'is-active': isActive }">
-      <div class="navbar-end">
-        <div class="navbar-item">
-          <div class="buttons">
-            <NuxtLink to="/signup" class="button is-link">
-              <strong>Sign up</strong>
-            </NuxtLink>
-            <NuxtLink to="/login" class="button is-light">
-              Log in
-            </NuxtLink>
           </div>
         </div>
       </div>
@@ -131,31 +100,20 @@ export default {
     }
   }
 
+  .navbar-brand {
+    flex-grow: 1;
+  }
+
   .navbar-menu-constant {
     margin-left: auto;
+  }
 
-    .navbar-item {
-      padding-right: 0;
-    }
+  .navbar-menu {
+    flex-grow: 0;
   }
 
   .navbar-burger {
     margin-left: unset;
-    span {
-      background-color: transparent;
-
-      &:nth-child(1) {
-        top: calc(50% - 10px);
-      }
-    }
-
-    &.is-active span {
-      transform: none;
-    }
-
-    &:hover {
-      background-color: transparent;
-    }
   }
 }
 </style>
