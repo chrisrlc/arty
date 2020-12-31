@@ -17,8 +17,7 @@
           :removable="true"
           name="image"
           @change="onChange"
-        >
-        </picture-input>
+        />
       </div>
 
       <div class="field">
