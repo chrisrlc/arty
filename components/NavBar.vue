@@ -7,7 +7,7 @@
 
       <div class="navbar-menu-constant">
         <div class="navbar-item">
-          <NuxtLink v-if="loggedIn" to="/art" class="button is-link" aria-label="Add new art">
+          <NuxtLink v-if="loggedIn" to="/art/new" class="button is-link" aria-label="Add new art">
             <span class="icon is-small">
               <font-awesome-icon :icon="['fas', 'plus']" />
             </span>
