@@ -70,10 +70,15 @@ async function edit (req, res) {
 
       if (req.body.imageUpdated) {
         if (req.body.image) {
-          // Upload image to Cloudinary
+          if (work.cloudinaryId) {
+            // Delete old image from Cloudinary
+            await cloudinary.deleteImage(work.cloudinaryId)
+          }
+
+          // Upload new image to Cloudinary
           const imageUpload = await cloudinary.uploadImage(req.body.image)
 
-          // Set image data on db record
+          // Update image data on db record
           work.cloudinaryId = imageUpload.public_id
           work.imageUrl = imageUpload.secure_url
         } else {
