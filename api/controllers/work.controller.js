@@ -69,12 +69,21 @@ async function edit (req, res) {
       work.acquisitionCost = req.body.acquisitionCost
 
       if (req.body.imageUpdated) {
-        // Upload image to Cloudinary
-        const imageUpload = await cloudinary.uploadImage(req.body.image)
+        if (req.body.image) {
+          // Upload image to Cloudinary
+          const imageUpload = await cloudinary.uploadImage(req.body.image)
 
-        // Set image data on record
-        work.cloudinaryId = imageUpload.public_id
-        work.imageUrl = imageUpload.secure_url
+          // Set image data on db record
+          work.cloudinaryId = imageUpload.public_id
+          work.imageUrl = imageUpload.secure_url
+        } else {
+          // Delete image from Cloudinary
+          await cloudinary.deleteImage(work.cloudinaryId)
+
+          // Delete image data from db record
+          work.cloudinaryId = null
+          work.imageUrl = null
+        }
       }
 
       // Save updated record in db

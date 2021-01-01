@@ -11,6 +11,11 @@ async function uploadImage (image) {
   return await cloudinary.uploader.upload(image)
 }
 
+async function deleteImage (cloudinaryId) {
+  return await cloudinary.uploader.destroy(cloudinaryId)
+}
+
 module.exports = {
-  uploadImage
+  uploadImage,
+  deleteImage
 }

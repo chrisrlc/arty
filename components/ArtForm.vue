@@ -13,6 +13,7 @@
         :removable="true"
         name="image"
         @change="onChange"
+        @remove="onRemove"
         :prefill="work.image"
         :prefillOptions="{mediaType: 'image/jpeg'}"
       />
@@ -132,6 +133,10 @@ export default {
         // TODO: Handle error
         console.log('FileReader API not supported')
       }
+    },
+    onRemove () {
+      this.work.imageUpdated = true
+      this.work.image = null
     }
   }
 }
