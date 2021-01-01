@@ -13,6 +13,8 @@
         :removable="true"
         name="image"
         @change="onChange"
+        :prefill="work.image"
+        :prefillOptions="{mediaType: 'image/jpeg'}"
       />
     </div>
 

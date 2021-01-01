@@ -111,7 +111,7 @@ async function show (req, res) {
       acquisitionUrl: work.acquisitionUrl,
       acquisitionDate: work.acquisitionDate,
       acquisitionCost: work.acquisitionCost,
-      image: null // TODO
+      image: work.imageUrl
     })
   } else {
     res.status(404).send({
