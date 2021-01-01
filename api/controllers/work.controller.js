@@ -8,17 +8,17 @@ async function create (req, res) {
   // TODO: 403 if no user
 
   try {
-    let newArtistId = null
+    let artistId = null
     if (req.body.artist) {
-      const newArtist = await Artist.findOrCreate({
+      const artist = await Artist.findOrCreate({
         where: { name: req.body.artist }
       })
-      newArtistId = newArtist.id
+      artistId = artist.id
     }
 
     const work = Work.build({
       userId: req.session.user.id,
-      artistId: newArtistId,
+      artistId: artistId,
       title: req.body.title,
       description: req.body.description,
       acquisitionUrl: req.body.acquisitionUrl,
@@ -69,12 +69,12 @@ async function edit (req, res) {
       work.acquisitionCost = req.body.acquisitionCost
 
       if (req.body.imageUpdated) {
-        if (req.body.image) {
-          if (work.cloudinaryId) {
-            // Delete old image from Cloudinary
-            await cloudinary.deleteImage(work.cloudinaryId)
-          }
+        if (work.cloudinaryId) {
+          // Delete old image from Cloudinary
+          await cloudinary.deleteImage(work.cloudinaryId)
+        }
 
+        if (req.body.image) {
           // Upload new image to Cloudinary
           const imageUpload = await cloudinary.uploadImage(req.body.image)
 
@@ -82,9 +82,6 @@ async function edit (req, res) {
           work.cloudinaryId = imageUpload.public_id
           work.imageUrl = imageUpload.secure_url
         } else {
-          // Delete image from Cloudinary
-          await cloudinary.deleteImage(work.cloudinaryId)
-
           // Delete image data from db record
           work.cloudinaryId = null
           work.imageUrl = null
@@ -103,7 +100,7 @@ async function edit (req, res) {
     }
   } else {
     res.status(404).send({
-      message: "No Work found"
+      message: 'No Work found.'
     })
   }
 }
@@ -119,6 +116,7 @@ async function show (req, res) {
       artistName = artist.name
     }
     res.send({
+      id: work.id,
       title: work.title,
       artist: artistName,
       description: work.description,
@@ -129,7 +127,7 @@ async function show (req, res) {
     })
   } else {
     res.status(404).send({
-      message: "No Work found"
+      message: 'No Work found.'
     })
   }
 }

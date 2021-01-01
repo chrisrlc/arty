@@ -18,8 +18,7 @@ export default {
   methods: {
     async editWork (workInfo) {
       try {
-        const workId = this.$route.params.id
-        await this.$axios.post(`/art/${workId}`, workInfo)
+        await this.$axios.post(`/art/${this.work.id}`, workInfo)
       } catch (err) {
         // TODO: Handle error
         console.log(err.response.data.message)
