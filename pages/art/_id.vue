@@ -12,10 +12,7 @@
 export default {
   async asyncData ({ params, $axios }) {
     let work = await $axios.get(`/art/${params.id}`)
-    console.log('in asyncData')
-    console.log(work)
     work = work.data
-    console.log(work)
     return { work }
   },
   methods: {

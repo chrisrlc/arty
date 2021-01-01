@@ -10,7 +10,9 @@ async function create (req, res) {
   try {
     let newArtistId = null
     if (req.body.artist) {
-      const newArtist = await Artist.create({ name: req.body.artist })
+      const newArtist = await Artist.findOrCreate({
+        where: { name: req.body.artist }
+      })
       newArtistId = newArtist.id
     }
 

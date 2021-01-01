@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="submitForm(workInfo)">
+  <form @submit.prevent="submitForm(work)">
     <div class="field">
       <picture-input
         ref="pictureInput"
@@ -20,7 +20,7 @@
       <label class="label">Title</label>
       <div class="control">
         <input
-          v-model="workInfo.title"
+          v-model="work.title"
           class="input"
           type="text"
           name="title"
@@ -33,7 +33,7 @@
       <label class="label">Artist</label>
       <div class="control">
         <input
-          v-model="workInfo.artist"
+          v-model="work.artist"
           class="input"
           type="text"
           name="artist"
@@ -46,7 +46,7 @@
       <label class="label">Description</label>
       <div class="control">
         <textarea
-          v-model="workInfo.description"
+          v-model="work.description"
           class="textarea"
           :placeholder="descriptionPlaceholder"
         />
@@ -57,7 +57,7 @@
       <label class="label">URL</label>
       <div class="control">
         <input
-          v-model="workInfo.acquisitionUrl"
+          v-model="work.acquisitionUrl"
           class="input"
           type="text"
           name="acquisitionUrl"
@@ -69,7 +69,7 @@
     <div class="field">
       <label class="label">Date purchased</label>
       <date-picker
-        v-model="workInfo.acquisitionDate"
+        v-model="work.acquisitionDate"
         placeholder="MM/DD/YYYY"
         format="MM/dd/yyyy"
         :typeable="true"
@@ -82,7 +82,7 @@
       <label class="label">Cost</label>
       <div class="control has-icons-left">
         <input
-          v-model="workInfo.acquisitionCost"
+          v-model="work.acquisitionCost"
           class="input"
           type="number"
           min="0"
@@ -118,23 +118,14 @@ export default {
     return {
       descriptionPlaceholder: 'Handmade purple patchwork rabbit with tiny horn-rimmed glasses and a judgmental ' +
         'expression, measures 8” long.\n\nMight be haunted?',
-      workInfo: {
-        title: this.work.title,
-        artist: this.work.artist,
-        description: this.work.description,
-        acquisitionUrl: this.work.acquisitionUrl,
-        acquisitionDate: this.work.acquisitionDate,
-        acquisitionCost: this.work.acquisitionCost,
-        image: this.work.image,
-        imageUpdated: false
-      }
+      imageUpdated: false
     }
   },
   methods: {
     onChange (image) {
       if (image) {
-        this.workInfo.imageUpdated = true
-        this.workInfo.image = image
+        this.work.imageUpdated = true
+        this.work.image = image
       } else {
         // TODO: Handle error
         console.log('FileReader API not supported')
