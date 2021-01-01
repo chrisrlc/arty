@@ -18,11 +18,11 @@ export default {
   methods: {
     async addWork (workInfo) {
       try {
-        const work = await this.$axios.post('/art/new', workInfo)
-        const workId = work.data.id
+        const newWork = await this.$axios.post('/art/new', workInfo)
+        const newWorkId = newWork.data.id
 
         // TODO: Generate and use slug instead of id
-        await this.$router.push(`/art/${workId}`)
+        await this.$router.push(`/art/${newWorkId}`)
       } catch (err) {
         // TODO: Handle error
         console.log(err.response.data.message)
