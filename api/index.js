@@ -21,19 +21,19 @@ app.use(bodyParser.json({ limit: '50mb' }))
 app.use(bodyParser.urlencoded({ extended: true }))
 
 const db = require('./models')
-// db.sequelize.sync()
-db.sequelize.query('SET FOREIGN_KEY_CHECKS = 0')
-  .then(function () {
-    return db.sequelize.sync({force: true})
-  })
-  .then(function () {
-    return db.sequelize.query('SET FOREIGN_KEY_CHECKS = 1')
-  })
-  .then(function () {
-    console.log('Drop and re-sync db.')
-  }, function (err) {
-    console.log(err)
-  })
+db.sequelize.sync()
+// db.sequelize.query('SET FOREIGN_KEY_CHECKS = 0')
+//   .then(function () {
+//     return db.sequelize.sync({force: true})
+//   })
+//   .then(function () {
+//     return db.sequelize.query('SET FOREIGN_KEY_CHECKS = 1')
+//   })
+//   .then(function () {
+//     console.log('Drop and re-sync db.')
+//   }, function (err) {
+//     console.log(err)
+//   })
 
 const SequelizeStore = require('connect-session-sequelize')(session.Store)
 app.use(session({
