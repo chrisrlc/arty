@@ -37,7 +37,7 @@ export default {
         await this.$axios.post('/auth/register', userInfo)
         await this.$auth.loginWith('local', { data: userInfo })
 
-        await this.$router.push('/')
+        await this.$router.push('/art')
       } catch (err) {
         this.error = err.response.data.message
       }

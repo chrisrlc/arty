@@ -19,6 +19,7 @@ export default {
     async editWork (workInfo) {
       try {
         await this.$axios.post(`/art/${this.work.id}`, workInfo)
+        // TODO: success notification
       } catch (err) {
         // TODO: Handle error
         console.log(err.response.data.message)

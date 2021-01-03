@@ -10,7 +10,7 @@ async function create (req, res) {
   try {
     let artistId = null
     if (req.body.artist) {
-      const artist = await Artist.findOrCreate({
+      const [artist, created] = await Artist.findOrCreate({
         where: { name: req.body.artist }
       })
       artistId = artist.id
@@ -51,12 +51,17 @@ async function create (req, res) {
 async function edit (req, res) {
   // TODO: 403 if no user
 
-  const work = await Work.findByPk(req.params.workId)
+  const work = await Work.findOne({
+    where: {
+      id: req.params.workId,
+      userId: req.session.user.id
+    }
+  })
   if (work) {
     try {
       let artistId = null
       if (req.body.artist) {
-        const artist = await Artist.findOrCreate({
+        const [artist, created] = await Artist.findOrCreate({
           where: { name: req.body.artist }
         })
         artistId = artist.id
@@ -108,7 +113,12 @@ async function edit (req, res) {
 async function show (req, res) {
   // TODO: 403 if no user
 
-  const work = await Work.findByPk(req.params.workId)
+  const work = await Work.findOne({
+    where: {
+      id: req.params.workId,
+      userId: req.session.user.id
+    }
+  })
   if (work) {
     let artistName = null
     if (work.artistId) {
@@ -132,8 +142,42 @@ async function show (req, res) {
   }
 }
 
+async function index (req, res) {
+  // TODO: 403 if no user
+
+  const works = await Work.findAll({
+    where: {
+      userId: req.session.user.id
+    },
+    attributes: ['id', 'title', 'artistId', 'imageUrl']
+  })
+
+  const works_display = await Promise.all(works.map(displayWork))
+  res.send(works_display)
+}
+
+async function displayWork (work) {
+  // Get artist name
+  let artistName = null
+  if (work.artistId) {
+    const artist = await Artist.findByPk(work.artistId)
+    artistName = artist.name
+  }
+
+  // TODO: Get resized image using dynamic delivery URL
+  const imageUrl = work.imageUrl
+
+  return {
+    id: work.id,
+    title: work.title,
+    artist: artistName,
+    imageUrl: imageUrl
+  }
+}
+
 module.exports = {
   create,
   edit,
-  show
+  show,
+  index
 }

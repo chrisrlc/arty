@@ -2,6 +2,10 @@ const WorkController = require('../controllers/work.controller')
 const express = require('express')
 const router = express.Router()
 
+router.get('/art', async (req, res) => {
+  await WorkController.index(req, res)
+})
+
 router.post('/art/new', async (req, res) => {
   await WorkController.create(req, res)
 })

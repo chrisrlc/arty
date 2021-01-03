@@ -35,7 +35,7 @@ export default {
     async userLogin (userInfo) {
       try {
         await this.$auth.loginWith('local', { data: userInfo })
-        await this.$router.push('/')
+        await this.$router.push('/art')
       } catch (err) {
         this.error = err.response.data.message
       }

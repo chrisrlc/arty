@@ -43,10 +43,14 @@
 
     <div v-if="loggedIn" id="navbarBurgerDropdown" class="navbar-menu" :class="{ 'is-active': isActive }">
       <div class="navbar-end">
+        <!--  TODO: Dropdown not closing after click on desktop?  -->
         <div class="navbar-item has-dropdown is-hoverable">
           <a class="navbar-link">{{ user.email }}</a>
 
           <div class="navbar-dropdown">
+            <NuxtLink to="/art" class="navbar-item">
+              Art
+            </NuxtLink>
             <NuxtLink to="/settings" class="navbar-item">
               Settings
             </NuxtLink>
