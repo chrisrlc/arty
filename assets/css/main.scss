@@ -1,11 +1,6 @@
-// Import the initial bulma variables
-@import '~bulma/sass/utilities/initial-variables';
-@import '~bulma/sass/utilities/functions';
-
-// Overrides
+// Bulma overrides
 $primary: $arty-purple;
 $link: $secondary;
-$footer-background-color: $off-white;
 
 // Import the rest of bulma
 @import '~bulma';

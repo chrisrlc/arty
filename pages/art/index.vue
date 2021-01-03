@@ -30,7 +30,13 @@ export default {
 <style lang="scss">
 .art-index {
   .art-container {
-    column-count: 4;
+    column-count: 2;
+    @media (min-width: $tablet) {
+      column-count: 3;
+    }
+    @media (min-width: $desktop) {
+      column-count: 4;
+    }
     column-gap: 10px;
 
     figure {

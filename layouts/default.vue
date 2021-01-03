@@ -26,11 +26,11 @@ html {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   box-sizing: border-box;
-  background-color: $off-white;
+  background-color: $white-bis;
 }
 
 section {
-  background-color: white;
+  background-color: $white;
 }
 
 .arty-title {
