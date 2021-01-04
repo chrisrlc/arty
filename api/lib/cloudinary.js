@@ -15,7 +15,12 @@ async function deleteImage (cloudinaryId) {
   return await cloudinary.uploader.destroy(cloudinaryId)
 }
 
+function imageUrl (cloudinaryId, format, transformation_opts={}) {
+  return cloudinary.url(`${cloudinaryId}.${format}`, transformation_opts)
+}
+
 module.exports = {
   uploadImage,
-  deleteImage
+  deleteImage,
+  imageUrl
 }

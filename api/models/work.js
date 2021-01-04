@@ -34,7 +34,7 @@ module.exports = (sequelize, Sequelize) => {
     cloudinaryId: {
       type: Sequelize.STRING
     },
-    imageUrl: {
+    imageFormat: {
       type: Sequelize.STRING
     }
   })

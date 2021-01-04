@@ -32,7 +32,7 @@ async function create (req, res) {
 
       // Set up image data for db
       work.cloudinaryId = imageUpload.public_id
-      work.imageUrl = imageUpload.secure_url
+      work.imageFormat = imageUpload.format
     }
 
     // Create Work in db
@@ -85,11 +85,11 @@ async function edit (req, res) {
 
           // Update image data on db record
           work.cloudinaryId = imageUpload.public_id
-          work.imageUrl = imageUpload.secure_url
+          work.imageFormat = imageUpload.format
         } else {
           // Delete image data from db record
           work.cloudinaryId = null
-          work.imageUrl = null
+          work.imageFormat = null
         }
       }
 
@@ -133,7 +133,7 @@ async function show (req, res) {
       acquisitionUrl: work.acquisitionUrl,
       acquisitionDate: work.acquisitionDate,
       acquisitionCost: work.acquisitionCost,
-      image: work.imageUrl
+      imageUrl: work.cloudinaryId ? cloudinary.imageUrl(work.cloudinaryId, work.imageFormat) : null
     })
   } else {
     res.status(404).send({
@@ -149,7 +149,7 @@ async function index (req, res) {
     where: {
       userId: req.session.user.id
     },
-    attributes: ['id', 'title', 'artistId', 'imageUrl']
+    attributes: ['id', 'title', 'artistId', 'cloudinaryId', 'imageFormat']
   })
 
   const works_display = await Promise.all(works.map(displayWork))
@@ -164,8 +164,15 @@ async function displayWork (work) {
     artistName = artist.name
   }
 
-  // TODO: Get resized image using dynamic delivery URL
-  const imageUrl = work.imageUrl
+  let imageUrl = null
+  if (work.cloudinaryId) {
+    // Scale image to height=250
+    const transformation_opts = {
+      height: 250,
+      crop: 'fill'
+    }
+    imageUrl = cloudinary.imageUrl(work.cloudinaryId, work.imageFormat, transformation_opts)
+  }
 
   return {
     id: work.id,

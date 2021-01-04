@@ -14,7 +14,7 @@
         name="image"
         @change="onChange"
         @remove="onRemove"
-        :prefill="work.image"
+        :prefill="work.imageUrl"
         :prefillOptions="{mediaType: 'image/jpeg'}"
       />
     </div>

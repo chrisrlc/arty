@@ -19,8 +19,6 @@
 export default {
   async asyncData ({ $axios }) {
     const res = await $axios.get('/art')
-    console.log('in art.vue')
-    console.log(res)
     const works = res.data
     return { works }
   }
