@@ -146,7 +146,7 @@ async function index (req, res) {
     where: {
       userId: req.session.user.id
     },
-    attributes: ['id', 'title', 'artistId', 'imageId']
+    attributes: ['id', 'title', 'artistId', 'imageId', 'acquisitionDate']
   })
 
   const works_display = await Promise.all(works.map(displayWork))
@@ -175,7 +175,8 @@ async function displayWork (work) {
     id: work.id,
     title: work.title,
     artist: artistName,
-    imageUrl: imageUrl
+    imageUrl: imageUrl,
+    acquisitionDate: work.acquisitionDate
   }
 }
 

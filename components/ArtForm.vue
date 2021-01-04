@@ -13,10 +13,10 @@
         removeButtonClass="button"
         :removable="true"
         name="image"
-        @change="onChange"
-        @remove="onRemove"
         :prefill="work.imageUrl"
         :prefillOptions="{mediaType: 'image/jpeg'}"
+        @change="onChange"
+        @remove="onRemove"
       />
     </div>
 
@@ -71,7 +71,7 @@
     </div>
 
     <div class="field">
-      <label class="label">Date purchased</label>
+      <label class="label">Date acquired</label>
       <date-picker
         v-model="work.acquisitionDate"
         placeholder="MM/DD/YYYY"

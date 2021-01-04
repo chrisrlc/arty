@@ -26,7 +26,7 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING
     },
     acquisitionDate: {
-      type: Sequelize.DATEONLY
+      type: Sequelize.DATE
     },
     acquisitionCost: {
       type: Sequelize.DECIMAL(19,4)

@@ -4,12 +4,19 @@
       That's So Arty
     </h1>
     <div class="container art-container">
-      <NuxtLink :to="`/art/${work.id}`" v-for="work in works" :key="work.id" class="box">
-        <figure class="image" v-if="work.imageUrl">
+      <NuxtLink v-for="work in works" :key="work.id" :to="`/art/${work.id}`" class="box">
+        <figure v-if="work.imageUrl" class="image">
           <img :src="work.imageUrl">
         </figure>
-        <p class="title">{{ work.title }}</p>
-        <p class="subtitle">{{ work.artist }}</p>
+        <p v-if="work.title" class="title has-text-centered is-size-5">
+          {{ work.title }}
+        </p>
+        <p v-if="work.artist" class="subtitle has-text-centered is-size-6">
+          {{ work.artist }}
+        </p>
+        <p v-if="work.acquisitionDate" class="has-text-left has-text-grey is-size-7">
+          {{ friendlyDate(work.acquisitionDate) }}
+        </p>
       </NuxtLink>
     </div>
   </section>
@@ -21,6 +28,12 @@ export default {
     const res = await $axios.get('/art')
     const works = res.data
     return { works }
+  },
+  methods: {
+    friendlyDate (date) {
+      const d = new Date(date)
+      return d.toDateString()
+    }
   }
 }
 </script>
@@ -40,18 +53,14 @@ export default {
     figure {
       max-width: 100%;
       display: block;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     .box {
       display: grid;
       grid-template-rows: 1fr auto;
       break-inside: avoid;
-
-      > * {
-        margin-left: auto;
-        margin-right: auto;
-        text-align: center;
-      }
 
       figure {
         grid-row: 1 / -1;
@@ -61,14 +70,6 @@ export default {
         img {
           width: auto;
         }
-      }
-
-      .title {
-        font-size: 1.25rem;
-      }
-
-      .subtitle {
-        font-size: 1rem;
       }
     }
   }
