@@ -31,10 +31,7 @@ module.exports = (sequelize, Sequelize) => {
     acquisitionCost: {
       type: Sequelize.DECIMAL(19,4)
     },
-    cloudinaryId: {
-      type: Sequelize.STRING
-    },
-    imageFormat: {
+    imageId: {
       type: Sequelize.STRING
     }
   })

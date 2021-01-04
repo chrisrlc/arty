@@ -27,12 +27,11 @@ async function create (req, res) {
     })
 
     if (req.body.image) {
-      // Upload image to Cloudinary
+      // Upload image as base64 data uri string to Cloudinary
       const imageUpload = await cloudinary.uploadImage(req.body.image)
 
       // Set up image data for db
-      work.cloudinaryId = imageUpload.public_id
-      work.imageFormat = imageUpload.format
+      work.imageId = imageUpload.public_id
     }
 
     // Create Work in db
@@ -74,22 +73,20 @@ async function update (req, res) {
       work.acquisitionCost = req.body.acquisitionCost
 
       if (req.body.imageUpdated) {
-        if (work.cloudinaryId) {
+        if (work.imageId) {
           // Delete old image from Cloudinary
-          await cloudinary.deleteImage(work.cloudinaryId)
+          await cloudinary.deleteImage(work.imageId)
         }
 
         if (req.body.image) {
-          // Upload new image to Cloudinary
+          // Upload new image as base64 data uri string to Cloudinary
           const imageUpload = await cloudinary.uploadImage(req.body.image)
 
           // Update image data on db record
-          work.cloudinaryId = imageUpload.public_id
-          work.imageFormat = imageUpload.format
+          work.imageId = imageUpload.public_id
         } else {
           // Delete image data from db record
-          work.cloudinaryId = null
-          work.imageFormat = null
+          work.imageId = null
         }
       }
 
@@ -133,7 +130,7 @@ async function show (req, res) {
       acquisitionUrl: work.acquisitionUrl,
       acquisitionDate: work.acquisitionDate,
       acquisitionCost: work.acquisitionCost,
-      imageUrl: work.cloudinaryId ? cloudinary.imageUrl(work.cloudinaryId, work.imageFormat) : null
+      imageUrl: work.imageId ? cloudinary.imageUrl(work.imageId) : null
     })
   } else {
     res.status(404).send({
@@ -149,7 +146,7 @@ async function index (req, res) {
     where: {
       userId: req.session.user.id
     },
-    attributes: ['id', 'title', 'artistId', 'cloudinaryId', 'imageFormat']
+    attributes: ['id', 'title', 'artistId', 'imageId']
   })
 
   const works_display = await Promise.all(works.map(displayWork))
@@ -165,13 +162,13 @@ async function displayWork (work) {
   }
 
   let imageUrl = null
-  if (work.cloudinaryId) {
+  if (work.imageId) {
     // Scale image to height=250
     const transformation_opts = {
-      height: 250,
+      width: 250,
       crop: 'limit'
     }
-    imageUrl = cloudinary.imageUrl(work.cloudinaryId, work.imageFormat, transformation_opts)
+    imageUrl = cloudinary.imageUrl(work.imageId, transformation_opts)
   }
 
   return {

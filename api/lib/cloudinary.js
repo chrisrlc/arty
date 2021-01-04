@@ -8,15 +8,16 @@ cloudinary.config({
 })
 
 async function uploadImage (image) {
-  return await cloudinary.uploader.upload(image)
+  // Saves image with max 1200x1200 dimensions and jpg format
+  return await cloudinary.uploader.upload(image, {width: 1200, height: 1200, crop: 'limit', format: 'jpg'})
 }
 
-async function deleteImage (cloudinaryId) {
-  return await cloudinary.uploader.destroy(cloudinaryId)
+async function deleteImage (publicId) {
+  return await cloudinary.uploader.destroy(publicId)
 }
 
-function imageUrl (cloudinaryId, format, transformation_opts={}) {
-  return cloudinary.url(`${cloudinaryId}.${format}`, transformation_opts)
+function imageUrl (publicId, transformation_opts={}) {
+  return cloudinary.url(`${publicId}.jpg`, transformation_opts)
 }
 
 module.exports = {
