@@ -3,21 +3,23 @@
     <h1 class="title">
       That's So Arty
     </h1>
-    <div class="container art-container">
-      <NuxtLink v-for="work in works" :key="work.id" :to="`/art/${work.id}`" class="box">
-        <figure v-if="work.imageUrl" class="image">
-          <img :src="work.imageUrl">
-        </figure>
-        <p v-if="work.title" class="title has-text-centered is-size-5">
-          {{ work.title }}
-        </p>
-        <p v-if="work.artist" class="subtitle has-text-centered is-size-6">
-          {{ work.artist }}
-        </p>
-        <p v-if="work.acquisitionDate" class="has-text-left has-text-grey is-size-7">
-          {{ friendlyDate(work.acquisitionDate) }}
-        </p>
-      </NuxtLink>
+    <div class="container">
+      <div v-for="work in works" :key="work.id" class="box">
+        <NuxtLink :to="`/art/${work.id}`" class="art-details">
+          <p v-if="work.acquisitionDate" class="date has-text-left has-text-grey is-size-7">
+            {{ friendlyDate(work.acquisitionDate) }}
+          </p>
+          <figure v-if="work.imageUrl" class="image">
+            <img :src="work.imageUrl">
+          </figure>
+          <p v-if="work.title" class="title has-text-centered is-size-5">
+            {{ work.title }}
+          </p>
+          <p v-if="work.artist" class="subtitle has-text-centered is-size-6">
+            {{ work.artist }}
+          </p>
+        </NuxtLink>
+      </div>
     </div>
   </section>
 </template>
@@ -40,7 +42,7 @@ export default {
 
 <style lang="scss">
 .art-index {
-  .art-container {
+  .container {
     column-count: 2;
     @media (min-width: $tablet) {
       column-count: 3;
@@ -50,25 +52,29 @@ export default {
     }
     column-gap: 10px;
 
-    figure {
-      max-width: 100%;
-      display: block;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
     .box {
       display: grid;
       grid-template-rows: 1fr auto;
       break-inside: avoid;
 
-      figure {
-        grid-row: 1 / -1;
-        grid-column: 1;
-        margin-bottom: 0.5em;
+      .art-details {
+        max-width: 100%;
+        display: block;
 
-        img {
-          width: auto;
+        .date {
+          margin-bottom: 0.5rem;
+        }
+
+        figure {
+          grid-row: 1 / -1;
+          grid-column: 1;
+          margin-bottom: 0.5rem;
+
+          img {
+            width: auto;
+            margin-left: auto;
+            margin-right: auto;
+          }
         }
       }
     }
