@@ -18,7 +18,7 @@ export default {
   methods: {
     async addWork (workInfo) {
       try {
-        await this.$axios.post('/art/new', workInfo)
+        await this.$axios.post('/art', workInfo)
         await this.$router.push('/art')
       } catch (err) {
         // TODO: Handle error

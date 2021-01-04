@@ -48,7 +48,7 @@ async function create (req, res) {
 }
 
 // Edit an existing Work
-async function edit (req, res) {
+async function update (req, res) {
   // TODO: 403 if no user
 
   const work = await Work.findOne({
@@ -169,7 +169,7 @@ async function displayWork (work) {
     // Scale image to height=250
     const transformation_opts = {
       height: 250,
-      crop: 'fill'
+      crop: 'limit'
     }
     imageUrl = cloudinary.imageUrl(work.cloudinaryId, work.imageFormat, transformation_opts)
   }
@@ -184,7 +184,7 @@ async function displayWork (work) {
 
 module.exports = {
   create,
-  edit,
+  update,
   show,
   index
 }

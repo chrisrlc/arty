@@ -47,12 +47,12 @@ app.use(session({
 
 // simple route
 app.get('/', (req, res) => {
-  res.json('Hola!!')
+  res.end()
 })
 
 // bring in routes
-app.use('/api', require('./routes/authentication'))
-app.use('/api', require('./routes/work'))
+app.use('/api/auth', require('./routes/authentication'))
+app.use('/api/art', require('./routes/work'))
 
 // set port, listen for requests
 const PORT = process.env.PORT || 4000

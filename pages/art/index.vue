@@ -1,7 +1,7 @@
 <template>
   <section class="section art-index">
     <h1 class="title">
-      All the arts
+      That's So Arty
     </h1>
     <div class="container art-container">
       <NuxtLink :to="`/art/${work.id}`" v-for="work in works" :key="work.id" class="box">
@@ -43,16 +43,33 @@ export default {
     }
 
     .box {
-      margin: 0;
       display: grid;
       grid-template-rows: 1fr auto;
-      margin-bottom: 10px;
       break-inside: avoid;
-    }
 
-    .box > figure {
-      grid-row: 1 / -1;
-      grid-column: 1;
+      > * {
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+      }
+
+      figure {
+        grid-row: 1 / -1;
+        grid-column: 1;
+        margin-bottom: 0.5em;
+
+        img {
+          width: auto;
+        }
+      }
+
+      .title {
+        font-size: 1.25rem;
+      }
+
+      .subtitle {
+        font-size: 1rem;
+      }
     }
   }
 }

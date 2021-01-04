@@ -2,20 +2,12 @@ const WorkController = require('../controllers/work.controller')
 const express = require('express')
 const router = express.Router()
 
-router.get('/art', async (req, res) => {
-  await WorkController.index(req, res)
-})
+router.get('/', WorkController.index)
 
-router.post('/art/new', async (req, res) => {
-  await WorkController.create(req, res)
-})
+router.post('/', WorkController.create)
 
-router.post('/art/:workId', async (req, res) => {
-  await WorkController.edit(req, res)
-})
+router.post('/:workId', WorkController.update)
 
-router.get('/art/:workId', async (req, res) => {
-  await WorkController.show(req, res)
-})
+router.get('/:workId', WorkController.show)
 
 module.exports = router

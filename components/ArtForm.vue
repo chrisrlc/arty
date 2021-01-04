@@ -6,6 +6,7 @@
         width="600"
         height="600"
         margin="16"
+        :crop="false"
         accept="image/jpeg,image/png"
         size="10"
         button-class="button is-link"
