@@ -26,13 +26,16 @@ For detailed explanation on how things work, check out [Nuxt.js docs](https://nu
 ```bash
 # Install mysql
 
-# Create database and user
+# Create mysql user
 $ mysql -u root
 mysql> CREATE USER 'artyUser'@'localhost' IDENTIFIED BY 'artyarty';
-mysql> CREATE DATABASE IF NOT EXISTS arty;
 mysql> GRANT ALL PRIVILEGES ON arty.* TO 'artyUser'@'localhost';
 mysql> FLUSH PRIVILEGES;
-mysql> EXIT
+mysql> exit
+
+# Create database & run migrations
+$ npx sequelize db:create
+$ npx sequelize db:migrate
 
 # Copy .env.example to .env (update vars as needed)
 cp .env.example .env

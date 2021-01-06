@@ -2,6 +2,7 @@ module.exports = (sequelize, Sequelize) => {
   const ArtistWebsite = sequelize.define('artistWebsite', {
     artistId: {
       type: Sequelize.INTEGER,
+      allowNull: false,
       onDelete: 'CASCADE',
       references: {
         model: 'artists',
@@ -10,13 +11,12 @@ module.exports = (sequelize, Sequelize) => {
     },
     url: {
       type: Sequelize.STRING,
-      required: true
+      allowNull: false
     }
   })
 
   ArtistWebsite.associate = function (models) {
     ArtistWebsite.belongsTo(models.Artist, {
-      foreignKey: 'artistId',
       onDelete: 'CASCADE'
     })
   }

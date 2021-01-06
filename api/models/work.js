@@ -2,7 +2,7 @@ module.exports = (sequelize, Sequelize) => {
   const Work = sequelize.define('work', {
     userId: {
       type: Sequelize.INTEGER,
-      require: true,
+      allowNull: false,
       onDelete: 'CASCADE',
       references: {
         model: 'users',
@@ -11,6 +11,7 @@ module.exports = (sequelize, Sequelize) => {
     },
     artistId: {
       type: Sequelize.INTEGER,
+      onDelete: 'SET NULL',
       references: {
         model: 'artists',
         key: 'id'
@@ -38,11 +39,10 @@ module.exports = (sequelize, Sequelize) => {
 
   Work.associate = function (models) {
     Work.belongsTo(models.Artist, {
-      foreignKey: 'artistId'
+      onDelete: 'SET NULL'
     })
 
     Work.belongsTo(models.User, {
-      foreignKey: 'userId',
       onDelete: 'CASCADE'
     })
   }

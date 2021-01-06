@@ -48,6 +48,7 @@
     "jest": "^26.5.0",
     "sass": "^1.29.0",
     "sass-loader": "^10.1.0",
+    "sequelize-cli": "^6.2.0",
     "vue-jest": "^3.0.4"
   }
 }

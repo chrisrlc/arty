@@ -2,18 +2,15 @@ module.exports = (sequelize, Sequelize) => {
   const Artist = sequelize.define('artist', {
     name: {
       type: Sequelize.STRING,
-      required: true
+      unique: true,
+      allowNull: false
     }
   })
 
   Artist.associate = function (models) {
-    Artist.hasMany(models.Work, {
-      foreignKey: 'artistId'
-    })
+    Artist.hasMany(models.Work)
 
-    Artist.hasMany(models.ArtistWebsite, {
-      foreignKey: 'artistId'
-    })
+    Artist.hasMany(models.ArtistWebsite)
   }
 
   return Artist
