@@ -28,8 +28,7 @@
 export default {
   async asyncData ({ $axios }) {
     const res = await $axios.get('/art')
-    const works = res.data
-    return { works }
+    return { works: res.data }
   },
   methods: {
     friendlyDate (date) {

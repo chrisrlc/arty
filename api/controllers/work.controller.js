@@ -37,7 +37,7 @@ async function create (req, res) {
     // Create Work in db
     await work.save()
 
-    res.send({ id: work.id })
+    res.end()
   } catch (err) {
     res.status(500).send({
       message:

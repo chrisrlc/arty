@@ -11,9 +11,8 @@
 <script>
 export default {
   async asyncData ({ params, $axios }) {
-    let work = await $axios.get(`/art/${params.id}`)
-    work = work.data
-    return { work }
+    const res = await $axios.get(`/art/${params.id}`)
+    return { work: res.data }
   },
   methods: {
     async editWork (workInfo) {
