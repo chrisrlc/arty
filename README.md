@@ -43,3 +43,13 @@ cp .env.example .env
 # Start backend server at localhost:4000
 $ node api/index.js
 ```
+
+## Migrations
+
+To run migrations:
+
+    $ npx sequelize db:migrate
+
+To generate skeleton migration file in `api/migrations/`: 
+
+    $ npx sequelize-cli migration:generate --name migration-skeleton
