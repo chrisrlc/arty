@@ -33,7 +33,7 @@ export default {
   methods: {
     friendlyDate (date) {
       const d = new Date(date)
-      return d.toDateString()
+      return d.toLocaleDateString('en', { year: 'numeric', month: 'short', day: 'numeric' })
     }
   }
 }
