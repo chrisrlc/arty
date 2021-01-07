@@ -103,8 +103,21 @@
         <button class="button is-primary">Save</button>
       </div>
       <div v-if="work.id" class="control">
-        <button @click="deleteArt" type="button" class="button is-danger is-outlined">Delete</button>
+        <button @click="deleteModal = !deleteModal" type="button" class="button is-danger is-outlined">Delete</button>
       </div>
+    </div>
+    <div class="modal" :class="{ 'is-active': deleteModal }">
+      <div class="modal-background"></div>
+      <div class="modal-content">
+        <div class="box">
+          <p class="content">Are you sure you want to delete {{ work.title || 'this artwork' }} from your inventory?</p>
+          <div class="buttons">
+            <button @click="deleteArt" type="button" class="button is-danger">Delete</button>
+            <button @click="deleteModal = !deleteModal" type="button" class="button">Cancel</button>
+          </div>
+        </div>
+      </div>
+      <button @click="deleteModal = !deleteModal" type="button" class="modal-close is-large" aria-label="close"></button>
     </div>
   </form>
 </template>
@@ -125,7 +138,8 @@ export default {
     return {
       descriptionPlaceholder: 'Handmade purple patchwork rabbit with tiny horn-rimmed glasses and a judgmental ' +
         'expression, measures 8” long.\n\nMight be haunted?',
-      imageUpdated: false
+      imageUpdated: false,
+      deleteModal: false
     }
   },
   methods: {
@@ -145,9 +159,11 @@ export default {
     async deleteArt () {
       if (this.work.id) {
         try {
-          await this.$axios.delete(`/art/${this.work.id}`)
+          const res = await this.$axios.delete(`/art/${this.work.id}`)
           await this.$router.push('/art')
+
           // TODO: success notification
+          console.log(`${res.data.title || 'Your untitled artwork'} has been deleted.`)
         } catch (err) {
           // TODO: Handle error
           console.log(err.response.data.message)
