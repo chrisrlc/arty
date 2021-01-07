@@ -68,6 +68,7 @@ async function update (req, res) {
 
       work.artistId = artistId
       work.title = req.body.title
+      work.description = req.body.description
       work.acquisitionUrl = req.body.acquisitionUrl
       work.acquisitionDate = req.body.acquisitionDate
       work.acquisitionCost = req.body.acquisitionCost

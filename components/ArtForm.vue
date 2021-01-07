@@ -71,7 +71,7 @@
     </div>
 
     <div class="field">
-      <label class="label">Date acquired</label>
+      <label class="label">Date Acquired</label>
       <date-picker
         v-model="work.acquisitionDate"
         placeholder="MM/DD/YYYY"
