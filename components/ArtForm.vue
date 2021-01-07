@@ -98,14 +98,18 @@
       </div>
     </div>
 
-    <div class="field is-grouped">
+    <div class="field is-grouped is-pulled-left">
       <div class="control">
         <button class="button is-primary">Save</button>
       </div>
-      <div v-if="work.id" class="control">
-        <button @click="deleteModal = !deleteModal" type="button" class="button is-danger is-outlined">Delete</button>
+      <div class="control">
+        <button @click="returnToIndex" type="button" class="button is-light">Cancel</button>
       </div>
     </div>
+    <div v-if="work.id" class="field">
+      <button @click="deleteModal = !deleteModal" type="button" class="button is-text is-pulled-right">Delete</button>
+    </div>
+
     <div class="modal" :class="{ 'is-active': deleteModal }">
       <div class="modal-background"></div>
       <div class="modal-content">
@@ -113,7 +117,7 @@
           <p class="content">Are you sure you want to delete {{ work.title || 'this artwork' }} from your inventory?</p>
           <div class="buttons">
             <button @click="deleteArt" type="button" class="button is-danger">Delete</button>
-            <button @click="deleteModal = !deleteModal" type="button" class="button">Cancel</button>
+            <button @click="deleteModal = !deleteModal" type="button" class="button is-light">Cancel</button>
           </div>
         </div>
       </div>
@@ -171,6 +175,14 @@ export default {
       } else {
         // TODO: Handle error
         console.log('No art to delete')
+      }
+    },
+    async returnToIndex () {
+      try {
+        await this.$router.push('/art')
+      } catch (err) {
+        // TODO: Handle error
+        console.log(err.response.data.message)
       }
     }
   }
