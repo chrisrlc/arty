@@ -66,7 +66,7 @@ module.exports = {
       },
       url: {
         type: Sequelize.STRING,
-        allowNull: true
+        allowNull: false
       },
       createdAt: {
         allowNull: false,
@@ -114,7 +114,7 @@ module.exports = {
         type: Sequelize.DATE
       },
       acquisitionCost: {
-        type: Sequelize.DECIMAL(19,4)
+        type: Sequelize.DECIMAL(19,2)
       },
       imageId: {
         type: Sequelize.STRING
