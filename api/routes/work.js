@@ -10,4 +10,6 @@ router.post('/:workId', WorkController.update)
 
 router.get('/:workId', WorkController.show)
 
+router.delete('/:workId', WorkController.destroy)
+
 module.exports = router

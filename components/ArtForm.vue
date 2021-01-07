@@ -98,10 +98,13 @@
       </div>
     </div>
 
-    <div class="control">
-      <button class="button is-primary">
-        Save
-      </button>
+    <div class="field is-grouped">
+      <div class="control">
+        <button class="button is-primary">Save</button>
+      </div>
+      <div v-if="work.id" class="control">
+        <button @click="deleteArt" type="button" class="button is-danger is-outlined">Delete</button>
+      </div>
     </div>
   </form>
 </template>
@@ -138,6 +141,21 @@ export default {
     onRemove () {
       this.work.imageUpdated = true
       this.work.image = null
+    },
+    async deleteArt () {
+      if (this.work.id) {
+        try {
+          await this.$axios.delete(`/art/${this.work.id}`)
+          await this.$router.push('/art')
+          // TODO: success notification
+        } catch (err) {
+          // TODO: Handle error
+          console.log(err.response.data.message)
+        }
+      } else {
+        // TODO: Handle error
+        console.log('No art to delete')
+      }
     }
   }
 }

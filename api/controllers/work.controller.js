@@ -107,6 +107,36 @@ async function update (req, res) {
   }
 }
 
+async function destroy (req, res) {
+  const work = await Work.findOne({
+    where: {
+      id: req.params.workId,
+      userId: req.session.user.id
+    }
+  })
+  if (work) {
+    try {
+      if (work.imageId) {
+        // Delete image from Cloudinary
+        await cloudinary.deleteImage(work.imageId)
+      }
+      // Delete Work from db
+      await work.destroy()
+    } catch (err) {
+      res.status(500).send({
+        message:
+          err.message || 'Some error occurred while deleting a Work.'
+      })
+    }
+
+    res.send({ title: work.title })
+  } else {
+    res.status(404).send({
+      message: 'No Work found.'
+    })
+  }
+}
+
 async function show (req, res) {
   // TODO: 403 if no user
 
@@ -183,6 +213,7 @@ async function displayWork (work) {
 module.exports = {
   create,
   update,
+  destroy,
   show,
   index
 }
