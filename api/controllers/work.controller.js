@@ -193,7 +193,7 @@ async function displayWork (work) {
 
   let imageUrl = null
   if (work.imageId) {
-    // Scale image to height=250
+    // Scale image to width=250
     const transformation_opts = {
       width: 250,
       crop: 'limit'
