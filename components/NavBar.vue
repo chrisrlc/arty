@@ -1,7 +1,7 @@
 <template>
   <nav class="navbar main-nav" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
-      <NuxtLink class="navbar-item arty-title" to="/">
+      <NuxtLink class="navbar-item arty-title" :to="loggedIn ? '/art' : '/'">
         arty
       </NuxtLink>
 

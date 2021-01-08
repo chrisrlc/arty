@@ -10,6 +10,9 @@
       </div>
 
       <div class="level-right">
+        <NuxtLink to="/" class="level-item">
+          Home
+        </NuxtLink>
         <NuxtLink to="/about" class="level-item">
           About
         </NuxtLink>
