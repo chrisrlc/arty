@@ -30,7 +30,13 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.DATE
     },
     acquisitionCost: {
-      type: Sequelize.DECIMAL(19,4)
+      type: Sequelize.DECIMAL(19,2)
+    },
+    source: {
+      type: Sequelize.STRING
+    },
+    location: {
+      type: Sequelize.STRING
     },
     imageId: {
       type: Sequelize.STRING

@@ -23,7 +23,9 @@ async function create (req, res) {
       description: req.body.description,
       acquisitionUrl: req.body.acquisitionUrl,
       acquisitionDate: req.body.acquisitionDate,
-      acquisitionCost: req.body.acquisitionCost
+      acquisitionCost: req.body.acquisitionCost,
+      source: req.body.source,
+      location: req.body.location
     })
 
     if (req.body.image) {
@@ -72,6 +74,8 @@ async function update (req, res) {
       work.acquisitionUrl = req.body.acquisitionUrl
       work.acquisitionDate = req.body.acquisitionDate
       work.acquisitionCost = req.body.acquisitionCost
+      work.source = req.body.source
+      work.location = req.body.location
 
       if (req.body.imageUpdated) {
         if (work.imageId) {
@@ -161,6 +165,8 @@ async function show (req, res) {
       acquisitionUrl: work.acquisitionUrl,
       acquisitionDate: work.acquisitionDate,
       acquisitionCost: work.acquisitionCost,
+      source: work.source,
+      location: work.location,
       imageUrl: work.imageId ? cloudinary.imageUrl(work.imageId) : null
     })
   } else {
