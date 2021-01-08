@@ -30,25 +30,7 @@
           <button @click="showModal = !showModal" class="delete" aria-label="close"></button>
         </header>
         <section class="modal-card-body">
-          <figure v-if="modalWork.imageUrl" class="image content">
-            <img :src="modalWork.imageUrl">
-          </figure>
-          <p v-if="modalWork.description" class="content">
-            <strong>Description: </strong>
-            {{ modalWork.description }}
-          </p>
-          <p v-if="modalWork.acquisitionUrl" class="content">
-            <strong>URL: </strong>
-            {{ modalWork.acquisitionUrl }}
-          </p>
-          <p v-if="modalWork.acquisitionDate" class="content">
-            <strong>Date Acquired: </strong>
-            {{ friendlyDate(modalWork.acquisitionDate) }}
-          </p>
-          <p v-if="modalWork.acquisitionCost" class="content">
-            <strong>Cost: </strong>
-            ${{ modalWork.acquisitionCost }}
-          </p>
+          <ArtFormFields :work="modalWork" :readonly="true" />
         </section>
         <footer class="modal-card-foot">
           <button @click="editArt(modalWork.id)" class="button is-link">Edit</button>
