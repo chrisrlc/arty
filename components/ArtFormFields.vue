@@ -49,16 +49,16 @@
       </div>
     </div>
 
-    <div class="field">
+    <div class="field" v-if="!readonly || work.description">
       <label class="label">Description</label>
-      <div v-if="!readonly" class="control">
+      <div class="control">
         <textarea
           v-model="work.description"
           class="textarea"
           :placeholder="descriptionPlaceholder"
+          :readonly="readonly"
         />
       </div>
-      <p v-else-if="work.description" class="content readonly">{{ work.description }}</p>
     </div>
 
     <div class="field" v-if="!readonly || work.acquisitionDate">
@@ -69,7 +69,7 @@
         format="MM/dd/yyyy"
         :typeable="!readonly"
         name="acquisitionDate"
-        input-class="input"
+        input-class="input readonly"
         :disabled="readonly"
       />
     </div>
@@ -172,15 +172,11 @@ export default {
 
 <style lang="scss">
 .art-form-fields {
-
-  input[readonly], textarea[readonly] {
+  // Override disabled styling on date-picker input
+  .readonly {
     color: $grey-darker;
     background-color: $white;
-    border: 0;
-  }
-
-  .readonly {
-    padding: calc(0.75em - 1px)
+    border-color: $grey-lighter;
   }
 
   .control.has-icons-left .icon, .control.has-icons-right .icon {
