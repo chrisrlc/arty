@@ -1,11 +1,12 @@
 const db = require('../models')
 const User = db.users
 const bcrypt = require('bcrypt')
+const helper = require('../helpers/application.js')
 
 // Create and save a new User
 async function create (req, res) {
-  const email = req.body.email
-  const plainPassword = req.body.password
+  const email = helper.sanitize(req.body.email)
+  const plainPassword = helper.sanitize(req.body.password)
   const agreeToTerms = req.body.agreeToTerms
 
   // Validate request
@@ -52,16 +53,22 @@ async function comparePasswords (plainPassword, hashedPassword) {
 }
 
 async function login (req, res) {
+  const email = helper.sanitize(req.body.email)
+  const plainPassword = helper.sanitize(req.body.password)
+
   // Validate request
-  if (!req.body.email || !req.body.password) {
+  if (!email || !plainPassword) {
     res.status(401).send({
       message: "Email or password can't be empty!"
     })
     return
   }
-
-  const email = req.body.email
-  const plainPassword = req.body.password
+  if (plainPassword.length < 6) {
+    res.status(401).send({
+      message: "Password must be at least 6 characters."
+    })
+    return
+  }
 
   // Find User in the database and set session
   try {
