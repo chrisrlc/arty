@@ -23,14 +23,14 @@
     </div>
 
     <div class="modal" :class="{ 'is-active': showModal }">
-      <div class="modal-background"></div>
+      <div @click="showModal = !showModal" class="modal-background"></div>
       <div class="modal-card">
         <header class="modal-card-head">
           <p class="modal-card-title">{{ modalWork.title }}<span v-if="modalWork.artist"> by {{ modalWork.artist }}</span></p>
           <button @click="showModal = !showModal" class="delete" aria-label="close"></button>
         </header>
         <section class="modal-card-body">
-          <ArtFormFields :work="modalWork" :readonly="true" />
+          <ArtFormFields :work="modalWork" :disabled="true" />
         </section>
         <footer class="modal-card-foot">
           <button @click="editArt(modalWork.id)" class="button is-link">Edit</button>

@@ -13,6 +13,10 @@ function sanitize (content) {
 }
 
 function decodeHtml (content) {
+  if (!content) {
+    return ''
+  }
+
   return content.replace(/&amp;/ig, '&')
     .replace(/&lt;/ig, '<')
     .replace(/&gt;/ig, '>')

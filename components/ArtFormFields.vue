@@ -1,6 +1,6 @@
 <template>
-  <div class="art-form-fields">
-    <div v-if="!readonly" class="field">
+  <fieldset :disabled="disabled" class="art-form-fields">
+    <div v-if="!disabled" class="field">
       <picture-input
         ref="pictureInput"
         width="600"
@@ -19,11 +19,11 @@
         @remove="onRemove"
       />
     </div>
-    <figure v-else-if="readonly && work.imageUrl" class="image content">
+    <figure v-else-if="disabled && work.imageUrl" class="image content">
       <img :src="work.imageUrl">
     </figure>
 
-    <div class="field" v-if="!readonly">
+    <div class="field">
       <label class="label">Title</label>
       <div class="control">
         <input
@@ -36,7 +36,7 @@
       </div>
     </div>
 
-    <div class="field" v-if="!readonly">
+    <div class="field">
       <label class="label">Artist</label>
       <div class="control">
         <input
@@ -49,32 +49,31 @@
       </div>
     </div>
 
-    <div class="field" v-if="!readonly || work.description">
+    <div class="field" v-if="!disabled || work.description">
       <label class="label">Description</label>
       <div class="control">
         <textarea
           v-model="work.description"
           class="textarea"
           :placeholder="descriptionPlaceholder"
-          :readonly="readonly"
         />
       </div>
     </div>
 
-    <div class="field" v-if="!readonly || work.acquisitionDate">
+    <div class="field" v-if="!disabled || work.acquisitionDate">
       <label class="label">Date Acquired</label>
       <date-picker
         v-model="work.acquisitionDate"
         placeholder="MM/DD/YYYY"
         format="MM/dd/yyyy"
-        :typeable="!readonly"
+        :typeable="!disabled"
         name="acquisitionDate"
-        input-class="input readonly"
-        :disabled="readonly"
+        input-class="input"
+        :disabled="disabled"
       />
     </div>
 
-    <div class="field" v-if="!readonly || work.source">
+    <div class="field" v-if="!disabled || work.source">
       <label class="label">Source</label>
       <div class="control">
         <input
@@ -82,12 +81,11 @@
           class="input"
           name="source"
           placeholder="SFMOMA Museum Store"
-          :readonly="readonly"
         >
       </div>
     </div>
 
-    <div class="field" v-if="!readonly || work.location">
+    <div class="field" v-if="!disabled || work.location">
       <label class="label">Location</label>
       <div class="control">
         <input
@@ -95,12 +93,11 @@
           class="input"
           name="source"
           placeholder="San Francisco, CA"
-          :readonly="readonly"
         >
       </div>
     </div>
 
-    <div class="field" v-if="!readonly || work.acquisitionUrl">
+    <div class="field" v-if="!disabled || work.acquisitionUrl">
       <label class="label">URL</label>
       <div class="control">
         <input
@@ -109,12 +106,11 @@
           type="text"
           name="acquisitionUrl"
           placeholder="https://www.etsy.com/transaction/555555555"
-          :readonly="readonly"
         >
       </div>
     </div>
 
-    <div class="field" v-if="!readonly || work.acquisitionCost">
+    <div class="field" v-if="!disabled || work.acquisitionCost">
       <label class="label">Cost</label>
       <div class="control has-icons-left">
         <input
@@ -125,12 +121,11 @@
           step="any"
           name="acquisitionCost"
           placeholder="20"
-          :readonly="readonly"
         >
         <span class="icon is-small is-left">$</span>
       </div>
     </div>
-  </div>
+  </fieldset>
 </template>
 
 <script>
@@ -140,7 +135,7 @@ export default {
       type: Object,
       required: true
     },
-    readonly: {
+    disabled: {
       type: Boolean,
       default: false
     }
@@ -171,16 +166,4 @@ export default {
 </script>
 
 <style lang="scss">
-.art-form-fields {
-  // Override disabled styling on date-picker input
-  .readonly {
-    color: $grey-darker;
-    background-color: $white;
-    border-color: $grey-lighter;
-  }
-
-  .control.has-icons-left .icon, .control.has-icons-right .icon {
-    color: $grey-darker;
-  }
-}
 </style>

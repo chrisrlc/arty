@@ -8,7 +8,7 @@
           <button class="button is-primary">Save</button>
         </div>
         <div class="control">
-          <button @click="returnToIndex" type="button" class="button is-light">Cancel</button>
+          <button @click="returnToIndex" type="button" class="button is-light">Back</button>
         </div>
       </div>
       <div v-if="work.id" class="field">
