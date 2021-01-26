@@ -1,43 +1,20 @@
 const db = require('../models')
 const User = db.users
 const bcrypt = require('bcrypt')
-const helper = require('../helpers/application.js')
 
 // Create and save a new User
 async function create (req, res) {
-  const email = helper.sanitize(req.body.email)
-  const plainPassword = helper.sanitize(req.body.password)
-  const agreeToTerms = req.body.agreeToTerms
+  const email = req.body.email
+  const plainPassword = req.body.password
 
-  // Validate request
-  if (!agreeToTerms) {
-    res.status(401).send({
-      message: 'Please agree to the terms and conditions before creating an account.'
-    })
-    return
-  }
-  if (!email || !plainPassword) {
-    res.status(401).send({
-      message: "Email or password can't be empty!"
-    })
-    return
-  }
-  const existingUser = await User.findOne({where: {email: email}})
-  if (existingUser) {
-    res.status(401).send({
-      message: 'Email has already been taken. Please log in or choose another.'
-    })
-    return
-  }
-
-  // Create a User
-  const newUser = {
-    email: email,
-    password: await bcrypt.hash(plainPassword, 12) // Encrypt password
-  }
-
-  // Save User in the database and log in
   try {
+    // Create a User
+    const newUser = {
+      email: email,
+      password: await bcrypt.hash(plainPassword, 12) // Encrypt password
+    }
+
+    // Save User in the database and log in
     req.session.user = await User.create(newUser)
     res.end()
   } catch (err) {
@@ -53,22 +30,8 @@ async function comparePasswords (plainPassword, hashedPassword) {
 }
 
 async function login (req, res) {
-  const email = helper.sanitize(req.body.email)
-  const plainPassword = helper.sanitize(req.body.password)
-
-  // Validate request
-  if (!email || !plainPassword) {
-    res.status(401).send({
-      message: "Email or password can't be empty!"
-    })
-    return
-  }
-  if (plainPassword.length < 6) {
-    res.status(401).send({
-      message: "Password must be at least 6 characters."
-    })
-    return
-  }
+  const email = req.body.email
+  const plainPassword = req.body.password
 
   // Find User in the database and set session
   try {
@@ -104,9 +67,17 @@ function getUser (req, res) {
   }
 }
 
+async function validateSignupEmail (email) {
+  const user = await User.findOne({where: {email: email}})
+  if (user) {
+    throw new Error('Email has already been taken. Please log in or choose another.')
+  }
+}
+
 module.exports = {
   create,
   login,
   logout,
-  getUser
+  getUser,
+  validateSignupEmail
 }
