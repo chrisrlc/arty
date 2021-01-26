@@ -67,10 +67,43 @@ function getUser (req, res) {
   }
 }
 
-async function validateSignupEmail (email) {
-  const user = await User.findOne({where: {email: email}})
-  if (user) {
-    throw new Error('Email has already been taken. Please log in or choose another.')
+// VALIDATION SCHEMAS
+
+// Login
+const validations = {
+  email: {
+    trim: true,
+    isEmail: {
+      errorMessage: 'Please enter a valid email address.'
+    },
+    normalizeEmail: true
+  },
+  password: {
+    isLength: {
+      options: {min: 6},
+      errorMessage: 'Password must be at least 6 characters.'
+    }
+  }
+}
+
+// Signup
+const signupValidations = { ...validations,
+  agreeToTerms: {
+    isBoolean: true,
+    isIn: {
+      options: [[true]]
+    },
+    errorMessage: 'Please agree to the terms and conditions before creating an account.'
+  }
+}
+signupValidations['email'] = { ...validations['email'],
+  custom: {
+    options: async value => {
+      const user = await User.findOne({where: {email: value}})
+      if (user) {
+        throw new Error('Email has already been taken. Please log in or choose another.')
+      }
+    },
   }
 }
 
@@ -79,5 +112,6 @@ module.exports = {
   login,
   logout,
   getUser,
-  validateSignupEmail
+  signupValidations,
+  validations
 }
