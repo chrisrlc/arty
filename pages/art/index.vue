@@ -6,7 +6,7 @@
 
     <div class="art-tiles-container">
       <div v-for="work in works" :key="work.id" class="box">
-        <a @click="populateModal(work.id)" class="art-details">
+        <a class="art-details" @click="populateModal(work.id)">
           <p v-if="work.acquisitionDate" class="date has-text-left has-text-grey is-size-7">
             {{ friendlyDate(work.acquisitionDate) }}
           </p>
@@ -14,7 +14,7 @@
             <img :src="work.imageUrl">
           </figure>
           <p v-if="work.title || !work.imageUrl" class="title has-text-centered is-size-5">
-            {{ work.title || 'Untitled Artwork'}}
+            {{ work.title || 'Untitled Artwork' }}
           </p>
           <p v-if="work.artist" class="subtitle has-text-centered is-size-6">
             {{ work.artist }}
@@ -24,7 +24,9 @@
     </div>
 
     <div v-if="!works.length" class="container has-text-centered">
-      <h2 class="subtitle">No art added yet to your inventory!</h2>
+      <h2 class="subtitle">
+        No art added yet to your inventory!
+      </h2>
       <NuxtLink to="/art/new" class="button is-link">
         <span class="icon-text">
           <span class="icon">
@@ -36,20 +38,24 @@
     </div>
 
     <div class="modal" :class="{ 'is-active': showModal }">
-      <div @click="showModal = !showModal" class="modal-background"></div>
+      <div class="modal-background" @click="showModal = !showModal" />
       <div class="modal-card">
         <header class="modal-card-head">
           <p class="modal-card-title">
             {{ modalWork.title || 'Untitled Artwork' }}<span v-if="modalWork.artist"> by {{ modalWork.artist }}</span>
           </p>
-          <button @click="showModal = !showModal" class="delete" aria-label="close"></button>
+          <button aria-label="close" class="delete" @click="showModal = !showModal" />
         </header>
         <section class="modal-card-body">
           <ArtFormFields :work="modalWork" :disabled="true" />
         </section>
         <footer class="modal-card-foot">
-          <button @click="editArt(modalWork.id)" class="button is-link">Edit</button>
-          <button @click="showModal = !showModal" class="button">Close</button>
+          <button class="button is-link" @click="editArt(modalWork.id)">
+            Edit
+          </button>
+          <button class="button" @click="showModal = !showModal">
+            Close
+          </button>
         </footer>
       </div>
     </div>

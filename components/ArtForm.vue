@@ -5,29 +5,41 @@
     <div class="art-form-buttons">
       <div class="field is-grouped is-pulled-left">
         <div class="control">
-          <button class="button is-primary">Save</button>
+          <button class="button is-primary">
+            Save
+          </button>
         </div>
         <div class="control">
-          <button @click="returnToIndex" type="button" class="button is-light">{{ cancelButtonText }}</button>
+          <button type="button" class="button is-light" @click="returnToIndex">
+            {{ cancelButtonText }}
+          </button>
         </div>
       </div>
       <div v-if="work.id" class="field">
-        <button @click="deleteModal = !deleteModal" type="button" class="button is-text is-pulled-right">Delete</button>
+        <button type="button" class="button is-text is-pulled-right" @click="deleteModal = !deleteModal">
+          Delete
+        </button>
       </div>
     </div>
 
     <div v-if="work.id" class="modal" :class="{ 'is-active': deleteModal }">
-      <div class="modal-background"></div>
+      <div class="modal-background" />
       <div class="modal-content">
         <div class="box">
-          <p class="content">Are you sure you want to delete {{ work.title || 'this artwork' }} from your inventory?</p>
+          <p class="content">
+            Are you sure you want to delete {{ work.title || 'this artwork' }} from your inventory?
+          </p>
           <div class="buttons">
-            <button @click="deleteWork" type="button" class="button is-danger">Delete</button>
-            <button @click="deleteModal = !deleteModal" type="button" class="button is-light">Cancel</button>
+            <button type="button" class="button is-danger" @click="deleteWork">
+              Delete
+            </button>
+            <button type="button" class="button is-light" @click="deleteModal = !deleteModal">
+              Cancel
+            </button>
           </div>
         </div>
       </div>
-      <button @click="deleteModal = !deleteModal" type="button" class="modal-close is-large" aria-label="close"></button>
+      <button type="button" class="modal-close is-large" aria-label="close" @click="deleteModal = !deleteModal" />
     </div>
   </form>
 </template>

@@ -9,7 +9,7 @@
 
           <Notification v-if="error" :message="error" />
 
-          <UserAuthForm buttonText="Sign Up" :submitForm="userSignup" :checkTos="true" />
+          <UserAuthForm button-text="Sign Up" :submit-form="userSignup" :check-tos="true" />
 
           <div class="has-text-centered" style="margin-top: 20px">
             Already got an account?

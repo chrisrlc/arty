@@ -9,7 +9,7 @@
 
           <Notification v-if="error" :message="error" />
 
-          <UserAuthForm buttonText="Login" :submitForm="userLogin" />
+          <UserAuthForm button-text="Login" :submit-form="userLogin" />
 
           <div class="has-text-centered" style="margin-top: 20px">
             Don't have an account?

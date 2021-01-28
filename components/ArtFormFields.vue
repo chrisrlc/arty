@@ -10,11 +10,11 @@
         accept="image/jpeg,image/png"
         size="10"
         button-class="button is-link"
-        removeButtonClass="button"
+        remove-button-class="button"
         :removable="true"
         name="image"
         :prefill="work.imageUrl"
-        :prefillOptions="{mediaType: 'image/jpeg'}"
+        :prefill-options="{mediaType: 'image/jpeg'}"
         @change="onChange"
         @remove="onRemove"
       />
@@ -49,7 +49,7 @@
       </div>
     </div>
 
-    <div class="field" v-if="!disabled || work.description">
+    <div v-if="!disabled || work.description" class="field">
       <label class="label">Description</label>
       <div class="control">
         <textarea
@@ -60,7 +60,7 @@
       </div>
     </div>
 
-    <div class="field" v-if="!disabled || work.acquisitionDate">
+    <div v-if="!disabled || work.acquisitionDate" class="field">
       <label class="label">Date Acquired</label>
       <date-picker
         v-model="work.acquisitionDate"
@@ -73,7 +73,7 @@
       />
     </div>
 
-    <div class="field" v-if="!disabled || work.source">
+    <div v-if="!disabled || work.source" class="field">
       <label class="label">Source</label>
       <div class="control">
         <input
@@ -85,7 +85,7 @@
       </div>
     </div>
 
-    <div class="field" v-if="!disabled || work.location">
+    <div v-if="!disabled || work.location" class="field">
       <label class="label">Location</label>
       <div class="control">
         <input
@@ -97,7 +97,7 @@
       </div>
     </div>
 
-    <div class="field" v-if="!disabled || work.acquisitionUrl">
+    <div v-if="!disabled || work.acquisitionUrl" class="field">
       <label class="label">URL</label>
       <div class="control">
         <input
@@ -110,7 +110,7 @@
       </div>
     </div>
 
-    <div class="field" v-if="!disabled || work.acquisitionCost">
+    <div v-if="!disabled || work.acquisitionCost" class="field">
       <label class="label">Cost</label>
       <div class="control has-icons-left">
         <input

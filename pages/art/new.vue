@@ -6,7 +6,7 @@
 
     <Notification v-if="error" :message="error" />
 
-    <ArtForm :submitForm="addWork" cancelButtonText="Cancel" :work="work" @failed="setError" />
+    <ArtForm :submit-form="addWork" cancel-button-text="Cancel" :work="work" @failed="setError" />
   </section>
 </template>
 
