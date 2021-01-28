@@ -6,7 +6,7 @@
 
     <Notification v-if="error" :message="error" />
 
-    <ArtForm :submitForm="addWork" :cancelButtonText="'Cancel'" :work="work" />
+    <ArtForm :submitForm="addWork" cancelButtonText="Cancel" :work="work" @failed="setError" />
   </section>
 </template>
 
@@ -24,8 +24,12 @@ export default {
         await this.$axios.post('/art', workInfo)
         await this.$router.push('/art')
       } catch (err) {
-        this.error = err.response.data.message
+        this.setError(err.response.data.message)
       }
+    },
+    setError (msg) {
+      this.error = msg
+      window.scrollTo(0, 0)
     }
   }
 }

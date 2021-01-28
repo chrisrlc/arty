@@ -64,19 +64,11 @@ export default {
           console.log(`${res.data.title || 'Your untitled artwork'} has been deleted.`)
         } catch (err) {
           this.deleteModal = !this.deleteModal
-
-          // TODO: Handle error
-          // this.error = err.response.data.message
-          // throw new Error(err.response.data.message)
-          console.log(err.response.data.message)
+          this.$emit('failed', err.response.data.message)
         }
       } else {
         this.deleteModal = !this.deleteModal
-
-        // TODO: Handle error
-        // this.error = 'No art to delete'
-        // throw new Error('No art to delete')
-        console.log('No art to delete')
+        this.$emit('failed', 'No art to delete!')
       }
     },
     async returnToIndex () {
