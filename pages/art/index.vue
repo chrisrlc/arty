@@ -39,7 +39,9 @@
       <div @click="showModal = !showModal" class="modal-background"></div>
       <div class="modal-card">
         <header class="modal-card-head">
-          <p class="modal-card-title">{{ modalWork.title }}<span v-if="modalWork.artist"> by {{ modalWork.artist }}</span></p>
+          <p class="modal-card-title">
+            {{ modalWork.title || 'Untitled Artwork' }}<span v-if="modalWork.artist"> by {{ modalWork.artist }}</span>
+          </p>
           <button @click="showModal = !showModal" class="delete" aria-label="close"></button>
         </header>
         <section class="modal-card-body">
