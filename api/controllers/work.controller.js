@@ -42,8 +42,7 @@ async function create (req, res) {
     res.end()
   } catch (err) {
     res.status(500).send({
-      message:
-        err.message || 'Some error occurred while creating a Work.'
+      message: err.message || 'Some error occurred.'
     })
   }
 }
@@ -52,14 +51,15 @@ async function create (req, res) {
 async function update (req, res) {
   // TODO: 403 if no user
 
-  const work = await Work.findOne({
-    where: {
-      id: req.params.workId,
-      userId: req.session.user.id
-    }
-  })
-  if (work) {
-    try {
+  try {
+    const work = await Work.findOne({
+      where: {
+        id: req.params.workId,
+        userId: req.session.user.id
+      }
+    })
+
+    if (work) {
       let artistId = null
       if (req.body.artist) {
         const [artist, created] = await Artist.findOrCreate({
@@ -99,45 +99,44 @@ async function update (req, res) {
       await work.save()
 
       res.end()
-    } catch (err) {
+    } else {
       res.status(500).send({
-        message:
-          err.message || 'Some error occurred while editing a Work.'
+        message: 'No art found!'
       })
     }
-  } else {
+  } catch (err) {
     res.status(500).send({
-      message: 'No Work found.'
+      message:
+        err.message || 'Some error occurred.'
     })
   }
 }
 
 async function destroy (req, res) {
-  const work = await Work.findOne({
-    where: {
-      id: req.params.workId,
-      userId: req.session.user.id
-    }
-  })
-  if (work) {
-    try {
+  try {
+    const work = await Work.findOne({
+      where: {
+        id: req.params.workId,
+        userId: req.session.user.id
+      }
+    })
+    if (work) {
       if (work.imageId) {
         // Delete image from Cloudinary
         await cloudinary.deleteImage(work.imageId)
       }
       // Delete Work from db
       await work.destroy()
-    } catch (err) {
+
+      res.send({ title: work.title })
+    } else {
       res.status(500).send({
-        message:
-          err.message || 'Some error occurred while deleting a Work.'
+        message: 'Art not found!'
       })
     }
-
-    res.send({ title: work.title })
-  } else {
+  } catch (err) {
     res.status(500).send({
-      message: 'No Work found.'
+      message: err.message || 'Some error occurred.'
     })
   }
 }
@@ -145,33 +144,39 @@ async function destroy (req, res) {
 async function show (req, res) {
   // TODO: 403 if no user
 
-  const work = await Work.findOne({
-    where: {
-      id: req.params.workId,
-      userId: req.session.user.id
-    }
-  })
-  if (work) {
-    let artistName = null
-    if (work.artistId) {
-      const artist = await Artist.findByPk(work.artistId)
-      artistName = artist.name
-    }
-    res.send({
-      id: work.id,
-      title: work.title,
-      artist: artistName,
-      description: work.description,
-      acquisitionUrl: work.acquisitionUrl,
-      acquisitionDate: work.acquisitionDate,
-      acquisitionCost: work.acquisitionCost,
-      source: work.source,
-      location: work.location,
-      imageUrl: work.imageId ? cloudinary.imageUrl(work.imageId) : null
+  try {
+    const work = await Work.findOne({
+      where: {
+        id: req.params.workId,
+        userId: req.session.user.id
+      }
     })
-  } else {
+    if (work) {
+      let artistName = null
+      if (work.artistId) {
+        const artist = await Artist.findByPk(work.artistId)
+        artistName = artist.name
+      }
+      res.send({
+        id: work.id,
+        title: work.title,
+        artist: artistName,
+        description: work.description,
+        acquisitionUrl: work.acquisitionUrl,
+        acquisitionDate: work.acquisitionDate,
+        acquisitionCost: work.acquisitionCost,
+        source: work.source,
+        location: work.location,
+        imageUrl: work.imageId ? cloudinary.imageUrl(work.imageId) : null
+      })
+    } else {
+      res.status(500).send({
+        message: 'Art not found!'
+      })
+    }
+  } catch (err) {
     res.status(500).send({
-      message: 'No Work found.'
+      message: err.message || 'Some error occurred.'
     })
   }
 }
@@ -179,15 +184,21 @@ async function show (req, res) {
 async function index (req, res) {
   // TODO: 403 if no user
 
-  const works = await Work.findAll({
-    where: {
-      userId: req.session.user.id
-    },
-    attributes: ['id', 'title', 'artistId', 'imageId', 'acquisitionDate']
-  })
+  try {
+    const works = await Work.findAll({
+      where: {
+        userId: req.session.user.id
+      },
+      attributes: ['id', 'title', 'artistId', 'imageId', 'acquisitionDate']
+    })
 
-  const works_display = await Promise.all(works.map(displayWork))
-  res.send(works_display)
+    const works_display = await Promise.all(works.map(displayWork))
+    res.send(works_display)
+  } catch (err) {
+    res.status(500).send({
+      message: err.message || 'Some error occurred.'
+    })
+  }
 }
 
 async function displayWork (work) {
