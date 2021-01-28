@@ -106,7 +106,7 @@ async function update (req, res) {
       })
     }
   } else {
-    res.status(404).send({
+    res.status(500).send({
       message: 'No Work found.'
     })
   }
@@ -136,7 +136,7 @@ async function destroy (req, res) {
 
     res.send({ title: work.title })
   } else {
-    res.status(404).send({
+    res.status(500).send({
       message: 'No Work found.'
     })
   }
@@ -170,7 +170,7 @@ async function show (req, res) {
       imageUrl: work.imageId ? cloudinary.imageUrl(work.imageId) : null
     })
   } else {
-    res.status(404).send({
+    res.status(500).send({
       message: 'No Work found.'
     })
   }
