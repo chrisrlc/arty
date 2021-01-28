@@ -4,7 +4,9 @@
       Edit art details
     </h1>
 
-    <ArtForm :submitForm="editWork" :work="work" />
+    <Notification v-if="error" :message="error" />
+
+    <ArtForm :submitForm="editWork" :cancelButtonText="'Back'" :work="work" />
   </section>
 </template>
 
@@ -14,14 +16,19 @@ export default {
     const res = await $axios.get(`/art/${params.id}`)
     return { work: res.data }
   },
+  data () {
+    return {
+      error: '',
+      hi: false
+    }
+  },
   methods: {
     async editWork (workInfo) {
       try {
         await this.$axios.post(`/art/${this.work.id}`, workInfo)
         // TODO: success notification
       } catch (err) {
-        // TODO: Handle error
-        console.log(err.response.data.message)
+        this.error = err.response.data.message
       }
     }
   }

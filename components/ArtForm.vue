@@ -8,7 +8,7 @@
           <button class="button is-primary">Save</button>
         </div>
         <div class="control">
-          <button @click="returnToIndex" type="button" class="button is-light">Back</button>
+          <button @click="returnToIndex" type="button" class="button is-light">{{ cancelButtonText }}</button>
         </div>
       </div>
       <div v-if="work.id" class="field">
@@ -16,13 +16,13 @@
       </div>
     </div>
 
-    <div class="modal" :class="{ 'is-active': deleteModal }">
+    <div v-if="work.id" class="modal" :class="{ 'is-active': deleteModal }">
       <div class="modal-background"></div>
       <div class="modal-content">
         <div class="box">
           <p class="content">Are you sure you want to delete {{ work.title || 'this artwork' }} from your inventory?</p>
           <div class="buttons">
-            <button @click="deleteArt" type="button" class="button is-danger">Delete</button>
+            <button @click="deleteWork" type="button" class="button is-danger">Delete</button>
             <button @click="deleteModal = !deleteModal" type="button" class="button is-light">Cancel</button>
           </div>
         </div>
@@ -39,6 +39,10 @@ export default {
       type: Function,
       required: true
     },
+    cancelButtonText: {
+      type: String,
+      required: true
+    },
     work: {
       type: Object,
       required: true
@@ -50,7 +54,7 @@ export default {
     }
   },
   methods: {
-    async deleteArt () {
+    async deleteWork () {
       if (this.work.id) {
         try {
           const res = await this.$axios.delete(`/art/${this.work.id}`)
@@ -59,21 +63,24 @@ export default {
           // TODO: success notification
           console.log(`${res.data.title || 'Your untitled artwork'} has been deleted.`)
         } catch (err) {
+          this.deleteModal = !this.deleteModal
+
           // TODO: Handle error
+          // this.error = err.response.data.message
+          // throw new Error(err.response.data.message)
           console.log(err.response.data.message)
         }
       } else {
+        this.deleteModal = !this.deleteModal
+
         // TODO: Handle error
+        // this.error = 'No art to delete'
+        // throw new Error('No art to delete')
         console.log('No art to delete')
       }
     },
     async returnToIndex () {
-      try {
-        await this.$router.push('/art')
-      } catch (err) {
-        // TODO: Handle error
-        console.log(err.response.data.message)
-      }
+      await this.$router.push('/art')
     }
   }
 }

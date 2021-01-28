@@ -3,7 +3,8 @@
     <h1 class="title">
       That's So Arty
     </h1>
-    <div class="container">
+
+    <div class="art-tiles-container">
       <div v-for="work in works" :key="work.id" class="box">
         <a @click="populateModal(work.id)" class="art-details">
           <p v-if="work.acquisitionDate" class="date has-text-left has-text-grey is-size-7">
@@ -12,14 +13,26 @@
           <figure v-if="work.imageUrl" class="image content">
             <img :src="work.imageUrl">
           </figure>
-          <p v-if="work.title" class="title has-text-centered is-size-5">
-            {{ work.title }}
+          <p v-if="work.title || !work.imageUrl" class="title has-text-centered is-size-5">
+            {{ work.title || 'Untitled Artwork'}}
           </p>
           <p v-if="work.artist" class="subtitle has-text-centered is-size-6">
             {{ work.artist }}
           </p>
         </a>
       </div>
+    </div>
+
+    <div v-if="!works.length" class="container has-text-centered">
+      <h2 class="subtitle">No art added yet to your inventory!</h2>
+      <NuxtLink to="/art/new" class="button is-link">
+        <span class="icon-text">
+          <span class="icon">
+            <font-awesome-icon :icon="['fas', 'plus']" />
+          </span>
+          <span>Add new art</span>
+        </span>
+      </NuxtLink>
     </div>
 
     <div class="modal" :class="{ 'is-active': showModal }">
@@ -78,7 +91,24 @@ export default {
     margin-right: auto;
   }
 
-  .container {
+  // Coming soon, apparently: https://bulma.io/documentation/elements/icon/#icon-text
+  .icon-text {
+    align-items: flex-start;
+    color: inherit;
+    display: inline-flex;
+    flex-wrap: wrap;
+    line-height: 1.5rem;
+    vertical-align: top;
+  }
+  .icon-text .icon:not(:last-child) {
+    margin-right: .25em;
+  }
+  .icon-text .icon {
+    flex-grow: 0;
+    flex-shrink: 0;
+  }
+
+  .art-tiles-container {
     column-count: 2;
     @media (min-width: $tablet) {
       column-count: 3;

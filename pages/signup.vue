@@ -28,7 +28,7 @@ export default {
   auth: 'guest',
   data () {
     return {
-      error: null
+      error: ''
     }
   },
   methods: {

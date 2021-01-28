@@ -4,7 +4,9 @@
       Add new art to your inventory
     </h1>
 
-    <ArtForm :submitForm="addWork" :work="work" />
+    <Notification v-if="error" :message="error" />
+
+    <ArtForm :submitForm="addWork" :cancelButtonText="'Cancel'" :work="work" />
   </section>
 </template>
 
@@ -12,7 +14,8 @@
 export default {
   data () {
     return {
-      work: {}
+      work: {},
+      error: ''
     }
   },
   methods: {
@@ -21,8 +24,7 @@ export default {
         await this.$axios.post('/art', workInfo)
         await this.$router.push('/art')
       } catch (err) {
-        // TODO: Handle error
-        console.log(err.response.data.message)
+        this.error = err.response.data.message
       }
     }
   }

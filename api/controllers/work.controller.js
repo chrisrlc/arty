@@ -2,7 +2,6 @@ const db = require('../models')
 const Work = db.works
 const Artist = db.artists
 const cloudinary = require('../lib/cloudinary.js')
-const helper = require('../helpers/application.js')
 
 // Create and save a new Work
 async function create (req, res) {
@@ -12,7 +11,7 @@ async function create (req, res) {
     let artistId = null
     if (req.body.artist) {
       const [artist, created] = await Artist.findOrCreate({
-        where: { name: helper.sanitize(req.body.artist) }
+        where: { name: req.body.artist }
       })
       artistId = artist.id
     }
@@ -20,13 +19,13 @@ async function create (req, res) {
     const work = Work.build({
       userId: req.session.user.id,
       artistId: artistId,
-      title: helper.sanitize(req.body.title),
-      description: helper.sanitize(req.body.description),
-      acquisitionUrl: helper.sanitize(req.body.acquisitionUrl),
-      acquisitionDate: helper.sanitize(req.body.acquisitionDate),
-      acquisitionCost: helper.sanitize(req.body.acquisitionCost),
-      source: helper.sanitize(req.body.source),
-      location: helper.sanitize(req.body.location)
+      title: req.body.title,
+      description: req.body.description,
+      acquisitionUrl: req.body.acquisitionUrl,
+      acquisitionDate: req.body.acquisitionDate,
+      acquisitionCost: req.body.acquisitionCost,
+      source: req.body.source,
+      location: req.body.location
     })
 
     if (req.body.image) {
@@ -64,19 +63,19 @@ async function update (req, res) {
       let artistId = null
       if (req.body.artist) {
         const [artist, created] = await Artist.findOrCreate({
-          where: { name: helper.sanitize(req.body.artist) }
+          where: { name: req.body.artist }
         })
         artistId = artist.id
       }
 
       work.artistId = artistId
-      work.title = helper.sanitize(req.body.title)
-      work.description = helper.sanitize(req.body.description)
-      work.acquisitionUrl = helper.sanitize(req.body.acquisitionUrl)
-      work.acquisitionDate = helper.sanitize(req.body.acquisitionDate)
-      work.acquisitionCost = helper.sanitize(req.body.acquisitionCost)
-      work.source = helper.sanitize(req.body.source)
-      work.location = helper.sanitize(req.body.location)
+      work.title = req.body.title
+      work.description = req.body.description
+      work.acquisitionUrl = req.body.acquisitionUrl
+      work.acquisitionDate = req.body.acquisitionDate
+      work.acquisitionCost = req.body.acquisitionCost
+      work.source = req.body.source
+      work.location = req.body.location
 
       if (req.body.imageUpdated) {
         if (work.imageId) {
@@ -160,14 +159,14 @@ async function show (req, res) {
     }
     res.send({
       id: work.id,
-      title: helper.decodeHtml(work.title),
-      artist: helper.decodeHtml(artistName),
-      description: helper.decodeHtml(work.description),
-      acquisitionUrl: helper.decodeHtml(work.acquisitionUrl),
+      title: work.title,
+      artist: artistName,
+      description: work.description,
+      acquisitionUrl: work.acquisitionUrl,
       acquisitionDate: work.acquisitionDate,
       acquisitionCost: work.acquisitionCost,
-      source: helper.decodeHtml(work.source),
-      location: helper.decodeHtml(work.location),
+      source: work.source,
+      location: work.location,
       imageUrl: work.imageId ? cloudinary.imageUrl(work.imageId) : null
     })
   } else {
@@ -211,8 +210,8 @@ async function displayWork (work) {
 
   return {
     id: work.id,
-    title: helper.decodeHtml(work.title),
-    artist: helper.decodeHtml(artistName),
+    title: work.title,
+    artist: artistName,
     imageUrl: imageUrl,
     acquisitionDate: work.acquisitionDate
   }
