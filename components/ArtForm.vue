@@ -55,20 +55,15 @@ export default {
   },
   methods: {
     async deleteWork () {
-      if (this.work.id) {
-        try {
-          const res = await this.$axios.delete(`/art/${this.work.id}`)
-          await this.$router.push('/art')
+      try {
+        const res = await this.$axios.delete(`/art/${this.work.id}`)
+        await this.$router.push('/art')
 
-          // TODO: success notification
-          console.log(`${res.data.title || 'Your untitled artwork'} has been deleted.`)
-        } catch (err) {
-          this.deleteModal = !this.deleteModal
-          this.$emit('failed', err.response.data.message)
-        }
-      } else {
+        // TODO: success notification
+        console.log(`${res.data.title || 'Your untitled artwork'} has been deleted.`)
+      } catch (err) {
         this.deleteModal = !this.deleteModal
-        this.$emit('failed', 'No art to delete!')
+        this.$emit('failed', err.response.data.message)
       }
     },
     async returnToIndex () {
