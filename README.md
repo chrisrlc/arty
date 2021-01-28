@@ -40,7 +40,7 @@ $ npx sequelize db:migrate
 # Copy .env.example to .env (update vars as needed)
 cp .env.example .env
 
-# Start backend server at localhost:4000
+# Start backend server at localhost:3001
 $ node api/index.js
 ```
 

@@ -43,7 +43,7 @@ app.use('/api/auth', require('./routes/authentication'))
 app.use('/api/art', require('./routes/work'))
 
 // set port, listen for requests
-const PORT = process.env.PORT || 4000
+const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`)
 })
