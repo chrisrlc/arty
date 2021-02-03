@@ -70,7 +70,7 @@ function getUser (req, res) {
 // VALIDATION SCHEMAS
 
 // Login
-const validations = {
+const loginValidations = {
   email: {
     trim: true,
     isEmail: {
@@ -87,7 +87,7 @@ const validations = {
 }
 
 // Signup
-const signupValidations = { ...validations,
+const signupValidations = { ...loginValidations,
   agreeToTerms: {
     isBoolean: true,
     isIn: {
@@ -96,7 +96,7 @@ const signupValidations = { ...validations,
     errorMessage: 'Please agree to the terms and conditions before creating an account.'
   }
 }
-signupValidations['email'] = { ...validations['email'],
+signupValidations['email'] = { ...loginValidations['email'],
   custom: {
     options: async value => {
       const user = await User.findOne({where: {email: value}})
@@ -113,5 +113,5 @@ module.exports = {
   logout,
   getUser,
   signupValidations,
-  validations
+  loginValidations
 }

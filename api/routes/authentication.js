@@ -12,7 +12,7 @@ router.post('/register', checkSchema(AuthenticationController.signupValidations)
   await AuthenticationController.create(req, res)
 })
 
-router.post('/login', checkSchema(AuthenticationController.validations), async (req, res) => {
+router.post('/login', checkSchema(AuthenticationController.loginValidations), async (req, res) => {
   const errors = validationResult(req)
   if (!errors.isEmpty()) {
     return res.status(401).send({ message: errors.array().map(err => err.msg).join(' ') })
