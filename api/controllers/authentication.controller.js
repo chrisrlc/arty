@@ -1,17 +1,21 @@
 const db = require('../models')
 const User = db.users
 const bcrypt = require('bcrypt')
+const validator = require('../lib/validator.js')
 
 // Create and save a new User
 async function create (req, res) {
-  const email = req.body.email
-  const plainPassword = req.body.password
-
   try {
+    // Handle any failed validations
+    const errors = validator.validationResult(req)
+    if (!errors.isEmpty()) {
+      return res.status(400).send({ message: validator.validationErrorString(errors) })
+    }
+
     // Create a User
     const newUser = {
-      email: email,
-      password: await bcrypt.hash(plainPassword, 12) // Encrypt password
+      email: req.body.email,
+      password: await bcrypt.hash(req.body.password, 12) // Encrypt password
     }
 
     // Save User in the database and log in
@@ -30,13 +34,16 @@ async function comparePasswords (plainPassword, hashedPassword) {
 }
 
 async function login (req, res) {
-  const email = req.body.email
-  const plainPassword = req.body.password
-
-  // Find User in the database and set session
   try {
-    const user = await User.findOne({where: {email: email}})
-    if (user && await comparePasswords(plainPassword, user.password)) {
+    // Handle any failed validations
+    const errors = validator.validationResult(req)
+    if (!errors.isEmpty()) {
+      return res.status(401).send({ message: validator.validationErrorString(errors) })
+    }
+
+    // Find User in the database and set session
+    const user = await User.findOne({where: {email: req.body.email}})
+    if (user && await comparePasswords(req.body.password, user.password)) {
       req.session.user = user
       res.end()
     } else {
