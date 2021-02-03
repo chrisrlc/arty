@@ -23,7 +23,7 @@
     </div>
 
     <div v-if="work.id" class="modal" :class="{ 'is-active': deleteModal }">
-      <div class="modal-background" />
+      <div class="modal-background" @click="deleteModal = !deleteModal" />
       <div class="modal-content">
         <div class="box">
           <p class="content">
