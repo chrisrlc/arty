@@ -6,7 +6,8 @@ const validator = require('../lib/validator.js')
 // Create and save a new User
 async function create (req, res) {
   try {
-    // Handle any failed validations
+    // Validations
+    await validateSignUp(req)
     const errors = validator.validationResult(req)
     if (!errors.isEmpty()) {
       return res.status(400).send({ message: validator.validationErrorString(errors) })
@@ -35,7 +36,8 @@ async function comparePasswords (plainPassword, hashedPassword) {
 
 async function login (req, res) {
   try {
-    // Handle any failed validations
+    // Validations
+    await validateLogin(req)
     const errors = validator.validationResult(req)
     if (!errors.isEmpty()) {
       return res.status(401).send({ message: validator.validationErrorString(errors) })
@@ -74,51 +76,33 @@ function getUser (req, res) {
   }
 }
 
-// VALIDATION SCHEMAS
+// VALIDATION
 
-// Login
-const loginValidations = {
-  email: {
-    trim: true,
-    isEmail: {
-      errorMessage: 'Please enter a valid email address.'
-    },
-    normalizeEmail: true
-  },
-  password: {
-    isLength: {
-      options: {min: 6},
-      errorMessage: 'Password must be at least 6 characters.'
-    }
-  }
-}
-
-// Signup
-const signupValidations = { ...loginValidations,
-  agreeToTerms: {
-    isBoolean: true,
-    isIn: {
-      options: [[true]]
-    },
-    errorMessage: 'Please agree to the terms and conditions before creating an account.'
-  }
-}
-signupValidations['email'] = { ...loginValidations['email'],
-  custom: {
-    options: async value => {
+async function validateSignUp (req) {
+  await validator.check('email')
+    .trim().isEmail().withMessage('Please enter a valid email address.').normalizeEmail().bail()
+    .custom(async value => {
       const user = await User.findOne({where: {email: value}})
       if (user) {
         throw new Error('Email has already been taken. Please log in or choose another.')
       }
-    },
-  }
+    }).run(req)
+  await validator.check('password')
+    .isLength({ min: 6 }).withMessage('Password must be at least 6 characters.').run(req)
+  await validator.check('agreeToTerms', 'Please agree to the terms and conditions before creating an account.')
+    .isIn([true]).run(req)
+}
+
+async function validateLogin (req) {
+  await validator.check('email')
+    .trim().isEmail().withMessage('Please enter a valid email address.').normalizeEmail().run(req)
+  await validator.check('password')
+    .isLength({ min: 6 }).withMessage('Password must be at least 6 characters.').run(req)
 }
 
 module.exports = {
   create,
   login,
   logout,
-  getUser,
-  signupValidations,
-  loginValidations
+  getUser
 }
