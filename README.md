@@ -1,30 +1,12 @@
 # arty
 
-## Build Setup
-
-### Client-side
-
-```bash
-# install dependencies
-$ npm install
-
-# serve with hot reload at localhost:3000
-$ npm run dev
-
-# build for production and launch server
-$ npm run build
-$ npm run start
-
-# generate static project
-$ npm run generate
-```
-
-For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
-
-### Backend
+## Installation
 
 ```bash
 # Install mysql
+
+# Install dependencies
+$ npm install
 
 # Create mysql user
 $ mysql -u root
@@ -38,11 +20,16 @@ $ npx sequelize db:create
 $ npx sequelize db:migrate
 
 # Copy .env.example to .env (update vars as needed)
-cp .env.example .env
-
-# Start backend server at localhost:3001
-$ node api/index.js
+$ cp .env.example .env
 ```
+
+## Commands
+
+| Command | Description |
+|---------|-------------|
+| npm run dev | Start ExpressJS server in development with Nuxt.js in dev mode (hot reloading). Listen on [http://localhost:3000](http://localhost:3000). |
+| npm run build | Build the nuxt.js web application for production. |
+| npm start | Start ExpressJS server in production. |
 
 ## Migrations
 

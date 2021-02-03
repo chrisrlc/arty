@@ -55,6 +55,11 @@ export default {
     '@nuxtjs/style-resources',
   ],
 
+  // Server Middleware
+  serverMiddleware: {
+    '/api': '~/api'
+  },
+
   auth: {
     strategies: {
       local: {
@@ -76,7 +81,7 @@ export default {
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
   axios: {
-    baseURL:'http://localhost:3001/api',
+    baseURL: 'http://localhost:3000/api',
     debug: true,
     credentials: true
   },

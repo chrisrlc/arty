@@ -5,6 +5,7 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 const session = require('express-session')
 
+// Create express instance
 const app = express()
 
 var corsOptions = {
@@ -38,12 +39,22 @@ app.get('/', (req, res) => {
   res.end()
 })
 
-// bring in routes
-app.use('/api/auth', require('./routes/authentication'))
-app.use('/api/art', require('./routes/work'))
+// Require API routes
+const authentication = require('./routes/authentication')
+const work = require('./routes/work')
 
-// set port, listen for requests
-const PORT = process.env.PORT || 3001
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}.`)
-})
+// Import API Routes
+app.use('/auth', authentication)
+app.use('/art', work)
+
+// Export express app
+module.exports = app
+
+// Start standalone server if directly running
+if (require.main === module) {
+  const port = process.env.PORT || 3001
+  app.listen(port, () => {
+    // eslint-disable-next-line no-console
+    console.log(`API server listening on port ${port}`)
+  })
+}
