@@ -76,43 +76,21 @@ function getUser (req, res) {
 
 // VALIDATION SCHEMAS
 
-// Login
-const loginValidations = {
-  email: {
-    trim: true,
-    isEmail: {
-      errorMessage: 'Please enter a valid email address.'
-    },
-    normalizeEmail: true
-  },
-  password: {
-    isLength: {
-      options: {min: 6},
-      errorMessage: 'Password must be at least 6 characters.'
-    }
-  }
-}
+const loginValidations = [
+  validator.check('email').trim().isEmail().withMessage('Please enter a valid email address.').normalizeEmail(),
+  validator.check('password').isLength({min: 6}).withMessage('Password must be at least 6 characters.')
+]
 
-// Signup
-const signupValidations = { ...loginValidations,
-  agreeToTerms: {
-    isBoolean: true,
-    isIn: {
-      options: [[true]]
-    },
-    errorMessage: 'Please agree to the terms and conditions before creating an account.'
-  }
-}
-signupValidations['email'] = { ...loginValidations['email'],
-  custom: {
-    options: async value => {
+const signupValidations = loginValidations.concat([
+  validator.check('email').custom(async value => {
       const user = await User.findOne({where: {email: value}})
       if (user) {
         throw new Error('Email has already been taken. Please log in or choose another.')
       }
-    },
-  }
-}
+    }),
+  validator.check('agreeToTerms', 'Please agree to the terms and conditions before creating an account.')
+    .isIn([true])
+])
 
 module.exports = {
   create,
