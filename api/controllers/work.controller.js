@@ -6,8 +6,6 @@ const { check, validationResult } = require('express-validator')
 
 // Create and save a new Work
 async function create (req, res) {
-  // TODO: 403 if no user
-
   try {
     // Validate
     const errors = validationResult(req)
@@ -49,19 +47,12 @@ async function create (req, res) {
 
     res.end()
   } catch (err) {
-    res.status(500).send({
-      errors: [{
-        param: 'misc',
-        msg: err.message || 'Some error occurred.'
-      }]
-    })
+    res.status(500).send({errors: [{param: 'misc', msg: 'Some error occurred.'}]})
   }
 }
 
 // Edit an existing Work
 async function update (req, res) {
-  // TODO: 403 if no user
-
   try {
     // Validate
     const errors = validationResult(req)
@@ -120,20 +111,10 @@ async function update (req, res) {
 
       res.end()
     } else {
-      res.status(500).send({
-        errors: [{
-          param: 'misc',
-          msg: 'No art found!'
-        }]
-      })
+      res.status(500).send({errors: [{param: 'misc', msg: 'No art found!'}]})
     }
   } catch (err) {
-    res.status(500).send({
-      errors: [{
-        param: 'misc',
-        msg: err.message || 'Some error occurred.'
-      }]
-    })
+    res.status(500).send({errors: [{param: 'misc',  msg: 'Some error occurred.'}]})
   }
 }
 
@@ -155,26 +136,14 @@ async function destroy (req, res) {
 
       res.send({ title: work.title })
     } else {
-      res.status(500).send({
-        errors: [{
-          param: 'misc',
-          msg: 'Art not found!'
-        }]
-      })
+      res.status(500).send({errors: [{param: 'misc', msg: 'Art not found!'}]})
     }
   } catch (err) {
-    res.status(500).send({
-      errors: [{
-        param: 'misc',
-        msg: err.message || 'Some error occurred.'
-      }]
-    })
+    res.status(500).send({errors: [{param: 'misc', msg: 'Some error occurred.'}]})
   }
 }
 
 async function show (req, res) {
-  // TODO: 403 if no user
-
   try {
     const work = await Work.findOne({
       where: {
@@ -201,26 +170,14 @@ async function show (req, res) {
         imageUrl: work.imageId ? cloudinary.imageUrl(work.imageId) : null
       })
     } else {
-      res.status(500).send({
-        errors: [{
-          param: 'misc',
-          msg: 'Art not found!'
-        }]
-      })
+      res.status(500).send({errors: [{param: 'misc', msg: 'Art not found!'}]})
     }
   } catch (err) {
-    res.status(500).send({
-      errors: [{
-        param: 'misc',
-        msg: err.message || 'Some error occurred.'
-      }]
-    })
+    res.status(500).send({errors: [{param: 'misc', msg: 'Some error occurred.'}]})
   }
 }
 
 async function index (req, res) {
-  // TODO: 403 if no user
-
   try {
     const works = await Work.findAll({
       where: {
@@ -232,12 +189,7 @@ async function index (req, res) {
     const works_display = await Promise.all(works.map(displayWork))
     res.send(works_display)
   } catch (err) {
-    res.status(500).send({
-      errors: [{
-        param: 'misc',
-        msg: err.message || 'Some error occurred.'
-      }]
-    })
+    res.status(500).send({errors: [{param: 'misc', msg: 'Some error occurred.'}]})
   }
 }
 
@@ -268,10 +220,36 @@ async function displayWork (work) {
   }
 }
 
-// VALIDATION SCHEMAS
+// VALIDATIONS
+
+async function validateUser (req, res, next) {
+  if (!req.session.user) {
+    res.status(401).send({errors: [{param: 'misc', msg: 'User must be logged in.'}]})
+  } else {
+    // Great, user is logged in, moving on...
+    next()
+  }
+}
+
+async function validateAuthorizedUser (req, res, next) {
+  if (!req.session.user) {
+    res.status(401).send({errors: [{param: 'misc', msg: 'User must be logged in.'}]})
+  } else {
+    const work = await Work.findByPk(req.params.workId)
+    if (!work) {
+      res.status(400).send({errors: [{param: 'misc', msg: 'Art not found!'}]})
+    } else if (work.userId !== req.session.user.id) {
+        res.status(403).send({errors: [{param: 'misc', msg: 'User not authorized.'}]})
+    } else {
+      // Great, user is authorized, moving on...
+      next()
+    }
+  }
+}
 
 // TODO: Fix unlimited escaping of '&'
-const validations = [
+// TODO: check image size max?
+const validateWork = [
   check('acquisitionDate', 'Acquisition Date is invalid').trim().isISO8601().optional(),
   check('acquisitionCost', 'Acquisition Cost is invalid').trim().isFloat({min: 0}).optional(),
   check('image', 'Image is invalid').trim().isDataURI().optional(),
@@ -289,5 +267,7 @@ module.exports = {
   destroy,
   show,
   index,
-  validations
+  validateUser,
+  validateAuthorizedUser,
+  validateWork
 }

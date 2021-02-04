@@ -2,9 +2,9 @@ const AuthenticationController = require('../controllers/authentication.controll
 const express = require('express')
 const router = express.Router()
 
-router.post('/register', AuthenticationController.signupValidations, AuthenticationController.create)
+router.post('/register', AuthenticationController.validateSignup, AuthenticationController.create)
 
-router.post('/login', AuthenticationController.loginValidations, AuthenticationController.login)
+router.post('/login', AuthenticationController.validateLogin, AuthenticationController.login)
 
 router.post('/logout', AuthenticationController.logout)
 

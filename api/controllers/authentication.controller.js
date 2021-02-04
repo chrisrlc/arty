@@ -22,12 +22,7 @@ async function create (req, res) {
     req.session.user = await User.create(newUser)
     res.end()
   } catch (err) {
-    res.status(500).send({
-      errors: [{
-        param: 'misc',
-        msg: err.message || 'Some error occurred while creating the user.'
-      }]
-    })
+    res.status(500).send({errors: [{param: 'misc', msg: 'Some error occurred.'}]})
   }
 }
 
@@ -49,20 +44,10 @@ async function login (req, res) {
       req.session.user = user
       res.end()
     } else {
-      res.status(403).send({
-        errors: [{
-          param: 'misc',
-          msg: 'Invalid email or password.'
-        }]
-      })
+      res.status(403).send({errors: [{param: 'misc', msg: 'Invalid email or password.'}]})
     }
   } catch (err) {
-    res.status(500).send({
-      errors: [{
-        param: 'misc',
-        msg: err.message || 'Some error occurred while logging in.'
-      }]
-    })
+    res.status(500).send({errors: [{param: 'misc', msg: 'Some error occurred.'}]})
   }
 }
 
@@ -80,14 +65,14 @@ function getUser (req, res) {
   }
 }
 
-// VALIDATION SCHEMAS
+// VALIDATIONS
 
-const loginValidations = [
+const validateLogin = [
   check('email').trim().isEmail().withMessage('Please enter a valid email address.').normalizeEmail(),
   check('password').isLength({min: 6}).withMessage('Password must be at least 6 characters.')
 ]
 
-const signupValidations = loginValidations.concat([
+const validateSignup = validateLogin.concat([
   check('email').custom(async value => {
       const user = await User.findOne({where: {email: value}})
       if (user) {
@@ -103,6 +88,6 @@ module.exports = {
   login,
   logout,
   getUser,
-  signupValidations,
-  loginValidations
+  validateSignup,
+  validateLogin
 }
