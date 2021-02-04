@@ -4,9 +4,9 @@ const router = express.Router()
 
 router.get('/', WorkController.index)
 
-router.post('/', WorkController.create)
+router.post('/', WorkController.validations, WorkController.create)
 
-router.post('/:workId', WorkController.update)
+router.post('/:workId', WorkController.validations, WorkController.update)
 
 router.get('/:workId', WorkController.show)
 

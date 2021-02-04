@@ -6,7 +6,7 @@ const validator = require('../lib/validator.js')
 // Create and save a new User
 async function create (req, res) {
   try {
-    // Handle any failed validations
+    // Validate
     const errors = validator.validationResult(req)
     if (!errors.isEmpty()) {
       return res.status(400).send({ message: validator.validationErrorString(errors) })
@@ -35,7 +35,7 @@ async function comparePasswords (plainPassword, hashedPassword) {
 
 async function login (req, res) {
   try {
-    // Handle any failed validations
+    // Validate
     const errors = validator.validationResult(req)
     if (!errors.isEmpty()) {
       return res.status(401).send({ message: validator.validationErrorString(errors) })

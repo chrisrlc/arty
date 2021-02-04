@@ -2,23 +2,22 @@ const db = require('../models')
 const Work = db.works
 const Artist = db.artists
 const cloudinary = require('../lib/cloudinary.js')
+const validator = require('../lib/validator.js')
 
 // Create and save a new Work
 async function create (req, res) {
   // TODO: 403 if no user
 
   try {
-    let artistId = null
-    if (req.body.artist) {
-      const [artist, created] = await Artist.findOrCreate({
-        where: { name: req.body.artist }
-      })
-      artistId = artist.id
+    // Validate
+    const errors = validator.validationResult(req)
+    if (!errors.isEmpty()) {
+      return res.status(400).send({ message: validator.validationErrorString(errors) })
     }
 
+    // Build Work
     const work = Work.build({
       userId: req.session.user.id,
-      artistId: artistId,
       title: req.body.title,
       description: req.body.description,
       acquisitionUrl: req.body.acquisitionUrl,
@@ -28,6 +27,15 @@ async function create (req, res) {
       location: req.body.location
     })
 
+    // Set artistId
+    if (req.body.artist) {
+      const [artist, created] = await Artist.findOrCreate({
+        where: { name: req.body.artist }
+      })
+      work.artistId = artist.id
+    }
+
+    // Set imageId
     if (req.body.image) {
       // Upload image as base64 data uri string to Cloudinary
       const imageUpload = await cloudinary.uploadImage(req.body.image)
@@ -52,6 +60,13 @@ async function update (req, res) {
   // TODO: 403 if no user
 
   try {
+    // Validate
+    const errors = validator.validationResult(req)
+    if (!errors.isEmpty()) {
+      return res.status(400).send({ message: validator.validationErrorString(errors) })
+    }
+
+    // Get work
     const work = await Work.findOne({
       where: {
         id: req.params.workId,
@@ -60,15 +75,6 @@ async function update (req, res) {
     })
 
     if (work) {
-      let artistId = null
-      if (req.body.artist) {
-        const [artist, created] = await Artist.findOrCreate({
-          where: { name: req.body.artist }
-        })
-        artistId = artist.id
-      }
-
-      work.artistId = artistId
       work.title = req.body.title
       work.description = req.body.description
       work.acquisitionUrl = req.body.acquisitionUrl
@@ -77,6 +83,17 @@ async function update (req, res) {
       work.source = req.body.source
       work.location = req.body.location
 
+      // Set artist
+      if (req.body.artist) {
+        const [artist, created] = await Artist.findOrCreate({
+          where: { name: req.body.artist }
+        })
+        work.artistId = artist.id
+      } else {
+        work.artistId = null
+      }
+
+      // Set image
       if (req.body.imageUpdated) {
         if (work.imageId) {
           // Delete old image from Cloudinary
@@ -228,10 +245,25 @@ async function displayWork (work) {
   }
 }
 
+// VALIDATION SCHEMAS
+
+const validations = [
+  validator.check('acquisitionDate', 'Acquisition Date is invalid').trim().isISO8601().optional(),
+  validator.check('acquisitionCost', 'Acquisition Cost is invalid').trim().isFloat({min: 0}).optional(),
+  validator.check('image', 'Image is invalid').trim().isDataURI().optional(),
+  validator.check('artist').trim().escape(),
+  validator.check('title').trim().escape(),
+  validator.check('description').trim().escape(),
+  validator.check('acquisitionUrl').trim().escape(),
+  validator.check('source').trim().escape(),
+  validator.check('location').trim().escape()
+]
+
 module.exports = {
   create,
   update,
   destroy,
   show,
-  index
+  index,
+  validations
 }
