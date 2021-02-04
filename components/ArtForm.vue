@@ -1,6 +1,6 @@
 <template>
   <form @submit.prevent="submitForm(work)">
-    <ArtFormFields :work="work" />
+    <ArtFormFields :work="work" :errors="errors" />
 
     <div class="art-form-buttons">
       <div class="field is-grouped is-pulled-left">
@@ -58,6 +58,10 @@ export default {
     work: {
       type: Object,
       required: true
+    },
+    errors: {
+      type: Array,
+      required: true
     }
   },
   data () {
@@ -75,7 +79,7 @@ export default {
         console.log(`${res.data.title || 'Your untitled artwork'} has been deleted.`)
       } catch (err) {
         this.deleteModal = !this.deleteModal
-        this.$emit('failed', err.response.data.message)
+        this.$emit('failed', err.response.data.errors)
       }
     },
     async returnToIndex () {

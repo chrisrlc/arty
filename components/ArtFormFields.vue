@@ -18,6 +18,10 @@
         @change="onChange"
         @remove="onRemove"
       />
+      <!-- TODO: Handle image upload/save errors -->
+      <p v-if="fieldError('image')" class="help is-danger">
+        {{ fieldError('image') }}
+      </p>
     </div>
     <figure v-else-if="disabled && work.imageUrl" class="image content">
       <img :src="work.imageUrl">
@@ -29,11 +33,15 @@
         <input
           v-model="work.title"
           class="input"
+          :class="{ 'is-danger': fieldError('title') }"
           type="text"
           name="title"
           placeholder="Arty Rabbit"
         >
       </div>
+      <p v-if="fieldError('title')" class="help is-danger">
+        {{ fieldError('title') }}
+      </p>
     </div>
 
     <div class="field">
@@ -42,11 +50,15 @@
         <input
           v-model="work.artist"
           class="input"
+          :class="{ 'is-danger': fieldError('artist') }"
           type="text"
           name="artist"
           placeholder="Chrissy C"
         >
       </div>
+      <p v-if="fieldError('artist')" class="help is-danger">
+        {{ fieldError('artist') }}
+      </p>
     </div>
 
     <div v-if="!disabled || work.description" class="field">
@@ -55,9 +67,13 @@
         <textarea
           v-model="work.description"
           class="textarea"
+          :class="{ 'is-danger': fieldError('description') }"
           :placeholder="descriptionPlaceholder"
         />
       </div>
+      <p v-if="fieldError('description')" class="help is-danger">
+        {{ fieldError('description') }}
+      </p>
     </div>
 
     <div v-if="!disabled || work.acquisitionDate" class="field">
@@ -68,9 +84,12 @@
         format="MM/dd/yyyy"
         :typeable="!disabled"
         name="acquisitionDate"
-        input-class="input"
+        :input-class="{ 'input': true, 'is-danger': fieldError('acquisitionDate') }"
         :disabled="disabled"
       />
+      <p v-if="fieldError('acquisitionDate')" class="help is-danger">
+        {{ fieldError('acquisitionDate') }}
+      </p>
     </div>
 
     <div v-if="!disabled || work.source" class="field">
@@ -79,10 +98,14 @@
         <input
           v-model="work.source"
           class="input"
+          :class="{ 'is-danger': fieldError('source') }"
           name="source"
           placeholder="SFMOMA Museum Store"
         >
       </div>
+      <p v-if="fieldError('source')" class="help is-danger">
+        {{ fieldError('source') }}
+      </p>
     </div>
 
     <div v-if="!disabled || work.location" class="field">
@@ -91,10 +114,14 @@
         <input
           v-model="work.location"
           class="input"
+          :class="{ 'is-danger': fieldError('location') }"
           name="source"
           placeholder="San Francisco, CA"
         >
       </div>
+      <p v-if="fieldError('location')" class="help is-danger">
+        {{ fieldError('location') }}
+      </p>
     </div>
 
     <div v-if="!disabled || work.acquisitionUrl" class="field">
@@ -103,11 +130,15 @@
         <input
           v-model="work.acquisitionUrl"
           class="input"
+          :class="{ 'is-danger': fieldError('acquisitionUrl') }"
           type="text"
           name="acquisitionUrl"
           placeholder="https://www.etsy.com/transaction/555555555"
         >
       </div>
+      <p v-if="fieldError('acquisitionUrl')" class="help is-danger">
+        {{ fieldError('acquisitionUrl') }}
+      </p>
     </div>
 
     <div v-if="!disabled || work.acquisitionCost" class="field">
@@ -116,6 +147,7 @@
         <input
           v-model="work.acquisitionCost"
           class="input"
+          :class="{ 'is-danger': fieldError('acquisitionCost') }"
           type="number"
           min="0"
           step="any"
@@ -124,6 +156,9 @@
         >
         <span class="icon is-small is-left">$</span>
       </div>
+      <p v-if="fieldError('acquisitionCost')" class="help is-danger">
+        {{ fieldError('acquisitionCost') }}
+      </p>
     </div>
   </fieldset>
 </template>
@@ -138,6 +173,12 @@ export default {
     disabled: {
       type: Boolean,
       default: false
+    },
+    errors: {
+      type: Array,
+      default () {
+        return []
+      }
     }
   },
   data () {
@@ -160,6 +201,12 @@ export default {
     onRemove () {
       this.work.imageUpdated = true
       this.work.image = null
+    },
+    fieldError (param) {
+      const error = this.errors.find(error => error.param === param)
+      if (error) {
+        return error.msg
+      }
     }
   }
 }

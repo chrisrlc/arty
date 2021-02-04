@@ -7,9 +7,9 @@
             Login
           </h1>
 
-          <Notification v-if="error" :message="error" />
+          <Notification v-if="formError()" :message="formError()" />
 
-          <UserAuthForm button-text="Login" :submit-form="userLogin" />
+          <UserAuthForm button-text="Login" :submit-form="userLogin" :errors="errors" />
 
           <div class="has-text-centered" style="margin-top: 20px">
             Don't have an account?
@@ -28,7 +28,7 @@ export default {
   auth: 'guest',
   data () {
     return {
-      error: ''
+      errors: []
     }
   },
   methods: {
@@ -37,7 +37,13 @@ export default {
         await this.$auth.loginWith('local', { data: userInfo })
         await this.$router.push('/art')
       } catch (err) {
-        this.error = err.response.data.message
+        this.errors = err.response.data.errors
+      }
+    },
+    formError () {
+      const error = this.errors.find(error => error.param === 'misc')
+      if (error) {
+        return error.msg
       }
     }
   }

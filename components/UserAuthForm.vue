@@ -6,7 +6,7 @@
         <input
           v-model="userInfo.email"
           class="input"
-          type="email"
+          :class="{ 'is-danger': fieldError('email') }"
           name="email"
           required
         >
@@ -14,6 +14,9 @@
           <font-awesome-icon :icon="['fas', 'envelope']" />
         </span>
       </div>
+      <p v-if="fieldError('email')" class="help is-danger">
+        {{ fieldError('email') }}
+      </p>
     </div>
 
     <div class="field">
@@ -22,9 +25,10 @@
         <input
           v-model="userInfo.password"
           class="input"
+          :class="{ 'is-danger': fieldError('password') }"
           type="password"
           name="password"
-          minLength="6"
+          minlength="6"
           title="Please choose a password with at least 6 characters."
           required
         >
@@ -32,6 +36,9 @@
           <font-awesome-icon :icon="['fas', 'key']" />
         </span>
       </div>
+      <p v-if="fieldError('password')" class="help is-danger">
+        {{ fieldError('password') }}
+      </p>
     </div>
 
     <div v-if="checkTos" class="field">
@@ -41,6 +48,9 @@
           I agree to the <a href="#">terms and conditions</a>
         </label>
       </div>
+      <p v-if="fieldError('agreeToTerms')" class="help is-danger">
+        {{ fieldError('agreeToTerms') }}
+      </p>
     </div>
 
     <div class="control">
@@ -65,7 +75,11 @@ export default {
       type: String,
       required: true
     },
-    checkTos: Boolean
+    checkTos: Boolean,
+    errors: {
+      type: Array,
+      required: true
+    }
   },
   data () {
     return {
@@ -74,6 +88,14 @@ export default {
         email: null,
         password: null,
         agreeToTerms: false
+      }
+    }
+  },
+  methods: {
+    fieldError (param) {
+      const error = this.errors.find(error => error.param === param)
+      if (error) {
+        return error.msg
       }
     }
   }

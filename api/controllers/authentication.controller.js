@@ -1,15 +1,15 @@
 const db = require('../models')
 const User = db.users
 const bcrypt = require('bcrypt')
-const validator = require('../lib/validator.js')
+const { check, validationResult } = require('express-validator')
 
 // Create and save a new User
 async function create (req, res) {
   try {
     // Validate
-    const errors = validator.validationResult(req)
+    const errors = validationResult(req)
     if (!errors.isEmpty()) {
-      return res.status(400).send({ message: validator.validationErrorString(errors) })
+      return res.status(400).send({ errors: errors.array() })
     }
 
     // Create a User
@@ -23,8 +23,10 @@ async function create (req, res) {
     res.end()
   } catch (err) {
     res.status(500).send({
-      message:
-        err.message || 'Some error occurred while creating the user.'
+      errors: [{
+        param: 'misc',
+        msg: err.message || 'Some error occurred while creating the user.'
+      }]
     })
   }
 }
@@ -36,9 +38,9 @@ async function comparePasswords (plainPassword, hashedPassword) {
 async function login (req, res) {
   try {
     // Validate
-    const errors = validator.validationResult(req)
+    const errors = validationResult(req)
     if (!errors.isEmpty()) {
-      return res.status(401).send({ message: validator.validationErrorString(errors) })
+      return res.status(401).send({ errors: errors.array() })
     }
 
     // Find User in the database and set session
@@ -48,14 +50,18 @@ async function login (req, res) {
       res.end()
     } else {
       res.status(403).send({
-        message:
-          'Invalid email or password.'
+        errors: [{
+          param: 'misc',
+          msg: 'Invalid email or password.'
+        }]
       })
     }
   } catch (err) {
     res.status(500).send({
-      message:
-        err.message || 'Some error occurred while logging in.'
+      errors: [{
+        param: 'misc',
+        msg: err.message || 'Some error occurred while logging in.'
+      }]
     })
   }
 }
@@ -77,18 +83,18 @@ function getUser (req, res) {
 // VALIDATION SCHEMAS
 
 const loginValidations = [
-  validator.check('email').trim().isEmail().withMessage('Please enter a valid email address.').normalizeEmail(),
-  validator.check('password').isLength({min: 6}).withMessage('Password must be at least 6 characters.')
+  check('email').trim().isEmail().withMessage('Please enter a valid email address.').normalizeEmail(),
+  check('password').isLength({min: 6}).withMessage('Password must be at least 6 characters.')
 ]
 
 const signupValidations = loginValidations.concat([
-  validator.check('email').custom(async value => {
+  check('email').custom(async value => {
       const user = await User.findOne({where: {email: value}})
       if (user) {
         throw new Error('Email has already been taken. Please log in or choose another.')
       }
     }),
-  validator.check('agreeToTerms', 'Please agree to the terms and conditions before creating an account.')
+  check('agreeToTerms', 'Please agree to the terms and conditions before creating an account.')
     .isIn([true])
 ])
 

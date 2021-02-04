@@ -2,7 +2,7 @@ const db = require('../models')
 const Work = db.works
 const Artist = db.artists
 const cloudinary = require('../lib/cloudinary.js')
-const validator = require('../lib/validator.js')
+const { check, validationResult } = require('express-validator')
 
 // Create and save a new Work
 async function create (req, res) {
@@ -10,9 +10,9 @@ async function create (req, res) {
 
   try {
     // Validate
-    const errors = validator.validationResult(req)
+    const errors = validationResult(req)
     if (!errors.isEmpty()) {
-      return res.status(400).send({ message: validator.validationErrorString(errors) })
+      return res.status(400).send({ errors: errors.array() })
     }
 
     // Build Work
@@ -50,7 +50,10 @@ async function create (req, res) {
     res.end()
   } catch (err) {
     res.status(500).send({
-      message: err.message || 'Some error occurred.'
+      errors: [{
+        param: 'misc',
+        msg: err.message || 'Some error occurred.'
+      }]
     })
   }
 }
@@ -61,9 +64,9 @@ async function update (req, res) {
 
   try {
     // Validate
-    const errors = validator.validationResult(req)
+    const errors = validationResult(req)
     if (!errors.isEmpty()) {
-      return res.status(400).send({ message: validator.validationErrorString(errors) })
+      return res.status(400).send({ errors: errors.array() })
     }
 
     // Get work
@@ -118,13 +121,18 @@ async function update (req, res) {
       res.end()
     } else {
       res.status(500).send({
-        message: 'No art found!'
+        errors: [{
+          param: 'misc',
+          msg: 'No art found!'
+        }]
       })
     }
   } catch (err) {
     res.status(500).send({
-      message:
-        err.message || 'Some error occurred.'
+      errors: [{
+        param: 'misc',
+        msg: err.message || 'Some error occurred.'
+      }]
     })
   }
 }
@@ -148,12 +156,18 @@ async function destroy (req, res) {
       res.send({ title: work.title })
     } else {
       res.status(500).send({
-        message: 'Art not found!'
+        errors: [{
+          param: 'misc',
+          msg: 'Art not found!'
+        }]
       })
     }
   } catch (err) {
     res.status(500).send({
-      message: err.message || 'Some error occurred.'
+      errors: [{
+        param: 'misc',
+        msg: err.message || 'Some error occurred.'
+      }]
     })
   }
 }
@@ -188,12 +202,18 @@ async function show (req, res) {
       })
     } else {
       res.status(500).send({
-        message: 'Art not found!'
+        errors: [{
+          param: 'misc',
+          msg: 'Art not found!'
+        }]
       })
     }
   } catch (err) {
     res.status(500).send({
-      message: err.message || 'Some error occurred.'
+      errors: [{
+        param: 'misc',
+        msg: err.message || 'Some error occurred.'
+      }]
     })
   }
 }
@@ -213,7 +233,10 @@ async function index (req, res) {
     res.send(works_display)
   } catch (err) {
     res.status(500).send({
-      message: err.message || 'Some error occurred.'
+      errors: [{
+        param: 'misc',
+        msg: err.message || 'Some error occurred.'
+      }]
     })
   }
 }
@@ -247,16 +270,17 @@ async function displayWork (work) {
 
 // VALIDATION SCHEMAS
 
+// TODO: Fix unlimited escaping of '&'
 const validations = [
-  validator.check('acquisitionDate', 'Acquisition Date is invalid').trim().isISO8601().optional(),
-  validator.check('acquisitionCost', 'Acquisition Cost is invalid').trim().isFloat({min: 0}).optional(),
-  validator.check('image', 'Image is invalid').trim().isDataURI().optional(),
-  validator.check('artist').trim().escape(),
-  validator.check('title').trim().escape(),
-  validator.check('description').trim().escape(),
-  validator.check('acquisitionUrl').trim().escape(),
-  validator.check('source').trim().escape(),
-  validator.check('location').trim().escape()
+  check('acquisitionDate', 'Acquisition Date is invalid').trim().isISO8601().optional(),
+  check('acquisitionCost', 'Acquisition Cost is invalid').trim().isFloat({min: 0}).optional(),
+  check('image', 'Image is invalid').trim().isDataURI().optional(),
+  check('artist').trim().escape(),
+  check('title').trim().escape(),
+  check('description').trim().escape(),
+  check('acquisitionUrl').trim().escape(),
+  check('source').trim().escape(),
+  check('location').trim().escape()
 ]
 
 module.exports = {

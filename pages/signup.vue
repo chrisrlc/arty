@@ -7,9 +7,9 @@
             Sign Up
           </h1>
 
-          <Notification v-if="error" :message="error" />
+          <Notification v-if="formError()" :message="formError()" />
 
-          <UserAuthForm button-text="Sign Up" :submit-form="userSignup" :check-tos="true" />
+          <UserAuthForm button-text="Sign Up" :submit-form="userSignup" :check-tos="true" :errors="errors" />
 
           <div class="has-text-centered" style="margin-top: 20px">
             Already got an account?
@@ -28,7 +28,7 @@ export default {
   auth: 'guest',
   data () {
     return {
-      error: ''
+      errors: []
     }
   },
   methods: {
@@ -39,7 +39,13 @@ export default {
 
         await this.$router.push('/art')
       } catch (err) {
-        this.error = err.response.data.message
+        this.errors = err.response.data.errors
+      }
+    },
+    formError () {
+      const error = this.errors.find(error => error.param === 'misc')
+      if (error) {
+        return error.msg
       }
     }
   }

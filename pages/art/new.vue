@@ -4,9 +4,9 @@
       Add new art to your inventory
     </h1>
 
-    <Notification v-if="error" :message="error" />
+    <Notification v-if="formError()" :message="formError()" />
 
-    <ArtForm :submit-form="addWork" cancel-button-text="Cancel" :work="work" @failed="setError" />
+    <ArtForm :submit-form="addWork" cancel-button-text="Cancel" :work="work" :errors="errors" @failed="setError" />
   </section>
 </template>
 
@@ -15,7 +15,7 @@ export default {
   data () {
     return {
       work: {},
-      error: ''
+      errors: []
     }
   },
   methods: {
@@ -24,11 +24,19 @@ export default {
         await this.$axios.post('/art', workInfo)
         await this.$router.push('/art')
       } catch (err) {
-        this.setError(err.response.data.message)
+        this.setError(err.response.data.errors)
       }
     },
-    setError (msg) {
-      this.error = msg
+    formError () {
+      const error = this.errors.find(error => error.param === 'misc')
+      if (error) {
+        return error.msg
+      } else if (this.errors.length) {
+        return 'Your changes could not be saved! Scroll down to fix errors.'
+      }
+    },
+    setError (responseErrors) {
+      this.errors = responseErrors
       window.scrollTo(0, 0)
     }
   }
