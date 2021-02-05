@@ -1,5 +1,6 @@
 <template>
-  <div class="notification is-danger">
+  <div class="notification" :class="success ? 'is-success' : 'is-danger'">
+    <button class="delete" @click="clearMessage()" />
     {{ message }}
   </div>
 </template>
@@ -11,6 +12,15 @@ export default {
     message: {
       type: String,
       required: true
+    },
+    success: {
+      type: Boolean,
+      default: false
+    }
+  },
+  methods: {
+    clearMessage () {
+      this.$emit('clearNotification')
     }
   }
 }

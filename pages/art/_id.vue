@@ -1,12 +1,19 @@
 <template>
   <section class="section">
     <h1 class="title">
-      Edit art details
+      Edit {{ work.title || 'Untitled Artwork'}}
     </h1>
 
-    <Notification v-if="formError()" :message="formError()" />
+    <Notification v-if="notification" :message="notification" :success="success" @clearNotification="notification = ''" />
 
-    <ArtForm :submit-form="editWork" cancel-button-text="Back" :work="work" :errors="errors" @failed="setError" />
+    <ArtForm
+      :submit-form="editWork"
+      cancel-button-text="Back"
+      :work="work"
+      :saving="saving"
+      :errors="errors"
+      @failed="setError"
+    />
   </section>
 </template>
 
@@ -18,29 +25,45 @@ export default {
   },
   data () {
     return {
-      errors: []
+      errors: [],
+      saving: false,
+      success: false,
+      notification: ''
     }
   },
   methods: {
     async editWork (workInfo) {
       try {
+        // Set loading icon on Save button
+        this.saving = true
+
+        // Update work
         await this.$axios.post(`/art/${this.work.id}`, workInfo)
-        // TODO: success notification
+
+        // Set success notification
+        this.setNotification(true, `${this.work.title || 'Your untitled artwork'} has been updated!`)
       } catch (err) {
         this.setError(err.response.data.errors)
+      } finally {
+        // Stop loading icon on Save button
+        this.saving = false
       }
     },
-    formError () {
-      const error = this.errors.find(error => error.param === 'misc')
-      if (error) {
-        return error.msg
-      } else if (this.errors.length) {
-        return 'Your changes could not be saved! Scroll down to fix errors.'
-      }
+    setNotification (success, message) {
+      this.success = success
+      this.notification = message
+
+      // Scroll to top to see notification
+      window.scrollTo(0, 0)
     },
     setError (responseErrors) {
+      // Set field errors
       this.errors = responseErrors
-      window.scrollTo(0, 0)
+
+      // Set form error notification
+      const formError = this.errors.find(error => error.param === 'misc')
+      const formErrorMsg = formError ? formError.msg : 'Your changes could not be saved! Scroll down to fix errors.'
+      this.setNotification(false, formErrorMsg)
     }
   }
 }

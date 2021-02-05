@@ -45,7 +45,7 @@ async function create (req, res) {
     // Create Work in db
     await work.save()
 
-    res.end()
+    res.send({id: work.id})
   } catch (err) {
     res.status(500).send({errors: [{param: 'misc', msg: 'Some error occurred.'}]})
   }
@@ -250,9 +250,9 @@ async function validateAuthorizedUser (req, res, next) {
 // TODO: Fix unlimited escaping of '&'
 // TODO: check image size max?
 const validateWork = [
-  check('acquisitionDate', 'Acquisition Date is invalid').trim().isISO8601().optional(),
-  check('acquisitionCost', 'Acquisition Cost is invalid').trim().isFloat({min: 0}).optional(),
-  check('image', 'Image is invalid').trim().isDataURI().optional(),
+  check('acquisitionDate', 'Acquisition Date is invalid').trim().isISO8601().optional({nullable: true}),
+  check('acquisitionCost', 'Acquisition Cost is invalid').trim().isFloat({min: 0}).optional({nullable: true}),
+  check('image', 'Image is invalid').trim().isDataURI().optional({nullable: true}),
   check('artist').trim().escape(),
   check('title').trim().escape(),
   check('description').trim().escape(),

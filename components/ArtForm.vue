@@ -5,7 +5,7 @@
     <div class="art-form-buttons">
       <div class="field is-grouped is-pulled-left">
         <div class="control">
-          <button class="button is-primary">
+          <button class="button is-primary" :class="{'is-loading': saving}" :disabled="saving">
             Save
           </button>
         </div>
@@ -30,7 +30,13 @@
             Are you sure you want to delete {{ work.title || 'this artwork' }} from your inventory?
           </p>
           <div class="buttons">
-            <button type="button" class="button is-danger" @click="deleteWork">
+            <button
+              type="button"
+              class="button is-danger"
+              :class="{'is-loading': deleting}"
+              :disabled="deleting"
+              @click="deleteWork"
+            >
               Delete
             </button>
             <button type="button" class="button is-light" @click="deleteModal = !deleteModal">
@@ -62,16 +68,23 @@ export default {
     errors: {
       type: Array,
       required: true
+    },
+    saving: {
+      type: Boolean,
+      required: true,
+      default: false
     }
   },
   data () {
     return {
-      deleteModal: false
+      deleteModal: false,
+      deleting: false
     }
   },
   methods: {
     async deleteWork () {
       try {
+        this.deleting = true
         const res = await this.$axios.delete(`/art/${this.work.id}`)
         await this.$router.push('/art')
 
@@ -80,6 +93,8 @@ export default {
       } catch (err) {
         this.deleteModal = !this.deleteModal
         this.$emit('failed', err.response.data.errors)
+      } finally {
+        this.deleting = false
       }
     },
     async returnToIndex () {
