@@ -43,6 +43,9 @@ export default {
         // Set success notification
         this.setNotification(true, `${this.work.title || 'Your untitled artwork'} has been updated!`)
 
+        // Clear any errors
+        this.errors = []
+
         // Repopulate form fields from db in case of changes during update, e.g. acquisitionCost decimal rounding
         const res = await this.$axios.get(`/art/${this.work.id}`)
         this.work = res.data
