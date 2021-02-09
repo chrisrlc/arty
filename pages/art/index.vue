@@ -4,6 +4,8 @@
       That's So Arty
     </h1>
 
+    <Notification v-if="notification" :message="notification" @clearNotification="notification = ''" />
+
     <div class="art-tiles-container">
       <div v-for="work in works" :key="work.id" class="box">
         <a class="art-details" @click="populateModal(work.id)">
@@ -64,14 +66,19 @@
 
 <script>
 export default {
-  async asyncData ({ $axios }) {
-    const res = await $axios.get('/art')
-    return { works: res.data }
+  async asyncData ({ $axios, error }) {
+    try {
+      const res = await $axios.get('/art')
+      return { works: res.data }
+    } catch (err) {
+      error({ statusCode: err.response.status })
+    }
   },
   data () {
     return {
       showModal: false,
-      modalWork: {}
+      modalWork: {},
+      notification: ''
     }
   },
   methods: {
@@ -83,9 +90,13 @@ export default {
       await this.$router.push(`/art/${workId}`)
     },
     async populateModal (workId) {
-      const res = await this.$axios.get(`/art/${workId}`)
-      this.modalWork = res.data
-      this.showModal = !this.showModal
+      try {
+        const res = await this.$axios.get(`/art/${workId}`)
+        this.modalWork = res.data
+        this.showModal = !this.showModal
+      } catch (err) {
+        this.notification = err.response.data.errors[0].msg
+      }
     }
   }
 }

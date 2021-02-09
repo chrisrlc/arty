@@ -19,9 +19,13 @@
 
 <script>
 export default {
-  async asyncData ({ params, $axios }) {
-    const res = await $axios.get(`/art/${params.id}`)
-    return { work: res.data }
+  async asyncData ({ params, $axios, error }) {
+    try {
+      const res = await $axios.get(`/art/${params.id}`)
+      return { work: res.data }
+    } catch (err) {
+      error({ statusCode: err.response.status })
+    }
   },
   data () {
     return {
@@ -68,7 +72,7 @@ export default {
       this.errors = responseErrors
 
       // Set form error notification
-      const formError = this.errors.find(error => error.param === 'misc')
+      const formError = this.errors.find(error => error.context === 'misc')
       const formErrorMsg = formError ? formError.msg : 'Your changes could not be saved! Scroll down to fix errors.'
       this.setNotification(false, formErrorMsg)
     }

@@ -43,7 +43,7 @@ export default {
       }
     },
     formError () {
-      const error = this.errors.find(error => error.param === 'misc')
+      const error = this.errors.find(error => error.context === 'misc')
       if (error) {
         return error.msg
       }

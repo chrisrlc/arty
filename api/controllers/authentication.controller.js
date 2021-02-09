@@ -22,7 +22,7 @@ async function create (req, res) {
     req.session.user = await User.create(newUser)
     res.end()
   } catch (err) {
-    res.status(500).send({errors: [{param: 'misc', msg: 'Some error occurred.'}]})
+    res.status(500).send({errors: [{context: 'misc', msg: 'Some error occurred.'}]})
   }
 }
 
@@ -44,10 +44,10 @@ async function login (req, res) {
       req.session.user = user
       res.end()
     } else {
-      res.status(403).send({errors: [{param: 'misc', msg: 'Invalid email or password.'}]})
+      res.status(403).send({errors: [{context: 'misc', msg: 'Invalid email or password.'}]})
     }
   } catch (err) {
-    res.status(500).send({errors: [{param: 'misc', msg: 'Some error occurred.'}]})
+    res.status(500).send({errors: [{context: 'misc', msg: 'Some error occurred.'}]})
   }
 }
 

@@ -92,8 +92,8 @@ export default {
     }
   },
   methods: {
-    fieldError (param) {
-      const error = this.errors.find(error => error.param === param)
+    fieldError (context) {
+      const error = this.errors.find(error => error.context === context)
       if (error) {
         return error.msg
       }

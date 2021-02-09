@@ -1,6 +1,6 @@
 <template>
   <fieldset :disabled="disabled" class="art-form-fields">
-    <div v-if="!disabled" class="field">
+    <div v-if="!disabled" class="field" :class="{ 'picture-danger': fieldError('image') }">
       <picture-input
         ref="pictureInput"
         width="600"
@@ -18,8 +18,7 @@
         @change="onChange"
         @remove="onRemove"
       />
-      <!-- TODO: Handle image upload/save errors -->
-      <p v-if="fieldError('image')" class="help is-danger">
+      <p v-if="fieldError('image')" class="help is-danger has-text-centered">
         {{ fieldError('image') }}
       </p>
     </div>
@@ -148,7 +147,6 @@
           v-model="work.acquisitionCost"
           class="input"
           :class="{ 'is-danger': fieldError('acquisitionCost') }"
-          type="number"
           min="0"
           step="any"
           name="acquisitionCost"
@@ -191,19 +189,26 @@ export default {
   methods: {
     onChange (image) {
       if (image) {
-        this.work.imageUpdated = true
+        // Set image on work data to be saved
         this.work.image = image
+        this.work.imageUpdated = true
+
+        // Remove any image errors
+        this.errors = this.errors.filter(error => error.context !== 'image')
       } else {
-        // TODO: Handle error
-        console.log('FileReader API not supported')
+        this.errors.push({ context: 'image', msg: 'Image file could not be uploaded.' })
       }
     },
     onRemove () {
+      // Remove image from work data to be saved
       this.work.imageUpdated = true
       this.work.image = null
+
+      // Remove any image errors
+      this.errors = this.errors.filter(error => error.context !== 'image')
     },
-    fieldError (param) {
-      const error = this.errors.find(error => error.param === param)
+    fieldError (context) {
+      const error = this.errors.find(error => error.context === context)
       if (error) {
         return error.msg
       }
@@ -213,4 +218,7 @@ export default {
 </script>
 
 <style lang="scss">
+.picture-danger canvas {
+  border: 1px red solid;
+}
 </style>
