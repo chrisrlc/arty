@@ -1,7 +1,7 @@
 <template>
   <section class="section">
     <h1 class="title">
-      Edit {{ work.title || 'Untitled Artwork'}}
+      Edit {{ work.title || 'Untitled Artwork' }}
     </h1>
 
     <Notification v-if="notification" :message="notification" :success="success" @clearNotification="notification = ''" />
@@ -31,8 +31,8 @@ export default {
     return {
       errors: [],
       saving: false,
-      success: false,
-      notification: ''
+      success: this.$route.query.created,
+      notification: this.$route.query.created ? `${this.$route.query.created} has been created!` : ''
     }
   },
   methods: {

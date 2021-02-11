@@ -12,7 +12,8 @@
       :work="work"
       :saving="saving"
       :errors="errors"
-      @failed="setError" />
+      @failed="setError"
+    />
   </section>
 </template>
 
@@ -37,7 +38,7 @@ export default {
         const res = await this.$axios.post('/art', workInfo)
 
         // Redirect to edit
-        await this.$router.push(`/art/${res.data.id}`)
+        await this.$router.push(`/art/${res.data.id}?created=${res.data.title || 'Your untitled artwork'}`)
       } catch (err) {
         this.setError(err.response.data.errors)
       } finally {

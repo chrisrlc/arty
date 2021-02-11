@@ -86,10 +86,7 @@ export default {
       try {
         this.deleting = true
         const res = await this.$axios.delete(`/art/${this.work.id}`)
-        await this.$router.push('/art')
-
-        // TODO: success notification
-        console.log(`${res.data.title || 'Your untitled artwork'} has been deleted.`)
+        await this.$router.push(`/art?deleted=${res.data.title || 'Your untitled artwork'}`)
       } catch (err) {
         this.deleteModal = !this.deleteModal
         this.$emit('failed', err.response.data.errors)

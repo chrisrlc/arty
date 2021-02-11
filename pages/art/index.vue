@@ -78,7 +78,7 @@ export default {
     return {
       showModal: false,
       modalWork: {},
-      notification: ''
+      notification: this.$route.query.deleted ? `${this.$route.query.deleted} has been deleted.` : ''
     }
   },
   methods: {
