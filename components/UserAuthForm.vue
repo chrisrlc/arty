@@ -1,10 +1,10 @@
 <template>
-  <form @submit.prevent="submitForm(userInfo)">
+  <form @submit.prevent="submitForm(user)">
     <div class="field">
       <label class="label">Email</label>
       <div class="control has-icons-left">
         <input
-          v-model="userInfo.email"
+          v-model="user.email"
           class="input"
           :class="{ 'is-danger': fieldError('email') }"
           name="email"
@@ -23,7 +23,7 @@
       <label class="label">Password</label>
       <div class="control has-icons-left">
         <input
-          v-model="userInfo.password"
+          v-model="user.password"
           class="input"
           :class="{ 'is-danger': fieldError('password') }"
           type="password"
@@ -44,7 +44,7 @@
     <div v-if="checkTos" class="field">
       <div class="control">
         <label class="checkbox">
-          <input v-model="userInfo.agreeToTerms" type="checkbox" required>
+          <input v-model="user.agreeToTerms" type="checkbox" required>
           I agree to the <a href="#">terms and conditions</a>
         </label>
       </div>
@@ -54,10 +54,7 @@
     </div>
 
     <div class="control">
-      <button
-        :disabled="!valid"
-        class="button is-primary is-fullwidth"
-      >
+      <button class="button is-primary is-fullwidth">
         {{ buttonText }}
       </button>
     </div>
@@ -67,6 +64,10 @@
 <script>
 export default {
   props: {
+    user: {
+      type: Object,
+      required: true
+    },
     submitForm: {
       type: Function,
       required: true
@@ -81,19 +82,9 @@ export default {
       required: true
     }
   },
-  data () {
-    return {
-      valid: true,
-      userInfo: {
-        email: null,
-        password: null,
-        agreeToTerms: false
-      }
-    }
-  },
   methods: {
-    fieldError (context) {
-      const error = this.errors.find(error => error.context === context)
+    fieldError (param) {
+      const error = this.errors.find(error => error.param === param)
       if (error) {
         return error.msg
       }

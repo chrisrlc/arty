@@ -72,7 +72,7 @@ export default {
       this.errors = responseErrors
 
       // Set form error notification
-      const formError = this.errors.find(error => error.context === 'misc')
+      const formError = this.errors.find(error => !Object.keys(this.work).includes(error.param))
       const formErrorMsg = formError ? formError.msg : 'Your changes could not be saved! Scroll down to fix errors.'
       this.setNotification(false, formErrorMsg)
     }

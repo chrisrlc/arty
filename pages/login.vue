@@ -9,7 +9,7 @@
 
           <Notification v-if="formError()" :message="formError()" />
 
-          <UserAuthForm button-text="Login" :submit-form="userLogin" :errors="errors" />
+          <UserAuthForm :user="user" button-text="Login" :submit-form="userLogin" :errors="errors" />
 
           <div class="has-text-centered" style="margin-top: 20px">
             Don't have an account?
@@ -28,7 +28,11 @@ export default {
   auth: 'guest',
   data () {
     return {
-      errors: []
+      errors: [],
+      user: {
+        email: null,
+        password: null
+      }
     }
   },
   methods: {
@@ -41,7 +45,7 @@ export default {
       }
     },
     formError () {
-      const error = this.errors.find(error => error.context === 'misc')
+      const error = this.errors.find(error => !Object.keys(this.user).includes(error.param))
       if (error) {
         return error.msg
       }

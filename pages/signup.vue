@@ -9,7 +9,7 @@
 
           <Notification v-if="formError()" :message="formError()" />
 
-          <UserAuthForm button-text="Sign Up" :submit-form="userSignup" :check-tos="true" :errors="errors" />
+          <UserAuthForm :user="user" button-text="Sign Up" :submit-form="userSignup" :check-tos="true" :errors="errors" />
 
           <div class="has-text-centered" style="margin-top: 20px">
             Already got an account?
@@ -28,7 +28,12 @@ export default {
   auth: 'guest',
   data () {
     return {
-      errors: []
+      errors: [],
+      user: {
+        email: null,
+        password: null,
+        agreeToTerms: false
+      }
     }
   },
   methods: {
@@ -43,7 +48,7 @@ export default {
       }
     },
     formError () {
-      const error = this.errors.find(error => error.context === 'misc')
+      const error = this.errors.find(error => !Object.keys(this.user).includes(error.param))
       if (error) {
         return error.msg
       }

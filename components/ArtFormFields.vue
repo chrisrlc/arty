@@ -147,6 +147,7 @@
           v-model="work.acquisitionCost"
           class="input"
           :class="{ 'is-danger': fieldError('acquisitionCost') }"
+          type="number"
           min="0"
           step="any"
           name="acquisitionCost"
@@ -194,9 +195,9 @@ export default {
         this.work.imageUpdated = true
 
         // Remove any image errors
-        this.errors = this.errors.filter(error => error.context !== 'image')
+        this.errors = this.errors.filter(error => error.param !== 'image')
       } else {
-        this.errors.push({ context: 'image', msg: 'Image file could not be uploaded.' })
+        this.errors.push({ param: 'image', msg: 'Image file could not be uploaded.' })
       }
     },
     onRemove () {
@@ -205,10 +206,10 @@ export default {
       this.work.image = null
 
       // Remove any image errors
-      this.errors = this.errors.filter(error => error.context !== 'image')
+      this.errors = this.errors.filter(error => error.param !== 'image')
     },
-    fieldError (context) {
-      const error = this.errors.find(error => error.context === context)
+    fieldError (param) {
+      const error = this.errors.find(error => error.param === param)
       if (error) {
         return error.msg
       }
