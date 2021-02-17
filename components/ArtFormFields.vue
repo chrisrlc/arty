@@ -1,23 +1,25 @@
 <template>
   <fieldset :disabled="disabled" class="art-form-fields">
     <div v-if="!disabled" class="field" :class="{ 'picture-danger': fieldError('image') }">
-      <picture-input
-        ref="pictureInput"
-        width="600"
-        height="600"
-        margin="16"
-        :crop="false"
-        accept="image/jpeg,image/png"
-        size="10"
-        button-class="button is-link"
-        remove-button-class="button"
-        :removable="true"
-        name="image"
-        :prefill="work.imageUrl"
-        :prefill-options="{mediaType: 'image/jpeg'}"
-        @change="onChange"
-        @remove="onRemove"
-      />
+      <client-only>
+        <picture-input
+          ref="pictureInput"
+          width="600"
+          height="600"
+          margin="16"
+          :crop="false"
+          accept="image/jpeg,image/png"
+          size="10"
+          button-class="button is-link"
+          remove-button-class="button"
+          :removable="true"
+          name="image"
+          :prefill="work.imageUrl"
+          :prefill-options="{mediaType: 'image/jpeg'}"
+          @change="onChange"
+          @remove="onRemove"
+        />
+      </client-only>
       <p v-if="fieldError('image')" class="help is-danger has-text-centered">
         {{ fieldError('image') }}
       </p>
@@ -77,15 +79,29 @@
 
     <div v-if="!disabled || work.acquisitionDate" class="field">
       <label class="label">Date Acquired</label>
-      <date-picker
-        v-model="work.acquisitionDate"
-        placeholder="MM/DD/YYYY"
-        format="MM/dd/yyyy"
-        :typeable="!disabled"
-        name="acquisitionDate"
-        :input-class="{ 'input': true, 'is-danger': fieldError('acquisitionDate') }"
-        :disabled="disabled"
-      />
+      <client-only>
+        <date-picker
+          v-model="work.acquisitionDate"
+          placeholder="MM/DD/YYYY"
+          format="MM/dd/yyyy"
+          :typeable="!disabled"
+          name="acquisitionDate"
+          :input-class="{ 'input': true, 'is-danger': fieldError('acquisitionDate') }"
+          :disabled="disabled"
+        />
+        <div slot="placeholder">
+          <div class="control">
+            <input
+              v-model="work.acquisitionDate"
+              class="input"
+              :class="{ 'is-danger': fieldError('acquisitionDate') }"
+              type="text"
+              name="acquisitionDate"
+              placeholder="MM/DD/YYYY"
+            >
+          </div>
+        </div>
+      </client-only>
       <p v-if="fieldError('acquisitionDate')" class="help is-danger">
         {{ fieldError('acquisitionDate') }}
       </p>
