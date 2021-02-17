@@ -43,7 +43,6 @@
 
     <div v-if="loggedIn" id="navbarBurgerDropdown" class="navbar-menu" :class="{ 'is-active': isActive }">
       <div class="navbar-end">
-        <!--  TODO: Dropdown not closing after click on desktop?  -->
         <div class="navbar-item has-dropdown is-hoverable">
           <a class="navbar-link">{{ user.email }}</a>
 
@@ -118,6 +117,16 @@ export default {
 
   .navbar-burger {
     margin-left: unset;
+  }
+
+  // Overrides known bulma issue that prevents hoverable dropdown from closing after route change
+  // https://github.com/jgthms/bulma/issues/2514
+  .navbar-item.is-hoverable:hover .navbar-dropdown {
+    display: block !important;
+  }
+
+  .navbar-item.is-hoverable:focus-within .navbar-dropdown {
+    display: none;
   }
 }
 </style>
