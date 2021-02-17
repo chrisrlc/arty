@@ -233,19 +233,17 @@ async function validateAuthorizedUser (req, res, next) {
   }
 }
 
-// TODO: Fix unlimited escaping of '&'
-// TODO: check image size max?
 const validateWork = [
   check('acquisitionDate', 'Acquisition Date is invalid').trim().isISO8601().optional({nullable: true}),
   check('acquisitionCost', 'Acquisition Cost is invalid').trim().isFloat({min: 0}).optional({nullable: true}),
   check('image', 'Image is invalid').trim().isDataURI().optional({nullable: true}),
   check('imageUpdated'),
-  check('artist').trim().escape(),
-  check('title').trim().escape(),
-  check('description').trim().escape(),
-  check('acquisitionUrl').trim().escape(),
-  check('source').trim().escape(),
-  check('location').trim().escape()
+  check('artist').trim(),
+  check('title').trim(),
+  check('description').trim(),
+  check('acquisitionUrl').trim(),
+  check('source').trim(),
+  check('location').trim()
 ]
 
 module.exports = {

@@ -9,6 +9,7 @@ cloudinary.config({
 
 async function uploadImage (image) {
   // Saves image with max 1200x1200 dimensions and jpg format
+  // Max file size for Cloudinary free plan is 10 MB
   return await cloudinary.uploader.upload(image, {width: 1200, height: 1200, crop: 'limit', format: 'jpg'})
 }
 
