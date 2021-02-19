@@ -39,11 +39,15 @@ async function create (req, res) {
 
     // Set imageId
     if (allowedData.image) {
-      // Upload image as base64 data uri string to Cloudinary
-      const imageUpload = await cloudinary.uploadImage(allowedData.image)
+      try {
+        // Upload image as base64 data uri string to Cloudinary
+        const imageUpload = await cloudinary.uploadImage(allowedData.image)
 
-      // Set up image data for db
-      work.imageId = imageUpload.public_id
+        // Set up image data for db
+        work.imageId = imageUpload.public_id
+      } catch (err) {
+        return res.status(500).send({ errors: [{ param: 'image', msg: err.message }] })
+      }
     }
 
     // Create Work in db
@@ -98,11 +102,15 @@ async function update (req, res) {
       }
 
       if (allowedData.image) {
-        // Upload new image as base64 data uri string to Cloudinary
-        const imageUpload = await cloudinary.uploadImage(allowedData.image)
+        try {
+          // Upload new image as base64 data uri string to Cloudinary
+          const imageUpload = await cloudinary.uploadImage(allowedData.image)
 
-        // Update image data on db record
-        work.imageId = imageUpload.public_id
+          // Update image data on db record
+          work.imageId = imageUpload.public_id
+        } catch (err) {
+          return res.status(500).send({ errors: [{ param: 'image', msg: err.message }] })
+        }
       } else {
         // Delete image data from db record
         work.imageId = null
