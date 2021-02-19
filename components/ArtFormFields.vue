@@ -211,9 +211,9 @@ export default {
         this.work.imageUpdated = true
 
         // Remove any image errors
-        this.errors = this.errors.filter(error => error.param !== 'image')
+        this.$emit('setError', this.errors.filter(error => error.param !== 'image'))
       } else {
-        this.errors.push({ param: 'image', msg: 'Image file could not be uploaded.' })
+        this.$emit('setError', [...this.errors, { param: 'image', msg: 'Image file could not be uploaded.' }])
       }
     },
     onRemove () {
@@ -222,7 +222,7 @@ export default {
       this.work.image = null
 
       // Remove any image errors
-      this.errors = this.errors.filter(error => error.param !== 'image')
+      this.$emit('setError', this.errors.filter(error => error.param !== 'image'))
     },
     fieldError (param) {
       const error = this.errors.find(error => error.param === param)

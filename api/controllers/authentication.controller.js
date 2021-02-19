@@ -1,7 +1,7 @@
 const db = require('../models')
 const User = db.users
 const bcrypt = require('bcrypt')
-const { check, validationResult } = require('express-validator')
+const { check, validationResult, matchedData } = require('express-validator')
 
 // Create and save a new User
 async function create (req, res) {
@@ -12,10 +12,13 @@ async function create (req, res) {
       return res.status(400).send({ errors: errors.array() })
     }
 
+    // Filter req data
+    const allowedData = matchedData(req)
+
     // Create a User
     const newUser = {
-      email: req.body.email,
-      password: await bcrypt.hash(req.body.password, 12) // Encrypt password
+      email: allowedData.email,
+      password: await bcrypt.hash(allowedData.password, 12) // Encrypt password
     }
 
     // Save User in the database and log in
@@ -38,9 +41,12 @@ async function login (req, res) {
       return res.status(401).send({ errors: errors.array() })
     }
 
+    // Filter req data
+    const allowedData = matchedData(req)
+
     // Find User in the database and set session
-    const user = await User.findOne({where: {email: req.body.email}})
-    if (user && await comparePasswords(req.body.password, user.password)) {
+    const user = await User.findOne({where: {email: allowedData.email}})
+    if (user && await comparePasswords(allowedData.password, user.password)) {
       req.session.user = user
       res.end()
     } else {
@@ -74,11 +80,13 @@ const validateLogin = [
 
 const validateSignup = validateLogin.concat([
   check('email').custom(async value => {
-      const user = await User.findOne({where: {email: value}})
-      if (user) {
-        throw new Error('Email has already been taken. Please log in or choose another.')
-      }
-    }),
+    const user = await User.findOne({ where: { email: value } })
+    if (user) {
+      throw new Error('Email has already been taken. Please log in or choose another.')
+    } else {
+      return value
+    }
+  }),
   check('agreeToTerms', 'Please agree to the terms and conditions before creating an account.')
     .isIn([true])
 ])

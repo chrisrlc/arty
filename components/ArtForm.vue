@@ -1,6 +1,6 @@
 <template>
   <form @submit.prevent="submitForm(work)">
-    <ArtFormFields :work="work" :errors="errors" />
+    <ArtFormFields :work="work" :errors="errors" @setError="setError" />
 
     <div class="art-form-buttons">
       <div class="field is-grouped is-pulled-left">
@@ -89,13 +89,16 @@ export default {
         await this.$router.push(`/art?deleted=${res.data.title || 'Your untitled artwork'}`)
       } catch (err) {
         this.deleteModal = !this.deleteModal
-        this.$emit('failed', err.response.data.errors)
+        this.setError(err.response.data.errors)
       } finally {
         this.deleting = false
       }
     },
     async returnToIndex () {
       await this.$router.push('/art')
+    },
+    setError (errors) {
+      this.$emit('setError', errors)
     }
   }
 }

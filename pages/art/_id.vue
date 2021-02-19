@@ -12,7 +12,7 @@
       :work="work"
       :saving="saving"
       :errors="errors"
-      @failed="setError"
+      @setError="setError"
     />
   </section>
 </template>
@@ -71,10 +71,15 @@ export default {
       // Set field errors
       this.errors = responseErrors
 
-      // Set form error notification
-      const formError = this.errors.find(error => !Object.keys(this.work).includes(error.param))
-      const formErrorMsg = formError ? formError.msg : 'Your changes could not be saved! Scroll down to fix errors.'
-      this.setNotification(false, formErrorMsg)
+      if (this.errors.length) {
+        // Set form error notification
+        const formError = this.errors.find(error => !Object.keys(this.work).includes(error.param))
+        const formErrorMsg = formError ? formError.msg : 'Your changes could not be saved! Scroll down to fix errors.'
+        this.setNotification(false, formErrorMsg)
+      } else {
+        // Clear notification
+        this.notification = ''
+      }
     }
   }
 }

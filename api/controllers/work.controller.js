@@ -39,15 +39,11 @@ async function create (req, res) {
 
     // Set imageId
     if (allowedData.image) {
-      try {
-        // Upload image as base64 data uri string to Cloudinary
-        const imageUpload = await cloudinary.uploadImage(allowedData.image)
+      // Upload image as base64 data uri string to Cloudinary
+      const imageUpload = await cloudinary.uploadImage(allowedData.image)
 
-        // Set up image data for db
-        work.imageId = imageUpload.public_id
-      } catch (err) {
-        return res.status(500).send({ errors: [{ param: 'image', msg: err.message }] })
-      }
+      // Set up image data for db
+      work.imageId = imageUpload.public_id
     }
 
     // Create Work in db
@@ -102,15 +98,11 @@ async function update (req, res) {
       }
 
       if (allowedData.image) {
-        try {
-          // Upload new image as base64 data uri string to Cloudinary
-          const imageUpload = await cloudinary.uploadImage(allowedData.image)
+        // Upload new image as base64 data uri string to Cloudinary
+        const imageUpload = await cloudinary.uploadImage(allowedData.image)
 
-          // Update image data on db record
-          work.imageId = imageUpload.public_id
-        } catch (err) {
-          return res.status(500).send({ errors: [{ param: 'image', msg: err.message }] })
-        }
+        // Update image data on db record
+        work.imageId = imageUpload.public_id
       } else {
         // Delete image data from db record
         work.imageId = null
@@ -242,9 +234,20 @@ async function validateAuthorizedUser (req, res, next) {
 }
 
 const validateWork = [
-  check('acquisitionDate', 'Acquisition Date is invalid').trim().isISO8601().optional({nullable: true}),
-  check('acquisitionCost', 'Acquisition Cost is invalid').trim().isFloat({min: 0}).optional({nullable: true}),
-  check('image', 'Image is invalid').trim().isDataURI().optional({nullable: true}),
+  check('acquisitionDate', 'Acquisition Date is invalid').trim().isISO8601().optional({ nullable: true }),
+  check('acquisitionCost', 'Acquisition Cost is invalid').trim().isFloat({min: 0}).optional({ nullable: true }),
+  check('image', 'Image is invalid').trim().isDataURI().custom(value => {
+    // Remove initial metadata from base64 data uri string, e.g. 'data:image/jpeg;base64,' or 'data:image/png;base64,'
+    const i = value.indexOf('base64') + 7
+    const base64str = value.substr(i)
+
+    // Actual cloudinary max is 10485760
+    if (Buffer.from(base64str, 'base64').toString().length > 10100000) {
+      throw new Error('File size too large. Maximum is 10 MB.')
+    } else {
+      return value
+    }
+  }).optional({ nullable: true }),
   check('imageUpdated'),
   check('artist').trim(),
   check('title').trim(),
