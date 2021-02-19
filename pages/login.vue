@@ -14,7 +14,7 @@
           <div class="has-text-centered" style="margin-top: 20px">
             Don't have an account?
             <NuxtLink to="/signup">
-              Sign Up
+              Sign up
             </NuxtLink>
           </div>
         </div>

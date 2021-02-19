@@ -12,7 +12,12 @@
           rel="noopener noreferrer"
           class="button"
         >
-          GitHub
+          <span class="icon is-small">
+            <font-awesome-icon :icon="['fab', 'github']" />
+          </span>
+          <span>
+            GitHub
+          </span>
         </a>
       </div>
     </div>
