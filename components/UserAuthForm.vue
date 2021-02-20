@@ -7,6 +7,7 @@
           v-model="user.email"
           class="input"
           :class="{ 'is-danger': fieldError('email') }"
+          type="email"
           name="email"
           required
         >

@@ -172,8 +172,8 @@ async function index (req, res) {
       attributes: ['id', 'title', 'artistId', 'imageId', 'acquisitionDate']
     })
 
-    const works_display = await Promise.all(works.map(displayWork))
-    res.send(works_display)
+    const worksDisplay = await Promise.all(works.map(displayWork))
+    res.send(worksDisplay)
   } catch (err) {
     res.status(500).send({ errors: [{ msg: 'Some error occurred.' }] })
   }

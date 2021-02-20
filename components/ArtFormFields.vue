@@ -218,8 +218,8 @@ export default {
     },
     onRemove () {
       // Remove image from work data to be saved
-      this.work.imageUpdated = true
       this.work.image = null
+      this.work.imageUpdated = true
 
       // Remove any image errors
       this.$emit('setError', this.errors.filter(error => error.param !== 'image'))
