@@ -71,8 +71,7 @@ export default {
     },
     saving: {
       type: Boolean,
-      required: true,
-      default: false
+      required: true
     }
   },
   data () {

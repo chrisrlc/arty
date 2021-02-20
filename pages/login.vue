@@ -9,7 +9,13 @@
 
           <Notification v-if="formError()" :message="formError()" />
 
-          <UserAuthForm :user="user" button-text="Login" :submit-form="userLogin" :errors="errors" />
+          <UserAuthForm
+            :user="user"
+            button-text="Login"
+            :submit-form="userLogin"
+            :saving="saving"
+            :errors="errors"
+          />
 
           <div class="has-text-centered" style="margin-top: 20px">
             Don't have an account?
@@ -29,6 +35,7 @@ export default {
   data () {
     return {
       errors: [],
+      saving: false,
       user: {
         email: null,
         password: null
@@ -38,10 +45,19 @@ export default {
   methods: {
     async userLogin (userInfo) {
       try {
+        // Set loading icon on Log In button
+        this.saving = true
+
+        // Log in
         await this.$auth.loginWith('local', { data: userInfo })
+
+        // Redirect to art index
         await this.$router.push('/art')
       } catch (err) {
         this.errors = err.response.data.errors
+      } finally {
+        // Stop loading icon on Log In button
+        this.saving = false
       }
     },
     formError () {

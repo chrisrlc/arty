@@ -55,7 +55,7 @@
     </div>
 
     <div class="control">
-      <button class="button is-primary is-fullwidth">
+      <button class="button is-primary is-fullwidth" :class="{'is-loading': saving}" :disabled="saving">
         {{ buttonText }}
       </button>
     </div>
@@ -80,6 +80,10 @@ export default {
     checkTos: Boolean,
     errors: {
       type: Array,
+      required: true
+    },
+    saving: {
+      type: Boolean,
       required: true
     }
   },

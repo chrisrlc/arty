@@ -9,7 +9,14 @@
 
           <Notification v-if="formError()" :message="formError()" />
 
-          <UserAuthForm :user="user" button-text="Sign Up" :submit-form="userSignup" :check-tos="true" :errors="errors" />
+          <UserAuthForm
+            :user="user"
+            button-text="Sign Up"
+            :submit-form="userSignup"
+            :check-tos="true"
+            :saving="saving"
+            :errors="errors"
+          />
 
           <div class="has-text-centered" style="margin-top: 20px">
             Already got an account?
@@ -29,6 +36,7 @@ export default {
   data () {
     return {
       errors: [],
+      saving: false,
       user: {
         email: null,
         password: null,
@@ -39,12 +47,20 @@ export default {
   methods: {
     async userSignup (userInfo) {
       try {
+        // Set loading icon on Sign Up button
+        this.saving = true
+
+        // Create user
         await this.$axios.post('/auth/register', userInfo)
         await this.$auth.loginWith('local', { data: userInfo })
 
+        // Redirect to art index
         await this.$router.push('/art')
       } catch (err) {
         this.errors = err.response.data.errors
+      } finally {
+        // Stop loading icon on Sign Up button
+        this.saving = false
       }
     },
     formError () {
