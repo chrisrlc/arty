@@ -235,7 +235,7 @@ async function download (req, res) {
     res.attachment('works2.csv')
     res.send(csv)
   } catch (err) {
-    res.status(500).send({ errors: [{ msg: err.message }] })
+    res.status(500).send({ errors: [{ msg: 'Some error occurred.' }] })
   }
 }
 

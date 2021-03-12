@@ -3,6 +3,9 @@
     <h1 class="title">
       Export Inventory
     </h1>
+
+    <Notification v-if="notification" :message="notification" @clearNotification="notification = ''" />
+
     <p class="content">
       Export data for {{ worksCount }} artworks:
     </p>
@@ -22,15 +25,21 @@ export default {
       error({ statusCode: err.response.status })
     }
   },
+  data () {
+    return {
+      notification: ''
+    }
+  },
   methods: {
     async download () {
       try {
         const res = await this.$axios.get('/art/download')
+
+        // TODO: How to trigger browser download?
         console.log('download success hopefully??')
         console.log(res.data)
       } catch (err) {
-        console.log('download error')
-        console.log(err.response.data.errors)
+        this.notification = err.response.data.errors
       }
     }
   }
