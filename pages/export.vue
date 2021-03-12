@@ -7,7 +7,7 @@
     <Notification v-if="notification" :message="notification" @clearNotification="notification = ''" />
 
     <p class="content">
-      Export data for {{ worksCount }} artworks:
+      Export data for {{ worksCount }} artworks (images not included):
     </p>
     <a @click="download" class="button is-primary">
       Download CSV
