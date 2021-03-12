@@ -3,6 +3,7 @@ const Work = db.works
 const Artist = db.artists
 const cloudinary = require('../lib/cloudinary.js')
 const { check, validationResult, matchedData } = require('express-validator')
+const { parseAsync } = require('json2csv')
 
 // Create and save a new Work
 async function create (req, res) {
@@ -206,6 +207,38 @@ async function displayWork (work) {
   }
 }
 
+async function count (req, res) {
+  try {
+    res.send({
+      count: await Work.count()
+    })
+  } catch (err) {
+    res.status(500).send({ errors: [{ msg: 'Some error occurred.' }] })
+  }
+}
+
+async function download (req, res) {
+  try {
+    // TODO: Massage artistID, acquisitionDate, and acquisitionCost
+    const fields = ['title', 'artistId', 'description', 'acquisitionUrl', 'acquisitionDate', 'acquisitionCost',
+      'source', 'location']
+    const works = await Work.findAll({
+      where: {
+        userId: req.session.user.id
+      },
+      attributes: fields
+    })
+    const opts = { fields }
+    const csv = await parseAsync(works, opts)
+
+    res.header('Content-Type', 'text/csv')
+    res.attachment('works2.csv')
+    res.send(csv)
+  } catch (err) {
+    res.status(500).send({ errors: [{ msg: err.message }] })
+  }
+}
+
 // VALIDATIONS
 
 async function validateUser (req, res, next) {
@@ -263,6 +296,8 @@ module.exports = {
   destroy,
   show,
   index,
+  count,
+  download,
   validateUser,
   validateAuthorizedUser,
   validateWork

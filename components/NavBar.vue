@@ -50,6 +50,9 @@
             <NuxtLink to="/art" class="navbar-item">
               Art
             </NuxtLink>
+            <NuxtLink to="/export" class="navbar-item">
+              Export data
+            </NuxtLink>
             <NuxtLink to="/settings" class="navbar-item">
               Settings
             </NuxtLink>
