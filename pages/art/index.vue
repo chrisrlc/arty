@@ -10,7 +10,7 @@
       <div v-for="work in works" :key="work.id" class="box">
         <a class="art-details" @click="populateModal(work.id)">
           <p v-if="work.acquisitionDate" class="date has-text-left has-text-grey is-size-7">
-            {{ friendlyDate(work.acquisitionDate) }}
+            {{ work.acquisitionDate }}
           </p>
           <figure v-if="work.imageUrl" class="image content">
             <img :src="work.imageUrl">
@@ -82,10 +82,6 @@ export default {
     }
   },
   methods: {
-    friendlyDate (date) {
-      const d = new Date(date)
-      return d.toLocaleDateString('en', { year: 'numeric', month: 'short', day: 'numeric' })
-    },
     async editArt (workId) {
       await this.$router.push(`/art/${workId}`)
     },

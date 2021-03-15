@@ -2,6 +2,7 @@ const db = require('../models')
 const Work = db.works
 const Artist = db.artists
 const cloudinary = require('../lib/cloudinary.js')
+const utils = require('../lib/utils.js')
 const { check, validationResult, matchedData } = require('express-validator')
 const { parseAsync } = require('json2csv')
 
@@ -142,15 +143,10 @@ async function show (req, res) {
     // Get work
     const work = await Work.findByPk(req.params.workId)
 
-    let artistName = null
-    if (work.artistId) {
-      const artist = await Artist.findByPk(work.artistId)
-      artistName = artist.name
-    }
     res.send({
       id: work.id,
       title: work.title,
-      artist: artistName,
+      artist: await artistName(work.artistId),
       description: work.description,
       acquisitionUrl: work.acquisitionUrl,
       acquisitionDate: work.acquisitionDate,
@@ -173,21 +169,14 @@ async function index (req, res) {
       attributes: ['id', 'title', 'artistId', 'imageId', 'acquisitionDate']
     })
 
-    const worksDisplay = await Promise.all(works.map(displayWork))
-    res.send(worksDisplay)
+    const displayableWorks = await Promise.all(works.map(displayableWork))
+    res.send(displayableWorks)
   } catch (err) {
     res.status(500).send({ errors: [{ msg: 'Some error occurred.' }] })
   }
 }
 
-async function displayWork (work) {
-  // Get artist name
-  let artistName = null
-  if (work.artistId) {
-    const artist = await Artist.findByPk(work.artistId)
-    artistName = artist.name
-  }
-
+async function displayableWork (work) {
   let imageUrl = null
   if (work.imageId) {
     // Scale image to width=250
@@ -201,9 +190,9 @@ async function displayWork (work) {
   return {
     id: work.id,
     title: work.title,
-    artist: artistName,
+    artist: await artistName(work.artistId),
     imageUrl: imageUrl,
-    acquisitionDate: work.acquisitionDate
+    acquisitionDate: utils.friendlyDate(work.acquisitionDate)
   }
 }
 
@@ -217,22 +206,45 @@ async function count (req, res) {
   }
 }
 
+async function artistName (artistId) {
+  let artistName = null
+  if (artistId) {
+    const artist = await Artist.findByPk(artistId)
+    artistName = artist.name
+  }
+
+  return artistName
+}
+
+async function downloadableWork (work) {
+  return {
+    title: work.title,
+    artist: await artistName(work.artistId),
+    description: work.description,
+    acquisitionUrl: work.acquisitionUrl,
+    acquisitionDate: utils.friendlyDate(work.acquisitionDate),
+    acquisitionCost: work.acquisitionCost,
+    source: work.source,
+    location: work.location
+  }
+}
+
 async function download (req, res) {
   try {
-    // TODO: Massage artistID, acquisitionDate, and acquisitionCost
-    const fields = ['title', 'artistId', 'description', 'acquisitionUrl', 'acquisitionDate', 'acquisitionCost',
-      'source', 'location']
     const works = await Work.findAll({
       where: {
         userId: req.session.user.id
-      },
-      attributes: fields
+      }
     })
+    const downloadableWorks = await Promise.all(works.map(downloadableWork))
+
+    const fields = ['title', 'artist', 'description', 'acquisitionUrl', 'acquisitionDate', 'acquisitionCost',
+      'source', 'location']
     const opts = { fields }
-    const csv = await parseAsync(works, opts)
+    const csv = await parseAsync(downloadableWorks, opts)
 
     res.header('Content-Type', 'text/csv')
-    res.attachment('works2.csv')
+    res.attachment('inventory.csv')
     res.send(csv)
   } catch (err) {
     res.status(500).send({ errors: [{ msg: 'Some error occurred.' }] })

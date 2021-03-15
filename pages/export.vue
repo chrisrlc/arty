@@ -9,7 +9,7 @@
     <p class="content">
       Export data for {{ worksCount }} artworks (images not included):
     </p>
-    <a @click="download" class="button is-primary">
+    <a class="button is-primary" @click="download">
       Download CSV
     </a>
   </section>
@@ -35,9 +35,18 @@ export default {
       try {
         const res = await this.$axios.get('/art/download')
 
-        // TODO: How to trigger browser download?
-        console.log('download success hopefully??')
-        console.log(res.data)
+        // Get filename from response
+        const contentDisposition = res.headers['content-disposition']
+        const matches = contentDisposition.match(/filename="([^"]+)/)
+        const filename = matches ? matches[1] : 'inventory.csv'
+
+        // Trigger browser download
+        const url = URL.createObjectURL(new Blob([res.data]))
+        const link = document.createElement('a')
+        link.href = url
+        link.download = filename
+        document.body.appendChild(link)
+        link.click()
       } catch (err) {
         this.notification = err.response.data.errors
       }
