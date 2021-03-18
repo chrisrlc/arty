@@ -1,8 +1,8 @@
 const db = require('../models')
 const Work = db.works
 const Artist = db.artists
-const cloudinary = require('../lib/cloudinary.js')
-const utils = require('../lib/utils.js')
+const cloudinary = require('../lib/cloudinary')
+const utils = require('../lib/utils')
 const { check, validationResult, matchedData } = require('express-validator')
 const { parseAsync } = require('json2csv')
 
@@ -26,10 +26,17 @@ async function create (req, res) {
       description: allowedData.description,
       acquisitionUrl: allowedData.acquisitionUrl,
       acquisitionDate: allowedData.acquisitionDate,
-      acquisitionCost: allowedData.acquisitionCost,
       source: allowedData.source,
       location: allowedData.location
     })
+
+    // Set acquisitionCost
+    if (!allowedData.acquisitionCost && allowedData.acquistionCost !== 0) {
+      // Convert non-0 falsey values (e.g. '') to null
+      work.acquisitionCost = null
+    } else {
+      work.acquisitionCost = allowedData.acquisitionCost
+    }
 
     // Set artistId
     if (allowedData.artist) {
@@ -78,9 +85,16 @@ async function update (req, res) {
     work.description = allowedData.description
     work.acquisitionUrl = allowedData.acquisitionUrl
     work.acquisitionDate = allowedData.acquisitionDate
-    work.acquisitionCost = allowedData.acquisitionCost
     work.source = allowedData.source
     work.location = allowedData.location
+
+    // Set acquisitionCost
+    if (!allowedData.acquisitionCost && allowedData.acquistionCost !== 0) {
+      // Convert non-0 falsey values (e.g. '') to null
+      work.acquisitionCost = null
+    } else {
+      work.acquisitionCost = allowedData.acquisitionCost
+    }
 
     // Set artist
     if (allowedData.artist) {
@@ -279,8 +293,10 @@ async function validateAuthorizedUser (req, res, next) {
 }
 
 const validateWork = [
-  check('acquisitionDate', 'Acquisition Date is invalid').trim().isISO8601().optional({ nullable: true }),
-  check('acquisitionCost', 'Acquisition Cost is invalid').trim().isFloat({min: 0}).optional({ nullable: true }),
+  check('acquisitionDate', 'Acquisition Date is invalid').trim().isISO8601()
+    .optional({ nullable: true }),
+  check('acquisitionCost', 'Acquisition Cost is invalid').trim().isFloat({ min: 0 })
+    .optional({ nullable: true, checkFalsy: true }),
   check('image', 'Image is invalid').trim().isDataURI().custom(value => {
     // Remove initial metadata from base64 data uri string, e.g. 'data:image/jpeg;base64,' or 'data:image/png;base64,'
     const i = value.indexOf('base64') + 7

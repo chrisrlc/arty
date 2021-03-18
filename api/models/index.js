@@ -17,9 +17,9 @@ const db = {}
 db.Sequelize = Sequelize
 db.sequelize = sequelize
 
-db.users = require('./user.js')(sequelize, Sequelize)
-db.works = require('./work.js')(sequelize, Sequelize)
-db.artists = require('./artist.js')(sequelize, Sequelize)
-db.artistWebsites = require('./artist-website.js')(sequelize, Sequelize)
+db.users = require('./user')(sequelize, Sequelize)
+db.works = require('./work')(sequelize, Sequelize)
+db.artists = require('./artist')(sequelize, Sequelize)
+db.artistWebsites = require('./artist-website')(sequelize, Sequelize)
 
 module.exports = db

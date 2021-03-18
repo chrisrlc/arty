@@ -1,5 +1,5 @@
 require('dotenv').config()
-const authConfig = require('./config/auth.config.js')
+const authConfig = require('./config/auth.config')
 const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
