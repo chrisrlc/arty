@@ -1,5 +1,7 @@
 require('dotenv').config()
 const authConfig = require('./config/auth.config')
+const logger = require('./lib/logger')
+const morgan = require('morgan')
 const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
@@ -8,6 +10,10 @@ const session = require('express-session')
 // Create express instance
 const app = express()
 
+// Log http requests
+app.use(morgan('combined', { stream: logger.stream }))
+
+// Set up cors
 var corsOptions = {
   origin: 'http://localhost:3000',
   credentials: true

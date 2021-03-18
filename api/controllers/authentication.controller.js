@@ -1,6 +1,7 @@
 const db = require('../models')
 const User = db.users
 const bcrypt = require('bcrypt')
+const logger = require('../lib/logger')
 const { check, validationResult, matchedData } = require('express-validator')
 
 // Create and save a new User
@@ -25,6 +26,7 @@ async function create (req, res) {
     req.session.user = await User.create(newUser)
     res.end()
   } catch (err) {
+    logger.error(err.message)
     res.status(500).send({ errors: [{ msg: 'Some error occurred.' }] })
   }
 }
@@ -53,6 +55,7 @@ async function login (req, res) {
       res.status(403).send({ errors: [{ msg: 'Invalid email or password.' }] })
     }
   } catch (err) {
+    logger.error(err.message)
     res.status(500).send({ errors: [{ msg: 'Some error occurred.' }] })
   }
 }

@@ -2,6 +2,7 @@ const db = require('../models')
 const Work = db.works
 const Artist = db.artists
 const cloudinary = require('../lib/cloudinary')
+const logger = require('../lib/logger')
 const utils = require('../lib/utils')
 const { check, validationResult, matchedData } = require('express-validator')
 const { parseAsync } = require('json2csv')
@@ -60,6 +61,7 @@ async function create (req, res) {
 
     res.send({id: work.id, title: work.title})
   } catch (err) {
+    logger.error(err.message)
     res.status(500).send({ errors: [{ msg: 'Some error occurred.' }] })
   }
 }
@@ -68,9 +70,9 @@ async function create (req, res) {
 async function update (req, res) {
   try {
     // Validate
-    const validationErrors = validationResult(req)
-    if (!validationErrors.isEmpty()) {
-      return res.status(400).send({ errors: validationErrors.array() })
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+      return res.status(400).send({ errors: errors.array() })
     }
 
     // Filter req data
@@ -130,6 +132,7 @@ async function update (req, res) {
 
     res.end()
   } catch (err) {
+    logger.error(err.message)
     res.status(500).send({ errors: [{ msg: 'Some error occurred.' }] })
   }
 }
@@ -186,6 +189,7 @@ async function index (req, res) {
     const displayableWorks = await Promise.all(works.map(displayableWork))
     res.send(displayableWorks)
   } catch (err) {
+    logger.error(err.message)
     res.status(500).send({ errors: [{ msg: 'Some error occurred.' }] })
   }
 }
@@ -216,6 +220,7 @@ async function count (req, res) {
       count: await Work.count()
     })
   } catch (err) {
+    logger.error(err.message)
     res.status(500).send({ errors: [{ msg: 'Some error occurred.' }] })
   }
 }
@@ -261,6 +266,7 @@ async function download (req, res) {
     res.attachment('inventory.csv')
     res.send(csv)
   } catch (err) {
+    logger.error(err.message)
     res.status(500).send({ errors: [{ msg: 'Some error occurred.' }] })
   }
 }
@@ -284,7 +290,7 @@ async function validateAuthorizedUser (req, res, next) {
     if (!work) {
       res.status(404).send({errors: [{msg: 'Art not found!'}]})
     } else if (work.userId !== req.session.user.id) {
-        res.status(403).send({errors: [{msg: 'User not authorized.'}]})
+      res.status(403).send({errors: [{msg: 'User not authorized.'}]})
     } else {
       // Great, user is authorized, moving on...
       next()
