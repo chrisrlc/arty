@@ -1,7 +1,8 @@
-const { createLogger, format, transports, addColors } = require('winston')
+require('dotenv').config()
+const { createLogger, format, transports } = require('winston')
 
 const logger = createLogger({
-  level: process.env.NODE_ENV !== 'production' ? 'debug' : 'warn',
+  level: process.env.LOG_LEVEL,
   format: format.combine(format.timestamp(), format.json()),
   transports: [
     //
@@ -24,7 +25,7 @@ const logger = createLogger({
 // If we're not in production then log to the `console` with the format:
 // `${info.timestamp} ${info.level}: ${info.message} JSON.stringify({ ...rest }) `
 //
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV === 'development') {
   logger.add(new transports.Console({
     format: format.combine(
       format.colorize(),
