@@ -3,7 +3,10 @@ const { createLogger, format, transports } = require('winston')
 
 const logger = createLogger({
   level: process.env.LOG_LEVEL,
-  format: format.combine(format.timestamp(), format.json()),
+  format: format.combine(
+    format.errors({ stack: true }),
+    format.timestamp(),
+    format.json()),
   transports: [
     //
     // - Write all logs with level `error` and below to `logs/error.log`
@@ -11,14 +14,7 @@ const logger = createLogger({
     //
     new transports.File({ filename: 'logs/error.log', level: 'error' }),
     new transports.File({ filename: 'logs/combined.log' }),
-  ],
-
-  // TODO: Make exceptionHandler and rejectionHandler work...
-  exceptionHandlers: [
-    // Write all uncaught exceptions to `logs/exceptions.log`
-    new transports.File({ filename: 'logs/exceptions.log' })
-  ],
-  exitOnError: false
+  ]
 })
 
 //
@@ -30,7 +26,7 @@ if (process.env.NODE_ENV === 'development') {
     format: format.combine(
       format.colorize(),
       format.timestamp(),
-      format.printf((info) => `${info.timestamp} ${info.level}: ${info.message}`)
+      format.printf((info) => `${info.timestamp} ${info.level}: ${info.stack ? info.stack : info.message}`)
     ),
   }))
 }

@@ -61,7 +61,7 @@ async function create (req, res) {
 
     res.send({id: work.id, title: work.title})
   } catch (err) {
-    logger.error(err.message)
+    logger.error(err)
     res.status(500).send({ errors: [{ msg: 'Some error occurred.' }] })
   }
 }
@@ -132,7 +132,7 @@ async function update (req, res) {
 
     res.end()
   } catch (err) {
-    logger.error(err.message)
+    logger.error(err)
     res.status(500).send({ errors: [{ msg: 'Some error occurred.' }] })
   }
 }
@@ -189,7 +189,7 @@ async function index (req, res) {
     const displayableWorks = await Promise.all(works.map(displayableWork))
     res.send(displayableWorks)
   } catch (err) {
-    logger.error(err.message)
+    logger.error(err)
     res.status(500).send({ errors: [{ msg: 'Some error occurred.' }] })
   }
 }
@@ -220,7 +220,7 @@ async function count (req, res) {
       count: await Work.count({ where: { userId: req.session.user.id }})
     })
   } catch (err) {
-    logger.error(err.message)
+    logger.error(err)
     res.status(500).send({ errors: [{ msg: 'Some error occurred.' }] })
   }
 }
@@ -264,7 +264,7 @@ async function download (req, res) {
     res.attachment('inventory.csv')
     res.send(csv)
   } catch (err) {
-    logger.error(err.message)
+    logger.error(err)
     res.status(500).send({ errors: [{ msg: 'Some error occurred.' }] })
   }
 }

@@ -26,7 +26,7 @@ async function create (req, res) {
     req.session.user = await User.create(newUser)
     res.end()
   } catch (err) {
-    logger.error(err.message)
+    logger.error(err)
     res.status(500).send({ errors: [{ msg: 'Some error occurred.' }] })
   }
 }
@@ -55,7 +55,7 @@ async function login (req, res) {
       res.status(403).send({ errors: [{ msg: 'Invalid email or password.' }] })
     }
   } catch (err) {
-    logger.error(err.message)
+    logger.error(err)
     res.status(500).send({ errors: [{ msg: 'Some error occurred.' }] })
   }
 }
