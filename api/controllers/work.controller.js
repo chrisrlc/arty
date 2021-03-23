@@ -217,7 +217,7 @@ async function displayableWork (work) {
 async function count (req, res) {
   try {
     res.send({
-      count: await Work.count()
+      count: await Work.count({ where: { userId: req.session.user.id }})
     })
   } catch (err) {
     logger.error(err.message)
@@ -257,10 +257,8 @@ async function download (req, res) {
     })
     const downloadableWorks = await Promise.all(works.map(downloadableWork))
 
-    const fields = ['title', 'artist', 'description', 'acquisitionUrl', 'acquisitionDate', 'acquisitionCost',
-      'source', 'location']
-    const opts = { fields }
-    const csv = await parseAsync(downloadableWorks, opts)
+    const fields = downloadableWorks.length ? Object.keys(downloadableWorks[0]) : []
+    const csv = await parseAsync(downloadableWorks, { fields })
 
     res.header('Content-Type', 'text/csv')
     res.attachment('inventory.csv')
@@ -284,13 +282,13 @@ async function validateUser (req, res, next) {
 
 async function validateAuthorizedUser (req, res, next) {
   if (!req.session.user) {
-    res.status(401).send({errors: [{msg: 'User must be logged in.'}]})
+    res.status(401).send({ errors: [{ msg: 'User must be logged in.' }] })
   } else {
     const work = await Work.findByPk(req.params.workId)
     if (!work) {
-      res.status(404).send({errors: [{msg: 'Art not found!'}]})
+      res.status(404).send({ errors: [{ msg: 'Art not found!' }] })
     } else if (work.userId !== req.session.user.id) {
-      res.status(403).send({errors: [{msg: 'User not authorized.'}]})
+      res.status(403).send({ errors: [{ msg: 'User not authorized.' }] })
     } else {
       // Great, user is authorized, moving on...
       next()

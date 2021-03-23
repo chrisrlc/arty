@@ -6,12 +6,19 @@
 
     <Notification v-if="notification" :message="notification" @clearNotification="notification = ''" />
 
-    <p class="content">
-      Export data for {{ worksCount }} artworks (images not included):
-    </p>
-    <a class="button is-primary" @click="download">
-      Download CSV
-    </a>
+    <div v-if="worksCount" class="container">
+      <p class="content">
+        Export data for {{ worksCount }} artworks (images not included):
+      </p>
+      <a class="button is-primary" @click="download">
+        Download CSV
+      </a>
+    </div>
+    <div v-else class="container">
+      <p class="content">
+        No art added yet to your inventory!
+      </p>
+    </div>
   </section>
 </template>
 
@@ -45,8 +52,8 @@ export default {
         const link = document.createElement('a')
         link.href = url
         link.download = filename
-        document.body.appendChild(link)
         link.click()
+        URL.revokeObjectURL(link.href)
       } catch (err) {
         this.notification = err.response.data.errors
       }
