@@ -40,3 +40,10 @@ To run migrations:
 To generate skeleton migration file in `api/migrations/`: 
 
     $ npx sequelize-cli migration:generate --name migration-skeleton
+
+## Logging
+
+Server logs are captured using [winston](https://github.com/winstonjs/winston) and [morgan](https://github.com/expressjs/morgan) and stored in `/logs`. 
+See `api/lib/logger.js` for logger configs.
+
+Nuxt errors are logged to [Sentry](https://sentry.io/) using the [Sentry module for Nuxt](https://sentry.nuxtjs.org/).

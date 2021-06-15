@@ -9,23 +9,20 @@ const logger = createLogger({
     format.json()),
   transports: [
     //
-    // - Write all logs with level `error` and below to `logs/error.log`
+    // - Write all logs with level `error` and below to `logs/error.log`, incl. uncaught exceptions and promise rejections
     // - Write all logs with level `info` and below to `logs/combined.log`
     //
-    new transports.File({ filename: 'logs/error.log', level: 'error' }),
-    new transports.File({ filename: 'logs/combined.log' }),
+    new transports.File({
+      filename: 'logs/error.log',
+      level: 'error',
+      handleExceptions: true,
+      handleRejections: true
+    }),
+    new transports.File({
+      filename: 'logs/combined.log'
+    }),
   ],
-
-  // TODO: Make exceptionHandler and rejectionHandler work...?
-  // exceptionHandlers: [
-  //   // Write all uncaught exceptions to `logs/exceptions.log`
-  //   new transports.File({ filename: 'logs/exceptions.log' })
-  // ],
-  // rejectionHandlers: [
-  //   // Write all uncaught promise rejections to `logs/rejections.log`
-  //   new transports.File({ filename: 'logs/rejections.log' })
-  // ],
-  // exitOnError: false
+  exitOnError: false
 })
 
 //
@@ -44,7 +41,7 @@ if (process.env.NODE_ENV === 'development') {
 
 logger.stream = {
   write: function(message){
-    logger.info(message);
+    logger.info(message)
   }
 }
 
