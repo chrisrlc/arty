@@ -20,6 +20,7 @@
     "@nuxtjs/bulma": "^1.3.0",
     "@nuxtjs/dotenv": "^1.4.1",
     "@nuxtjs/fontawesome": "^1.1.2",
+    "@nuxtjs/sentry": "^5.0.3",
     "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
     "cloudinary": "^1.24.0",

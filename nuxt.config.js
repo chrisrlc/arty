@@ -53,6 +53,7 @@ export default {
     '@nuxtjs/axios',
     '@nuxtjs/auth',
     '@nuxtjs/style-resources',
+    '@nuxtjs/sentry'
   ],
 
   // Server Middleware

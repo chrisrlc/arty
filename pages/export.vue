@@ -24,11 +24,12 @@
 
 <script>
 export default {
-  async asyncData ({ $axios, error }) {
+  async asyncData ({ $axios, $sentry, error }) {
     try {
       const res = await $axios.get('/art/count')
       return { worksCount: res.data.count }
     } catch (err) {
+      $sentry.captureException(err)
       error({ statusCode: err.response.status })
     }
   },

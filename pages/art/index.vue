@@ -66,11 +66,12 @@
 
 <script>
 export default {
-  async asyncData ({ $axios, error }) {
+  async asyncData ({ $axios, $sentry, error }) {
     try {
       const res = await $axios.get('/art')
       return { works: res.data }
     } catch (err) {
+      $sentry.captureException(err)
       error({ statusCode: err.response.status })
     }
   },

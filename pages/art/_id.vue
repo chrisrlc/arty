@@ -19,11 +19,12 @@
 
 <script>
 export default {
-  async asyncData ({ params, $axios, error }) {
+  async asyncData ({ params, $axios, $sentry, error }) {
     try {
       const res = await $axios.get(`/art/${params.id}`)
       return { work: res.data }
     } catch (err) {
+      $sentry.captureException(err)
       error({ statusCode: err.response.status })
     }
   },
