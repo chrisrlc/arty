@@ -14,7 +14,18 @@ const logger = createLogger({
     //
     new transports.File({ filename: 'logs/error.log', level: 'error' }),
     new transports.File({ filename: 'logs/combined.log' }),
-  ]
+  ],
+
+  // TODO: Make exceptionHandler and rejectionHandler work...?
+  // exceptionHandlers: [
+  //   // Write all uncaught exceptions to `logs/exceptions.log`
+  //   new transports.File({ filename: 'logs/exceptions.log' })
+  // ],
+  // rejectionHandlers: [
+  //   // Write all uncaught promise rejections to `logs/rejections.log`
+  //   new transports.File({ filename: 'logs/rejections.log' })
+  // ],
+  // exitOnError: false
 })
 
 //
