@@ -107,23 +107,6 @@ export default {
     margin-right: auto;
   }
 
-  // Coming soon, apparently: https://bulma.io/documentation/elements/icon/#icon-text
-  .icon-text {
-    align-items: flex-start;
-    color: inherit;
-    display: inline-flex;
-    flex-wrap: wrap;
-    line-height: 1.5rem;
-    vertical-align: top;
-  }
-  .icon-text .icon:not(:last-child) {
-    margin-right: .25em;
-  }
-  .icon-text .icon {
-    flex-grow: 0;
-    flex-shrink: 0;
-  }
-
   .art-tiles-container {
     column-count: 2;
     @media (min-width: $tablet) {
