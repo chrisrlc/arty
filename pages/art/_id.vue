@@ -32,7 +32,7 @@ export default {
     return {
       errors: [],
       saving: false,
-      success: this.$route.query.created,
+      success: !!this.$route.query.created,
       notification: this.$route.query.created ? `${this.$route.query.created} has been created!` : ''
     }
   },
