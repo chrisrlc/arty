@@ -3,6 +3,7 @@ const User = db.users
 const bcrypt = require('bcrypt')
 const logger = require('../lib/logger')
 const { check, validationResult, matchedData } = require('express-validator')
+const { sendMail } = require('../lib/mail')
 
 // Create and save a new User
 async function create (req, res) {
@@ -24,6 +25,12 @@ async function create (req, res) {
 
     // Save User in the database and log in
     req.session.user = await User.create(newUser)
+
+    // TODO: Move html and plain text email templates elsewhere
+    // Send new account email
+    await sendMail(newUser.email, 'Welcome to arty!',
+      "Thanks for joining the arty community!\n\nLOVE,\nTwo Eggs in Pittsburgh")
+
     res.end()
   } catch (err) {
     logger.error(err)

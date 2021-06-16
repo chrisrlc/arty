@@ -33,6 +33,7 @@
     "json2csv": "^5.0.6",
     "morgan": "^1.10.0",
     "mysql2": "^2.2.5",
+    "nodemailer": "^6.6.1",
     "nuxt": "^2.15.7",
     "sequelize": "^6.6.2",
     "vue-picture-input": "^2.1.6",
